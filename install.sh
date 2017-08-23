@@ -74,6 +74,18 @@ if [ -f /etc/redhat-release ];then
  Install_v2ray(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
  }
+ #Install_sync
+ Install_sync(){
+ 
+ }
+ #Install_ytb_dl
+ Install_ytb_dl(){
+ cd ~
+ wget https://yt-dl.org/downloads/2016.07.13/youtube-dl -O /usr/local/bin/youtube-dl
+ chmod a+rx /usr/local/bin/youtube-dl
+ echo && stty erase '^H' && read -p "请输入视频地址：" address
+ youtube-dl $address
+ }
  
 #meun 
 if [[ "${action}" == "clearall" ]]; then
@@ -87,8 +99,10 @@ else
   ${Green_font_prefix}4.${Font_color_suffix} 安装/管理 ssr
   ${Green_font_prefix}5.${Font_color_suffix} 安装/管理 逗逼监控
   ${Green_font_prefix}6.${Font_color_suffix} 安装 V2ray
+  ${Green_font_prefix}7.${Font_color_suffix} 安装 Sync
+  ${Green_font_prefix}8.${Font_color_suffix} 安装/使用 youtube-dl
  "
-	echo && stty erase '^H' && read -p "请输入数字 [1-6]：" num
+	echo && stty erase '^H' && read -p "请输入数字 [1-8]：" num
 case "$num" in
 	1)
 	Install_screen
@@ -107,6 +121,12 @@ case "$num" in
 	;;
 	6)
 	Install_v2ray
+	;;
+	7)
+	Install_sync
+	;;
+	8)
+	Install_ytb_dl
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
