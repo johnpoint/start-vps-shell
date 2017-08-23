@@ -24,46 +24,55 @@ if [ -f /etc/redhat-release ];then
  echo "Not support OS, Please reinstall OS and retry!" 
  exit 1 
  fi 
- 
 
-if [[ "${action}" == "clearall" ]]; then
+#Install_something
+Install_something(){
+wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/install.sh && chmod +x install.sh && ./install.sh
+}
+#CG_passwd
+CG_passwd(){
+passwd
+}
+#Look_uname
+Look_uname(){
+uname -a
+}
+#Login_key
+Login_key(){
+wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/ssh_key.sh && chmod +x ssh_key.sh && ./ssh_key.sh
+}
+
+ 
+ if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
 else
-	echo -e "  ShadowsocksR MuJSON一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
-  ---- Toyo | doub.io/ss-jc60 ----
-  ${Green_font_prefix}1.${Font_color_suffix} 安装 ShadowsocksR
-  ${Green_font_prefix}2.${Font_color_suffix} 更新 ShadowsocksR
-  ${Green_font_prefix}3.${Font_color_suffix} 卸载 ShadowsocksR
-  ${Green_font_prefix}4.${Font_color_suffix} 安装 libsodium(chacha20)
+	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+  ---- johnpoint ----
+  ${Green_font_prefix}1.${Font_color_suffix} 安装 软件
+  ${Green_font_prefix}2.${Font_color_suffix} 修改 密码
+  ${Green_font_prefix}3.${Font_color_suffix} 查看 系统信息
+  ${Green_font_prefix}4.${Font_color_suffix} 更改 系统为密钥登陆
 ————————————
-  ${Green_font_prefix}5.${Font_color_suffix} 查看 账号信息
-  ${Green_font_prefix}6.${Font_color_suffix} 显示 连接信息
-  ${Green_font_prefix}7.${Font_color_suffix} 设置 用户配置
-  ${Green_font_prefix}8.${Font_color_suffix} 手动 修改配置
-  ${Green_font_prefix}9.${Font_color_suffix} 清零 已用流量
-————————————
- ${Green_font_prefix}10.${Font_color_suffix} 启动 ShadowsocksR
- ${Green_font_prefix}11.${Font_color_suffix} 停止 ShadowsocksR
- ${Green_font_prefix}12.${Font_color_suffix} 重启 ShadowsocksR
- ${Green_font_prefix}13.${Font_color_suffix} 查看 ShadowsocksR 日志
-————————————
- ${Green_font_prefix}14.${Font_color_suffix} 其他功能
- ${Green_font_prefix}15.${Font_color_suffix} 升级脚本
+  ${Green_font_prefix}5.${Font_color_suffix} 
+  ${Green_font_prefix}6.${Font_color_suffix} 
+  ${Green_font_prefix}7.${Font_color_suffix} 
+  ${Green_font_prefix}8.${Font_color_suffix} 
+  ${Green_font_prefix}9.${Font_color_suffix} 
  "
 	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-15]：" num
 case "$num" in
 	1)
-	Install_SSR
+	Install_something
 	;;
 	2)
-	Update_SSR
+	CG_passwd
 	;;
 	3)
-	Uninstall_SSR
+	Look_uname
 	;;
 	4)
-	Install_Libsodium
+	Login_key
 	;;
 	5)
 	View_User
@@ -76,27 +85,6 @@ case "$num" in
 	;;
 	8)
 	Manually_Modify_Config
-	;;
-	9)
-	Clear_transfer
-	;;
-	10)
-	Start_SSR
-	;;
-	11)
-	Stop_SSR
-	;;
-	12)
-	Restart_SSR
-	;;
-	13)
-	View_Log
-	;;
-	14)
-	Other_functions
-	;;
-	15)
-	Update_Shell
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
