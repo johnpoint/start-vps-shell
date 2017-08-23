@@ -1,6 +1,7 @@
 #!/bin/sh
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin 
 
+Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 #check OS#
 if [ -f /etc/redhat-release ];then 
  OS='CentOS' 
