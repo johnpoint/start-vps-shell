@@ -84,7 +84,6 @@ else
   ${Green_font_prefix}5.${Font_color_suffix} 安装/管理 逗逼监控
   ${Green_font_prefix}6.${Font_color_suffix} 
  "
-	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-6]：" num
 case "$num" in
 	1)
