@@ -25,7 +25,6 @@ if [ -f /etc/redhat-release ];then
  fi 
  echo '安装完成！'
  }
- 
  #Generate_key
  Generate_key(){
  echo '正在生成key'
@@ -37,7 +36,6 @@ if [ -f /etc/redhat-release ];then
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
- 
  #modify_sshd_config
  modify_sshd_config(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
@@ -55,7 +53,6 @@ if [ -f /etc/redhat-release ];then
  service sshd restart
  echo '请使用key登陆测试是否成功'
  }
- 
  #Download_key
  Download_key(){
  cd ~/.ssh
@@ -78,18 +75,21 @@ if [ -f /etc/redhat-release ];then
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+ #restart_sshd
+ restart_sshd(){
+ echo '正在重启ssh服务'
+ service ssh restart
+ service sshd restart
+ }
+ #close_passwd
+ close_passwd(){
+ echo '将PasswordAuthentication 改为no 并去掉#号'
+ echo '将PasswordAuthentication 改为no 并去掉#号'
+ echo '将PasswordAuthentication 改为no 并去掉#号'
+ echo '将PasswordAuthentication 改为no 并去掉#号'
+ vi /etc/ssh/sshd_config
+ echo '记得重启'
+ }
  #menu
 if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
@@ -100,8 +100,9 @@ else
   ${Green_font_prefix}2.${Font_color_suffix} 生成 key
   ${Green_font_prefix}3.${Font_color_suffix} 取回 私钥
   ${Green_font_prefix}4.${Font_color_suffix} 上传 key（多服务端单key选此项）
-  ${Green_font_prefix}5.${Font_color_suffix} 修改 sshd_config文件上传
+  ${Green_font_prefix}5.${Font_color_suffix} 修改 sshd_config文件
   ${Green_font_prefix}6.${Font_color_suffix} 重启 ssh服务
+  ${Green_font_prefix}7.${Font_color_suffix} 关闭 密码登陆
   
  "
 	menu_status
@@ -124,6 +125,9 @@ case "$num" in
 	;;
 	6)
 	restart_sshd
+	;;
+	7)
+	close_passwd
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
