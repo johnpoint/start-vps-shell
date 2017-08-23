@@ -72,9 +72,6 @@ if [ -f /etc/redhat-release ];then
  }
  
 #meun 
- check_sys
-[[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
-action=$1
 if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
 else
