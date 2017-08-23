@@ -12,16 +12,7 @@ if [ -f /etc/redhat-release ];then
  echo "Not support OS, Please reinstall OS and retry!" 
  exit 1 
  fi 
- 
-#Install
-Install(){
-wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/install.sh && chmod install.sh && ./install.sh
-}
-#cg_passwd
-cg_passwd(){
-passwd
-}
-#menu
+ #menu
 check_sys
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 action=$1
@@ -99,3 +90,12 @@ case "$num" in
 	;;
 esac
 fi
+#Install
+Install(){
+wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/install.sh && chmod install.sh && ./install.sh
+}
+#cg_passwd
+cg_passwd(){
+passwd
+}
+
