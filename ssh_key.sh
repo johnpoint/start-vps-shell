@@ -31,10 +31,15 @@ if [ -f /etc/redhat-release ];then
  echo '正在生成key'
  ssh-keygen
  echo '生成成功，保存于 /root/.ssh'
+ cd .ssh
+ mv id_rsa.pub authorized_keys
+ ls -a
+ chmod 600 authorized_keys
+ chmod 700 ~/.ssh
  }
  
- #sshd_config
- sshd_config(){
+ #modify_sshd_config
+ modify_sshd_config(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
@@ -51,7 +56,28 @@ if [ -f /etc/redhat-release ];then
  echo '请使用key登陆测试是否成功'
  }
  
- 
+ #Download_key
+ Download_key(){
+ cd ~/.ssh
+ cat id_rsa
+ echo '把屏幕上面的密匙复制出来写入文件内，文件取名为 id_rsa （这个名称随意，但这个密匙文件一定要保存好！）。'
+ }
+ #Upload_key
+ Upload_key(){
+ mkdir ~/.ssh
+ if [[ ${OS} == 'CentOS' ]];then 
+ yum update -y
+ yum install lrzsz -y
+ else 
+ apt-get update 
+ apt-get install lrzsz -y
+ fi 
+ cd ~/.ssh
+ rz -y
+ ls -a
+ chmod 600 authorized_keys
+ chmod 700 ~/.ssh
+ }
  
  
  
