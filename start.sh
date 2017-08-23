@@ -1680,6 +1680,14 @@ fi
 lnmp(){
 wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz && tar zxf lnmp1.4.tar.gz && cd lnmp1.4 && ./install.sh lnmp
 }
+#status
+status(){
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
+}
+#cg_status
+cg_status(){
+bash status.sh
+}
 check_sys
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 action=$1
@@ -1691,10 +1699,10 @@ else
   ${Green_font_prefix}1.${Font_color_suffix} 安装 screen
   ${Green_font_prefix}2.${Font_color_suffix} 安装 lrzsz
   ${Green_font_prefix}3.${Font_color_suffix} 安装 git
-  ${Green_font_prefix}4.${Font_color_suffix} 安装 ssr
+  ${Green_font_prefix}4.${Font_color_suffix} 安装/管理 ssr
   ${Green_font_prefix}5.${Font_color_suffix} 安装 lnmp
-  ${Green_font_prefix}6.${Font_color_suffix} 安装 ???
-  ${Green_font_prefix}7.${Font_color_suffix} 安装 ???
+  ${Green_font_prefix}6.${Font_color_suffix} 安装 探针监控（toyo出品）
+  ${Green_font_prefix}7.${Font_color_suffix} 管理 探针监控
    "
 	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-4]：" num
@@ -1711,14 +1719,14 @@ case "$num" in
 	4)
 	ssr
 	;;
-	5)lnmp
-	
+	5)
+	lnmp
 	;;
 	6)
-	
+	status
 	;;
 	7)
-	
+	cg_status
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
@@ -1730,31 +1738,6 @@ fi
 cg_passwd(){
 passwd
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #menu
 check_sys
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
