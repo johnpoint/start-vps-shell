@@ -15,7 +15,7 @@ if [ -f /etc/redhat-release ];then
  
 #Install
 Install(){
-wget -N --no-check-certificate https://raw.githubusercontent.com/
+wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/install.sh && chmod install.sh && ./install.sh
 }
 #cg_passwd
 cg_passwd(){
