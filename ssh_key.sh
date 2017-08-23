@@ -50,8 +50,6 @@ if [ -f /etc/redhat-release ];then
  echo '请寻找RSAAuthentication yes PubkeyAuthentication yes 如不为yes 则改为yes'
  vi /etc/ssh/sshd_config
  echo '正在重启ssh服务'
- service ssh restart
- service sshd restart
  echo '请使用key登陆测试是否成功'
  }
  #Download_key
