@@ -74,10 +74,7 @@ if [ -f /etc/redhat-release ];then
  Install_v2ray(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
  }
- #Install_sync
- Install_sync(){
- 
- }
+
  #Install_ytb_dl
  Install_ytb_dl(){
  cd ~
