@@ -18,3 +18,11 @@ ssh_key.sh——————更换登陆方式为密钥
 
 ### 更换登陆方式为密钥 ###
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/ssh_key.sh && chmod +x ssh_key.sh && ./ssh_key.sh`
+
+## 更新 ##
+
+### start.sh ###
+1.0.0 正式版 2017-8-23
+
+### ssh_key.sh ###
+0.0.1 半成品 2017-8-23
