@@ -75,16 +75,16 @@ case "$num" in
 	Login_key
 	;;
 	5)
-	View_User
+	
 	;;
 	6)
-	View_user_connection_info
+	
 	;;
 	7)
-	Modify_Config
+	
 	;;
 	8)
-	Manually_Modify_Config
+	
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
