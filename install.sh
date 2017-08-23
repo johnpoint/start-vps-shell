@@ -70,6 +70,10 @@ if [ -f /etc/redhat-release ];then
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
+ #Install_v2ray
+ Install_v2ray(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
+ }
  
 #meun 
 if [[ "${action}" == "clearall" ]]; then
@@ -82,7 +86,7 @@ else
   ${Green_font_prefix}3.${Font_color_suffix} 安装 git
   ${Green_font_prefix}4.${Font_color_suffix} 安装/管理 ssr
   ${Green_font_prefix}5.${Font_color_suffix} 安装/管理 逗逼监控
-  ${Green_font_prefix}6.${Font_color_suffix} 
+  ${Green_font_prefix}6.${Font_color_suffix} 安装 V2ray
  "
 	echo && stty erase '^H' && read -p "请输入数字 [1-6]：" num
 case "$num" in
@@ -102,7 +106,7 @@ case "$num" in
 	Install_status
 	;;
 	6)
-	
+	Install_v2ray
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
