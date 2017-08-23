@@ -2,7 +2,7 @@
 
 ## 文件注释 ##
 
-start.sh----安装git wget screen lrznz （限centos及有yum的系统）
+start.sh----安装常用软件
 
 v2ray.sh----雨落无声大大所制作的v2ray一键部署脚本
 
