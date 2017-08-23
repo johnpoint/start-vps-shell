@@ -18,9 +18,6 @@ install.sh————安装常用软件
 
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
 
-### 更换登陆方式为密钥 ###
-`wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/ssh_key.sh && chmod +x ssh_key.sh && ./ssh_key.sh`
-
 ## 更新 ##
 | 项目      | 版本    |  日期  |备注|
 |--------|--------|--------|--------|
