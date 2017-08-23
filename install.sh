@@ -80,6 +80,8 @@ if [ -f /etc/redhat-release ];then
  cd ~
  wget https://yt-dl.org/downloads/2016.07.13/youtube-dl -O /usr/local/bin/youtube-dl
  chmod a+rx /usr/local/bin/youtube-dl
+ echo && stty erase '^H' && read -p "请输入保存路径：" save
+ cd $save
  echo && stty erase '^H' && read -p "请输入视频地址：" address
  youtube-dl $address
  }
