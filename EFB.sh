@@ -13,14 +13,6 @@ sh_ver=0.0.1
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
-#check OS#
-if [ -f /etc/redhat-release ];then 
- elif [ ! -z "`cat /etc/issue | grep Ubuntu`" ];then 
- OS='Ubuntu' 
- else 
- echo "本脚本不支持此系统！" 
- exit 1 
- fi 
  #Install_something
  Install_something(){
  apt update -y
