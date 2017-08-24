@@ -29,20 +29,10 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 Start_sync(){
 cd /root/sync
 ./rslsync --webui.listen 0.0.0.0:8888
-	#echo "user_IP_1=${user_IP_1}"
-	if [[ ! -z ${user_IP_1} ]]; then
-	#echo "user_IP_total=${user_IP_total}"
-		for((integer_1 = ${user_IP_total}; integer_1 >= 1; integer_1--))
-		do
-			IP=`echo "${user_IP_1}" |sed -n "$integer_1"p`
-			#echo "IP=${IP}"
-			IP_address=`wget -qO- -t1 -T2 http://freeapi.ipip.net/${IP}|sed 's/\"//g;s/,//g;s/\[//g;s/\]//g'`
-			#echo "IP_address=${IP_address}"
-			user_IP="${user_IP}\n${IP}(${IP_address})"
-			#echo "user_IP=${user_IP}"
-			sleep 1s
-		done
-	fi
+IP_address=`wget -qO- -t1 -T2 http://freeapi.ipip.net/${IP}|sed 's/\"//g;s/,//g;s/\[//g;s/\]//g'`
+#echo "IP_address=${IP_address}"
+user_IP="${user_IP}\n${IP}(${IP_address})"
+fi
 echo '网址：http://{ip}:8888'
 }
 #Stop_sync
