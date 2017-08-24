@@ -29,7 +29,6 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 Start_sync(){
 cd /root/sync
 ./rslsync --webui.listen 0.0.0.0:8888
-get_IP_address(){
 	#echo "user_IP_1=${user_IP_1}"
 	if [[ ! -z ${user_IP_1} ]]; then
 	#echo "user_IP_total=${user_IP_total}"
@@ -44,7 +43,6 @@ get_IP_address(){
 			sleep 1s
 		done
 	fi
-}
 echo '网址：http://{ip}:8888'
 }
 #Stop_sync
