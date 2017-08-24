@@ -18,10 +18,10 @@ check_root(){
  apt update -y
  apt upgrade -y
  sudo add-apt-repository ppa:fkrull/deadsnakes
- sudo apt-get update
- sudo apt-get install python3.5
- sudo apt-get install python3.5-dev
- sudo apt-get install libncurses5-dev
+ sudo apt-get update -y
+ sudo apt-get install python3.5 -y
+ sudo apt-get install python3.5-dev -y
+ sudo apt-get install libncurses5-dev -y
  sudo mv /usr/bin/python3 /usr/bin/python3-old
  sudo ln -s /usr/bin/python3.5 /usr/bin/python3
  wget https://bootstrap.pypa.io/get-pip.py
@@ -54,7 +54,7 @@ check_root(){
  }
  #Start_EFB
  Start_EFB(){
- screen
+ cd ehForwarderBot
  python3 daemon.py start
  }
  #Uninstall_EFB
