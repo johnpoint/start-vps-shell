@@ -15,12 +15,7 @@ Install_sync(){
 cd ~
 mkdir sync
 cd sync
-ldconfig
-　　if ［ $（getconf WORD_BIT） = ‘32’ ］ && ［ $（getconf LONG_BIT） = ‘64’ ］ ; then
-　　wget -O sync.tar.gz https://download-cdn.resilio.com/stable/linux-i386/resilio-sync_i386.tar.gz
-　　else
-　　wget -O sync.tar.gz https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz
-　　fi
+wget -O sync.tar.gz https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz
 tar -xzf sync.tar.gz && rm -rf sync.tar.gz
 chmod +x rslsync
 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -32,7 +27,6 @@ cd /root/sync
 IP_address=`wget -qO- -t1 -T2 http://freeapi.ipip.net/${IP}|sed 's/\"//g;s/,//g;s/\[//g;s/\]//g'`
 #echo "IP_address=${IP_address}"
 user_IP="${user_IP}\n${IP}(${IP_address})"
-fi
 echo '网址：http://{ip}:8888'
 }
 #Stop_sync
@@ -52,14 +46,13 @@ check_root(){
  if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
 else
-	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v$sh_ver]
   ---- johnpoint ----
   ${Green_font_prefix}1.${Font_color_suffix} 安装 Resilio Sync
   ${Green_font_prefix}2.${Font_color_suffix} 启动 Resilio Sync
   ${Green_font_prefix}3.${Font_color_suffix} 停止 Resilio Sync
   ${Green_font_prefix}4.${Font_color_suffix} 卸载 Resilio Sync
   "
-	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-15]：" num
 case "$num" in
 	1)
