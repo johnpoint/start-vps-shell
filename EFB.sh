@@ -41,7 +41,7 @@ check_root(){
  }
  #Install_EFB
  Install_EFB(){
- apt-get install python3.5 libopus0 ffmpeg libmagic1 python3-pip git nano
+ apt-get install python3.5 libopus0 ffmpeg libmagic1 python3-pip git nano -y
  git clone https://github.com/blueset/ehForwarderBot.git
  cd ehForwarderBot
  pip3 install -r requirements.txt
