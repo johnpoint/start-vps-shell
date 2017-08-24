@@ -85,6 +85,10 @@ if [ -f /etc/redhat-release ];then
  echo && stty erase '^H' && read -p "请输入视频地址：" address
  youtube-dl $address
  }
+ #Install_sync
+ Install_sync(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/sync.sh && chmod +x sync.sh && ./sync.sh
+ }
  
 #meun 
 if [[ "${action}" == "clearall" ]]; then
