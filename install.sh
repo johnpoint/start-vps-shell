@@ -4,11 +4,11 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.0.0
+#	Version: 1.0.2
 #	Author: johnpoint
 #=================================================
 
-sh_ver=1.0.1
+sh_ver=1.0.2
 
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
@@ -94,7 +94,7 @@ if [ -f /etc/redhat-release ];then
 if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
 else
-	echo -e "  常用软件一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+	echo -e "  常用软件一键管理脚本 ${Red_font_prefix}[v $sh_ver]
   ---- johnpoint ----
   ${Green_font_prefix}1.${Font_color_suffix} 安装 screen
   ${Green_font_prefix}2.${Font_color_suffix} 安装 lrzsz

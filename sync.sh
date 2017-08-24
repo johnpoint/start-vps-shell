@@ -4,11 +4,11 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.1
+#	Version: 1.0.0
 #	Author: johnpoint
 #=================================================
 
-sh_ver=0.0.1
+sh_ver=1.0.0
 
 #Install_sync
 Install_sync(){
