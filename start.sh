@@ -53,7 +53,6 @@ else
   ${Green_font_prefix}3.${Font_color_suffix} 查看 系统信息
   ${Green_font_prefix}4.${Font_color_suffix} 更改 系统为密钥登陆
  "
-	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-15]：" num
 case "$num" in
 	1)
