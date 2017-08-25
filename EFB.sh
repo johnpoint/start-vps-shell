@@ -4,11 +4,11 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.0.0
+#	Version: 1.0.1
 #	Author: johnpoint
 #=================================================
 
-sh_ver=1.0.0
+sh_ver=1.0.1
 
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
