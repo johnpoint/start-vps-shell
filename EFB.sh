@@ -50,6 +50,7 @@ check_root(){
  chmod 777 storage
  cp config.sample.py config.py
  vi config.py
+ touch tgdata.db
  echo '配置完成'
  }
  #Start_EFB
