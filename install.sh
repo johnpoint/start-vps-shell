@@ -4,11 +4,11 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.0.2
+#	Version: 1.0.3
 #	Author: johnpoint
 #=================================================
 
-sh_ver=1.0.2
+sh_ver=1.0.3
 
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
@@ -89,6 +89,10 @@ if [ -f /etc/redhat-release ];then
  Install_sync(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/sync.sh && chmod +x sync.sh && ./sync.sh
  }
+ #Install_EFB
+ Install_EFB(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ }
  
 #meun 
 if [[ "${action}" == "clearall" ]]; then
@@ -104,6 +108,7 @@ else
   ${Green_font_prefix}6.${Font_color_suffix} 安装 V2ray
   ${Green_font_prefix}7.${Font_color_suffix} 安装 Sync
   ${Green_font_prefix}8.${Font_color_suffix} 安装/使用 youtube-dl
+  ${Green_font_prefix}9.${Font_color_suffix} 安装微信互联系统（限Ubuntu）
  "
 	echo && stty erase '^H' && read -p "请输入数字 [1-8]：" num
 case "$num" in
@@ -130,6 +135,9 @@ case "$num" in
 	;;
 	8)
 	Install_ytb_dl
+	;;
+	9)
+	Install_EFB
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
