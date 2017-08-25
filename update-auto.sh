@@ -9,4 +9,5 @@
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/ssh_key.sh
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/update-auto.sh
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/test.txt
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/EFB.sh
  
