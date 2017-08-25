@@ -104,7 +104,6 @@ else
   ${Green_font_prefix}7.${Font_color_suffix} 关闭 密码登陆
   
  "
-	menu_status
 	echo && stty erase '^H' && read -p "请输入数字 [1-5]：" num
 case "$num" in
 	1)
