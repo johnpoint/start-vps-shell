@@ -65,7 +65,6 @@ check_root(){
  echo '卸载完成'
  }
  #meun 
- check_sys
 [[ ${release} != "ubuntu" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
