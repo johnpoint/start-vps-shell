@@ -13,6 +13,30 @@ sh_ver=1.0.0
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
+#check OS#
+if [ -f /etc/redhat-release ];then 
+ OS='CentOS' 
+ elif [ ! -z "`cat /etc/issue | grep bian`" ];then 
+ OS='Debian' 
+ elif [ ! -z "`cat /etc/issue | grep Ubuntu`" ];then 
+ OS='Ubuntu' 
+ else 
+ echo "Not support OS, Please reinstall OS and retry!" 
+ exit 1 
+ fi 
+ 
+ if [[ ${OS} == 'CentOS' ]];then 
+ echo '抱歉，本脚本不支持此系统'
+ exit 1
+ else 
+ if [[ ${OS} == 'Debian' ]];then
+ echo '抱歉，本脚本不支持此系统'
+ exit 1
+ else 
+ echo '支持'
+ fi
+ fi 
+ echo '安装完成！'
  #Install_something
  Install_something(){
  apt update -y
@@ -65,7 +89,6 @@ check_root(){
  echo '卸载完成'
  }
  #meun 
-[[ ${release} != "ubuntu" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
 else
