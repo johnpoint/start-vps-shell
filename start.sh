@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.1.3
+#	Version: 2.0.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver=1.1.3
+sh_ver=2.0.1
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 
 check_root(){
