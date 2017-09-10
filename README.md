@@ -27,8 +27,8 @@ install.sh————安装常用软件
 | start.sh   |1.1.1|2017-8-23||
 | start.sh   |1.1.2|2017-8-23||
 | start.sh |2.0.0 |2017-8-23|正式版|
-| start.sh |2.0.1 |2017-8-23|整合install.sh|
-| start.sh |2.0.2 |2017-8-23|整合ssh_key.sh|
+| start.sh |2.0.1 |2017-9-10|整合install.sh|
+| start.sh |2.0.2 |2017-9-10|整合ssh_key.sh|
 
 
 | 项目      | 版本    |  日期  |备注|
