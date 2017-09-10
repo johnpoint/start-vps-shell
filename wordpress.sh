@@ -51,6 +51,8 @@ if [ -f /etc/redhat-release ];then
  git clone https://github.com/WordPress/WordPress.git
  cd WordPress
  cp -rf * /home/wwwroot/$yuming
+ cd ~
+ rm -rf WordPress
  echo '完成'
  }
  

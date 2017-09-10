@@ -94,6 +94,10 @@ if [ -f /etc/redhat-release ];then
  Install_EFB(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
+ #Install_wordpress
+ Install_wordpress(){
+ 
+ }
  #Install_something
 Install_something(){
 echo && echo -e "  你要做什么？
@@ -107,6 +111,7 @@ echo && echo -e "  你要做什么？
   ${Green_font_prefix}7.${Font_color_suffix} 安装 Sync
   ${Green_font_prefix}8.${Font_color_suffix} 安装/使用 youtube-dl
   ${Green_font_prefix}9.${Font_color_suffix} 安装微信互联系统（限Ubuntu）
+  ${Green_font_prefix}10.${Font_color_suffix} 安装 wordpress博客
   ——" && echo
 	stty erase '^H' && read -p "(默认: 取消):" install_num
 	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
@@ -128,6 +133,8 @@ echo && echo -e "  你要做什么？
 		Install_ytb_dl
 	elif [[ ${install_num} == "9" ]]; then
 		Install_EFB
+	elif [[ ${install_num} == "9" ]]; then
+		Install_wordpress
 	else
 		echo -e "${Error} 请输入正确的数字 [1-9]" && exit 1
 	fi
