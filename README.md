@@ -12,8 +12,6 @@ install.sh————安装常用软件
 
 ## 使用方法 ##
 
-`curl https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh | bash'
-
 `wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh`
 
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
