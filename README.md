@@ -19,14 +19,6 @@ install.sh————安装常用软件
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
 
 ## 更新 ##
-| 项目      | 版本    |  日期  |备注|
-|--------|--------|--------|--------|
-|ssh_key.sh|0.0.1|2017-8-23||
-|ssh_key.sh |0.1.0 beta|2017-8-23||
-|ssh_key.sh |1.0.0|2017-8-23||
-|ssh_key.sh |1.0.1|2017-8-23||
-|ssh_key.sh |2.0.0|2017-8-23|正式版|
-
 
 | 项目      | 版本    |  日期  |备注|
 |--------|--------|--------|--------|
@@ -35,16 +27,8 @@ install.sh————安装常用软件
 | start.sh   |1.1.1|2017-8-23||
 | start.sh   |1.1.2|2017-8-23||
 | start.sh |2.0.0 |2017-8-23|正式版|
-| start.sh |2.0.1 |2017-8-23|尝试整合|
-| start.sh |2.0.2 |2017-8-23|尝试整合|
-
-
-| 项目      | 版本    |  日期  |备注|
-|--------|--------|--------|--------|
-|install.sh |1.0.0|2017-8-23|正式版|
-|install.sh |1.0.1|2017-8-23|增加v2ray安装|
-|install.sh |1.0.2|2017-8-23|增加sync安装|
-|install.sh |1.0.3|2017-8-23|增加EFB_bot安装|
+| start.sh |2.0.1 |2017-8-23|整合install.sh|
+| start.sh |2.0.2 |2017-8-23|整合ssh_key.sh|
 
 
 | 项目      | 版本    |  日期  |备注|
