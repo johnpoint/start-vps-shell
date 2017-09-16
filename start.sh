@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 3.1.0
+#	Version: 3.1.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="3.1.0"
+sh_ver="3.1.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -71,8 +71,6 @@ if [ -f /etc/redhat-release ];then
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
  #Install_status
- #
- #
  
  #Install_v2ray
  Install_v2ray(){
@@ -135,10 +133,10 @@ echo && echo -e "  你要做什么？
 		Install_ytb_dl
 	elif [[ ${install_num} == "9" ]]; then
 		Install_EFB
-	elif [[ ${install_num} == "9" ]]; then
+	elif [[ ${install_num} == "10" ]]; then
 		Install_wordpress
 	else
-		echo -e "${Error} 请输入正确的数字 [1-9]" && exit 1
+		echo -e "${Error} 请输入正确的数字 [1-10]" && exit 1
 	fi
 }
 #CG_passwd
