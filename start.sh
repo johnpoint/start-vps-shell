@@ -304,8 +304,6 @@ echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
 	else
 		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
 	fi
-	exit 0
-	
 
  if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
