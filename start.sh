@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.3
+#	Version: 3.0.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver=2.0.3
+sh_ver=3.0.0
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -72,8 +72,7 @@ if [ -f /etc/redhat-release ];then
  }
  #Install_status
  Install_status(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
- bash status.sh s
+ 
  }
  #Install_v2ray
  Install_v2ray(){
@@ -257,7 +256,33 @@ echo && echo -e "  你要做什么？
 		echo -e "${Error} 请输入正确的数字 [1-7]" && exit 1
 	fi
 }
-
+#Update_shell
+Update_shell(){
+	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
+	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
+	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
+		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
+		stty erase '^H' && read -p "(默认: y):" yn
+		[[ -z "${yn}" ]] && yn="y"
+		if [[ ${yn} == [Yy] ]]; then
+			cd "${file}"
+			if [[ $sh_new_type == "yun" ]]; then
+				wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh
+			else
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+			fi
+			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
+		else
+			echo && echo "	已取消..." && echo
+		fi
+	else
+		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
+	fi
+	exit 0
+}
+}
 
  if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
@@ -268,6 +293,8 @@ else
   ${Green_font_prefix}2.${Font_color_suffix} 修改 密码
   ${Green_font_prefix}3.${Font_color_suffix} 查看 系统信息
   ${Green_font_prefix}4.${Font_color_suffix} 更改 系统为密钥登陆
+  ——————————————————————
+  ${Green_font_prefix}0.${Font_color_suffix} 更新 脚本
  "
 	echo && stty erase '^H' && read -p "请输入数字 [1-15]：" num
 case "$num" in
@@ -282,6 +309,9 @@ case "$num" in
 	;;
 	4)
 	Login_key
+	;;
+	0)
+	Update_shell
 	;;
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
