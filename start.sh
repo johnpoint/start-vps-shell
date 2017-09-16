@@ -282,7 +282,6 @@ Update_shell(){
 	fi
 	exit 0
 }
-}
 
  if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
