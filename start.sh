@@ -71,9 +71,9 @@ if [ -f /etc/redhat-release ];then
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
  #Install_status
- Install_status(){
+ #
+ #
  
- }
  #Install_v2ray
  Install_v2ray(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
