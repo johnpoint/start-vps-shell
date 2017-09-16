@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 3.1.1
+#	Version: 3.2.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="3.1.1"
+sh_ver="3.2.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -280,6 +280,32 @@ Update_shell(){
 	fi
 	exit 0
 }
+
+
+echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
+	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
+	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
+		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
+		stty erase '^H' && read -p "(默认: y):" yn
+		[[ -z "${yn}" ]] && yn="y"
+		if [[ ${yn} == [Yy] ]]; then
+			cd "${file}"
+			if [[ $sh_new_type == "yun" ]]; then
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+			else
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+			fi
+			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
+		else
+			echo && echo "	已取消..." && echo
+		fi
+	else
+		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
+	fi
+	exit 0
+	
 
  if [[ "${action}" == "clearall" ]]; then
 	Clear_transfer_all
