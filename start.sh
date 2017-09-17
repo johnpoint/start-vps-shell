@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 3.3.0
+#	Version: 3.3.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="3.3.0"
+sh_ver="3.3.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -97,6 +97,23 @@ if [ -f /etc/redhat-release ];then
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
+ #Install_v2ray
+ Install_v2ray(){
+ #Disable China 
+ wget http://iscn.kirito.moe/run.sh 
+ . ./run.sh 
+ if [[ $area == cn ]];then 
+ echo "Unable to install in china" 
+ exit 
+ fi 
+ # Get Public IP address 
+ ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
+ if [[ "$IP" = "" ]]; then 
+ ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
+ fi 
+  
+ uuid=$(cat /proc/sys/kernel/random/uuid) 
+ 
  function Install(){ 
  #Install Basic Packages 
  if [[ ${OS} == 'CentOS' ]];then 
@@ -128,24 +145,176 @@ if [ -f /etc/redhat-release ];then
  bash <(curl -L -s https://install.direct/go.sh) 
   
  } 
- #Install_v2ray
- Install_v2ray(){
- #Disable China 
- wget http://iscn.kirito.moe/run.sh 
- . ./run.sh 
- if [[ $area == cn ]];then 
- echo "Unable to install in china" 
- exit 
+  
+ clear 
+ echo 'V2Ray 一键安装|配置脚本 Author：Kirito && 雨落无声' 
+  
+ echo '' 
+ echo '此脚本会关闭iptables防火墙，切勿用于生产环境！' 
+  
+ while :; do echo 
+ read -p "输入用户等级（自用请输入1，共享请输入0）:" level 
+ if [[ ! $level =~ ^[0-1]$ ]]; then 
+ echo "${CWARNING}输入错误! 请输入正确的数字!${CEND}" 
+ else 
+ break 
  fi 
- # Get Public IP address 
- ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
- if [[ "$IP" = "" ]]; then 
- ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
+ done 
+  
+ echo '' 
+  
+ read -p "输入主要端口（默认：32000）:" mainport 
+ [ -z "$mainport" ] && mainport=32000 
+  
+ echo '' 
+  
+ read -p "是否启用HTTP伪装?（默认开启） [y/n]:" ifhttpheader 
+ [ -z "$ifhttpheader" ] && ifhttpheader='y' 
+ if [[ $ifhttpheader == 'y' ]];then 
+ httpheader=', 
+ "streamSettings": { 
+ "network": "tcp", 
+ "tcpSettings": { 
+ "connectionReuse": true, 
+ "header": { 
+ "type": "http", 
+ "request": { 
+ "version": "1.1", 
+ "method": "GET", 
+ "path": ["/"], 
+ "headers": { 
+ "Host": ["www.baidu.com", "www.sogou.com/"], 
+ "User-Agent": [ 
+ "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36", 
+ "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46" 
+ ], 
+ "Accept-Encoding": ["gzip, deflate"], 
+ "Connection": ["keep-alive"], 
+ "Pragma": "no-cache" 
+ } 
+ }, 
+ "response": { 
+ "version": "1.1", 
+ "status": "200", 
+ "reason": "OK", 
+ "headers": { 
+ "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"], 
+ "Transfer-Encoding": ["chunked"], 
+ "Connection": ["keep-alive"], 
+ "Pragma": "no-cache" 
+ } 
+ } 
+ } 
+ } 
+ }' 
+ else 
+ httpheader='' 
+ read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
+ [ -z "$ifmkcp" ] && ifmkcp='y' 
+ if [[ $ifmkcp == 'y' ]];then 
+ mkcp=', 
+ "streamSettings": { 
+ "network": "kcp" 
+ }' 
+ else 
+ mkcp='' 
+ fi 
  fi 
   
- uuid=$(cat /proc/sys/kernel/random/uuid) 
- cat << EOF > config 
- {"log" : { 
+ echo '' 
+  
+ read -p "是否启用动态端口?（默认开启） [y/n]:" ifdynamicport 
+ [ -z "$ifdynamicport" ] && ifdynamicport='y' 
+ if [[ $ifdynamicport == 'y' ]];then 
+  
+ read -p "输入数据端口起点（默认：32001）:" subport1 
+ [ -z "$subport1" ] && subport1=32000 
+  
+ read -p "输入数据端口终点（默认：32500）:" subport2 
+ [ -z "$subport2" ] && subport2=32500 
+  
+ read -p "输入每次开放端口数（默认：10）:" portnum 
+ [ -z "$portnum" ] && portnum=10 
+  
+ read -p "输入端口变更时间（单位：分钟）:" porttime 
+ [ -z "$porttime" ] && porttime=5 
+ dynamicport=" 
+ \"inboundDetour\": [ 
+ { 
+ \"protocol\": \"vmess\", 
+ \"port\": \"$subport1-$subport2\", 
+ \"tag\": \"detour\", 
+ \"settings\": {}, 
+ \"allocate\": { 
+ \"strategy\": \"random\", 
+ \"concurrency\": $portnum, 
+ \"refresh\": $porttime 
+ }${mkcp}${httpheader} 
+ } 
+ ], 
+ " 
+ else 
+ dynamicport='' 
+ fi 
+  
+ echo '' 
+  
+ read -p "是否启用 Mux.Cool?（默认开启） [y/n]:" ifmux 
+ [ -z "$ifmux" ] && ifmux='y' 
+ if [[ $ifmux == 'y' ]];then 
+ mux=', 
+ "mux": { 
+ "enabled": true 
+ } 
+ ' 
+ else 
+ mux="" 
+ fi 
+  
+ while :; do echo 
+ echo '1. HTTP代理（默认）' 
+ echo '2. Socks代理' 
+ read -p "请选择客户端代理类型: " chooseproxytype 
+ [ -z "$chooseproxytype" ] && chooseproxytype=1 
+ if [[ ! $chooseproxytype =~ ^[1-2]$ ]]; then 
+ echo '输入错误，请输入正确的数字！' 
+ else 
+ break 
+ fi 
+ done 
+  
+ if [[ $chooseproxytype == 1 ]];then 
+ proxytype='http' 
+ else 
+ proxytype='socks' 
+ fi 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ #CheckIfInstalled 
+ if [ ! -f "/usr/bin/v2ray/v2ray" ]; then 
+ Install 
+ fi 
+  
+ #Disable iptables 
+ iptables -P INPUT ACCEPT 
+ iptables -P FORWARD ACCEPT 
+ iptables -P OUTPUT ACCEPT 
+ iptables -F 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ echo " {"log" : { 
  "access": "/var/log/v2ray/access.log", 
  "error": "/var/log/v2ray/error.log", 
  "loglevel": "warning" 
@@ -294,8 +463,7 @@ if [ -f /etc/redhat-release ];then
  ] 
  } 
  } 
- } 
- EOF 
+ } ">config
  }
  #Install_sync
  Install_sync(){
