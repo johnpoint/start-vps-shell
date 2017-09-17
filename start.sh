@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 3.2.2
+#	Version: 3.3.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="3.2.2"
+sh_ver="3.3.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -97,10 +97,205 @@ if [ -f /etc/redhat-release ];then
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
- 
+ function Install(){ 
+ #Install Basic Packages 
+ if [[ ${OS} == 'CentOS' ]];then 
+ yum install curl wget unzip ntp ntpdate -y 
+ else 
+ apt-get update 
+ apt-get install curl unzip ntp wget ntpdate -y 
+ fi 
+  
+ #Set DNS 
+ echo "nameserver 8.8.8.8" > /etc/resolv.conf 
+ echo "nameserver 8.8.4.4" >> /etc/resolv.conf 
+  
+  
+ #Update NTP settings 
+ rm -rf /etc/localtime 
+ ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
+ ntpdate us.pool.ntp.org 
+  
+ #Disable SELinux 
+ if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config; then 
+ sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config 
+ setenforce 0 
+ fi 
+  
+ #Run Install 
+ cd /root 
+  
+ bash <(curl -L -s https://install.direct/go.sh) 
+  
+ } 
  #Install_v2ray
  Install_v2ray(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
+ #Disable China 
+ wget http://iscn.kirito.moe/run.sh 
+ . ./run.sh 
+ if [[ $area == cn ]];then 
+ echo "Unable to install in china" 
+ exit 
+ fi 
+ # Get Public IP address 
+ ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
+ if [[ "$IP" = "" ]]; then 
+ ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
+ fi 
+  
+ uuid=$(cat /proc/sys/kernel/random/uuid) 
+ cat << EOF > config 
+ {"log" : { 
+ "access": "/var/log/v2ray/access.log", 
+ "error": "/var/log/v2ray/error.log", 
+ "loglevel": "warning" 
+ }, 
+ "inbound": { 
+ "port": $mainport, 
+ "protocol": "vmess", 
+ "settings": { 
+ "clients": [ 
+ { 
+ "id": "$uuid", 
+ "level": $level, 
+ "alterId": 100 
+ } 
+ ] 
+ }${mkcp}${httpheader} 
+ }, 
+ "outbound": { 
+ "protocol": "freedom", 
+ "settings": {} 
+ }, 
+  
+ ${dynamicport} 
+  
+ "outboundDetour": [ 
+ { 
+ "protocol": "blackhole", 
+ "settings": {}, 
+ "tag": "blocked" 
+ } 
+ ], 
+ "routing": { 
+ "strategy": "rules", 
+ "settings": { 
+ "rules": [ 
+ { 
+ "type": "field", 
+ "ip": [ 
+ "0.0.0.0/8", 
+ "10.0.0.0/8", 
+ "100.64.0.0/10", 
+ "127.0.0.0/8", 
+ "169.254.0.0/16", 
+ "172.16.0.0/12", 
+ "192.0.0.0/24", 
+ "192.0.2.0/24", 
+ "192.168.0.0/16", 
+ "198.18.0.0/15", 
+ "198.51.100.0/24", 
+ "203.0.113.0/24", 
+ "::1/128", 
+ "fc00::/7", 
+ "fe80::/10" 
+ ], 
+ "outboundTag": "blocked" 
+ } 
+ ] 
+ } 
+ } 
+ } 
+ EOF 
+ rm -rf /etc/v2ray/config.back 
+ mv /etc/v2ray/config.json /etc/v2ray/config.back 
+ mv config /etc/v2ray/config.json 
+  
+ rm /root/config.json 
+ cat << EOF > /root/config.json 
+ { 
+ "log": { 
+ "loglevel": "info" 
+ }, 
+ "inbound": { 
+ "port": 1080, 
+ "listen": "127.0.0.1", 
+ "protocol": "$proxytype", 
+ "settings": { 
+ "auth": "noauth", 
+ "udp": true, 
+ "ip": "127.0.0.1" 
+ } 
+ }, 
+ "outbound": { 
+ "protocol": "vmess", 
+ "settings": { 
+ "vnext": [ 
+ { 
+ "address": "$ipc", 
+ "port": $mainport, 
+ "users": [ 
+ { 
+ "id": "$uuid", 
+ "alterId": 100 
+ } 
+ ] 
+ } 
+ ] 
+ }${mkcp}${httpheader}${mux} 
+ }, 
+ "outboundDetour": [ 
+ { 
+ "protocol": "freedom", 
+ "settings": {}, 
+ "tag": "direct" 
+ } 
+ ], 
+ "dns": { 
+ "servers": [ 
+ "8.8.8.8", 
+ "8.8.4.4", 
+ "localhost" 
+ ] 
+ }, 
+ "routing": { 
+ "strategy": "rules", 
+ "settings": { 
+ "rules": [ 
+ { 
+ "type": "chinasites", 
+ "outboundTag": "direct" 
+ }, 
+ { 
+ "type": "field", 
+ "ip": [ 
+ "0.0.0.0/8", 
+ "10.0.0.0/8", 
+ "100.64.0.0/10", 
+ "127.0.0.0/8", 
+ "169.254.0.0/16", 
+ "172.16.0.0/12", 
+ "192.0.0.0/24", 
+ "192.0.2.0/24", 
+ "192.168.0.0/16", 
+ "198.18.0.0/15", 
+ "198.51.100.0/24", 
+ "203.0.113.0/24", 
+ "::1/128", 
+ "fc00::/7", 
+ "fe80::/10" 
+ ], 
+ "outboundTag": "direct" 
+ }, 
+ { 
+ "type": "chinaip", 
+ "outboundTag": "direct" 
+ } 
+ ] 
+ } 
+ } 
+ } 
+ EOF 
  }
  #Install_sync
  Install_sync(){
@@ -365,3 +560,4 @@ case "$num" in
 	;;
 esac
 fi
+
