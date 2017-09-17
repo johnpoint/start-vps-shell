@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 3.4.0
+#	Version: 3.5.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="3.4.0"
+sh_ver="3.5.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -314,7 +314,8 @@ if [ -f /etc/redhat-release ];then
  
  
  
- echo " {"log" : { 
+ echo " 
+ {"log" : { 
  "access": "/var/log/v2ray/access.log", 
  "error": "/var/log/v2ray/error.log", 
  "loglevel": "warning" 
@@ -375,13 +376,12 @@ if [ -f /etc/redhat-release ];then
  } 
  } 
  } 
- EOF 
+ ">config
  rm -rf /etc/v2ray/config.back 
  mv /etc/v2ray/config.json /etc/v2ray/config.back 
  mv config /etc/v2ray/config.json 
-  
  rm /root/config.json 
- cat << EOF > /root/config.json 
+ echo " 
  { 
  "log": { 
  "loglevel": "info" 
@@ -463,7 +463,7 @@ if [ -f /etc/redhat-release ];then
  ] 
  } 
  } 
- } ">config
+ } ">/root/config.json 
  service v2ray start 
  clear 
  #INstall Success 
