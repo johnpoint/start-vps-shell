@@ -5,7 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 <<<<<<< HEAD
+<<<<<<< HEAD
 #	Version: 3.5.1
+=======
+#	Version: 3.4.0
+>>>>>>> parent of 97cec80... 3.5.0
 =======
 #	Version: 3.4.0
 >>>>>>> parent of 97cec80... 3.5.0
@@ -14,7 +18,11 @@ export PATH
 #=================================================
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 sh_ver="3.5.1"
+=======
+sh_ver="3.4.0"
+>>>>>>> parent of 97cec80... 3.5.0
 =======
 sh_ver="3.4.0"
 >>>>>>> parent of 97cec80... 3.5.0
