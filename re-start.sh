@@ -29,4 +29,5 @@ if [ -f /etc/redhat-release ];then
  echo '安装完成！'
  
  echo '正在获取脚本'
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+ echo '请输入 chmod +x start.sh && ./start.sh'
