@@ -307,13 +307,6 @@ if [ -f /etc/redhat-release ];then
  iptables -P FORWARD ACCEPT 
  iptables -P OUTPUT ACCEPT 
  iptables -F 
-  
- 
- 
- 
- 
- 
- 
  echo " {
  "log" : { 
  "access": "/var/log/v2ray/access.log", 
