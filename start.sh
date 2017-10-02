@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 4.1.0
+#	Version: 4.1.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
@@ -478,8 +478,9 @@ if [ -f /etc/redhat-release ];then
  #Install_ytb_dl
  Install_ytb_dl(){
  cd ~
- wget https://yt-dl.org/downloads/2016.07.13/youtube-dl -O /usr/local/bin/youtube-dl
+ wget https://yt-dl.org/downloads/2017.10.01/youtube-dl -O /usr/local/bin/youtube-dl
  chmod a+rx /usr/local/bin/youtube-dl
+ youtube-dl -U
  echo && stty erase '^H' && read -p "请输入保存路径：" save
  cd $save
  echo && stty erase '^H' && read -p "请输入视频地址：" address
