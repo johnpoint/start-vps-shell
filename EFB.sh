@@ -122,7 +122,7 @@ case "$num" in
 	Uninstall_EFB
 	;;
 	*)
-	echo -e "${Error} 请输入正确的数字 [1-5]"
+	echo -e "${Error} 请输入正确的数字 [1-6]"
 	;;
 esac
 fi
