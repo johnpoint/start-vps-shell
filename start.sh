@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 6.0.0
+#	Version: 7.0.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="6.0.0"
+sh_ver="7.0.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -489,6 +489,10 @@ if [ -f /etc/redhat-release ];then
  Install_GoFlyway(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
+ #Install_ExpressBot
+ Install_ExpressBot(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
+ }
  #Install_something
 Install_something(){
 echo && echo -e "  你要做什么？
@@ -507,7 +511,8 @@ echo && echo -e "  你要做什么？
   ${Green_font_prefix}9.${Font_color_suffix} 安装微信互联系统（限Ubuntu）
   ${Green_font_prefix}10.${Font_color_suffix} 安装 wordpress博客
   ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 GoFlyway
-  ——" && echo
+  ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 ExpressBot
+  ————————————————" && echo
 	stty erase '^H' && read -p "(默认: 取消):" install_num
 	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
 	if [[ ${install_num} == "1" ]]; then
@@ -536,6 +541,8 @@ echo && echo -e "  你要做什么？
 		Install_screen
 		Install_lrzsz
 		Install_git
+	elif [[ ${install_num} == "A" ]]; then
+	Install_ExpressBot
 	else
 		echo -e "${Error} 请输入正确的数字 [1-10]" && exit 1
 	fi
