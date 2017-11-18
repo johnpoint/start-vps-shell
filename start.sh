@@ -511,7 +511,7 @@ echo && echo -e "  你要做什么？
   ${Green_font_prefix}9.${Font_color_suffix} 安装微信互联系统（限Ubuntu）
   ${Green_font_prefix}10.${Font_color_suffix} 安装 wordpress博客
   ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 GoFlyway
-  ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 ExpressBot
+  ${Green_font_prefix}12.${Font_color_suffix} 安装/管理 ExpressBot
   ————————————————" && echo
 	stty erase '^H' && read -p "(默认: 取消):" install_num
 	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
@@ -541,10 +541,10 @@ echo && echo -e "  你要做什么？
 		Install_screen
 		Install_lrzsz
 		Install_git
-	elif [[ ${install_num} == "A" ]]; then
+	elif [[ ${install_num} == "12" ]]; then
 	Install_ExpressBot
 	else
-		echo -e "${Error} 请输入正确的数字 [1-10]" && exit 1
+		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
 }
 #CG_passwd
