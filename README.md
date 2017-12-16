@@ -10,15 +10,10 @@
 
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
 
-<<<<<<< HEAD
 ## To Do ##
 - [ ] 整理re-po
 - [ ] 增加 v2ray 安装
 - [ ] 增加VPS具体参数检测
-=======
-## TODO ##
-
->>>>>>> 70b82e19146693a2f3b634931b0cb3c42aa50cce
 
 ## License ##
 GPL v2
