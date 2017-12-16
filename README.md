@@ -10,7 +10,7 @@
 
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
 
-## To Do ##
+## TODO ##
 
 
 ## License ##
