@@ -2,10 +2,10 @@
 
 ## 使用方法 ##
 
-# 无wget #
+### 无wget ###
 `curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash`
 
-# 正常安装 #
+### 正常安装 ###
 `wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
 
 备用下载：
