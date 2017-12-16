@@ -16,20 +16,35 @@
 `curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash`
 
 ## 结构树 ##
+```
 start-vps-shell
-    │
-    ├── shell
-    │    ├── EFB.sh
-    │    ├── install.sh
-    │    ├── ssh_key.sh
-    │    ├── sync.sh
-    │    ├── v2ray.sh
-    │    ├── wordpress.sh
-    │
-    ├── start.sh
-    ├── re-start.sh
-    ├── README.md
-    ├── LICENSE
+    
+	│
+    
+	├── shell
+    
+	│    ├── EFB.sh
+    
+	│    ├── install.sh
+    
+	│    ├── ssh_key.sh
+    
+	│    ├── sync.sh
+    
+	│    ├── v2ray.sh
+    
+	│    ├── wordpress.sh
+    
+	│
+    
+	├── start.sh
+    
+	├── re-start.sh
+    
+	├── README.md
+    
+	├── LICENSE
+```
 
 ## To Do ##
 - [x] 整理re-po
