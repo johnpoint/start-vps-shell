@@ -13,7 +13,7 @@
 `wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh`
 
 ## To Do ##
-- [Ⅹ] 整理re-po
+- [x] 整理re-po
 - [ ] 增加 v2ray 安装
 - [ ] 增加VPS具体参数检测
 
