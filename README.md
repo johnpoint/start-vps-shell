@@ -3,17 +3,24 @@
 ## 使用方法 ##
 
 ### 正常安装 ###
-`wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh`
+
+```
+wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh
+```
 
 备用下载：
 
-`wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh`
+```
+wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh
+```
 
 ### 特殊的 ###
 
 有些系统精简得太厉害，连wget都没有安装，用这个：
 
-`curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash`
+```
+curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash
+```
 
 ## 结构树 ##
 
@@ -21,12 +28,12 @@
 start-vps-shell
     │
     ├── shell
-    │    ├── EFB.sh
-    │    ├── install.sh
-    │    ├── ssh_key.sh
-    │    ├── sync.sh
-    │    ├── v2ray.sh
-    │    ├── wordpress.sh
+    │     ├── EFB.sh
+    │     ├── install.sh
+    │     ├── ssh_key.sh
+    │     ├── sync.sh
+    │     ├── v2ray.sh
+    │     ├── wordpress.sh
     │
     ├── start.sh
     ├── re-start.sh
