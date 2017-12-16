@@ -124,7 +124,6 @@ kern=$( uname -r )
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
- #Install_v2ray
  
  #Install_sync
  Install_sync(){
@@ -182,7 +181,7 @@ echo && echo -e "  你要做什么？
   ————————————————
   ${Green_font_prefix}4.${Font_color_suffix} 安装/管理 ssr
   ${Green_font_prefix}5.${Font_color_suffix} 安装/管理 逗逼监控
-  ${Green_font_prefix}6.${Font_color_suffix} 安装 V2ray
+  ${Green_font_prefix}6.${Font_color_suffix} ~ 【 暂时不能安装 V2ray 】 ~
   ${Green_font_prefix}7.${Font_color_suffix} 安装 Sync
   ${Green_font_prefix}8.${Font_color_suffix} 安装/使用 youtube-dl
   ${Green_font_prefix}9.${Font_color_suffix} 安装微信互联系统（限Ubuntu）
