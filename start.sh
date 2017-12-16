@@ -97,28 +97,7 @@ kern=$( uname -r )
  Install_ssr(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
- #Install_status(安装基于lnmp的status，未完工
- Install_stats(){
- cd ~
- wget https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/ServerStatus.zip
- echo '正在安装unzip...'
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install unzip -y
- else
- apt-get update
- apt-get install unzip -y
- fi
- echo '安装完成！'
- unzip ServerStatus.zip
- cd ServerStatus/server
- make
- echo '如果没错误提示，OK，ctrl+c关闭；如果有错误提示，检查35601端口是否被占用'
- ./sergate
- echo && stty erase '^H' && read -p "请输入域名：" status_yuming
- cp -r ServerStatus/web/* /home/wwwroot/$status_yuming
- ./sergate --config=config.json --web-dir=/home/wwwroot/$status_yuming
- }
+
  #Install_status
  Install_status(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
@@ -127,7 +106,7 @@ kern=$( uname -r )
  
  #Install_sync
  Install_sync(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/sync.sh && chmod +x sync.sh && ./sync.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  #Install_ytb_dl
  Install_ytb_dl(){
@@ -142,11 +121,11 @@ kern=$( uname -r )
  }
  #Install_EFB
  Install_EFB(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  #Install_wordpress
  Install_wordpress(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
  }
  #Install_GoFlyway
  Install_GoFlyway(){
