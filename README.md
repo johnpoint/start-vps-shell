@@ -29,8 +29,8 @@ start-vps-shell
     │
     ├── shell
     │     ├── EFB.sh
-    │     ├── install.sh
-    │     ├── ssh_key.sh
+    │     ├── install.sh (已弃用，留作备份)
+    │     ├── ssh_key.sh
     │     ├── sync.sh
     │     ├── v2ray.sh
     │     ├── wordpress.sh
