@@ -18,7 +18,7 @@ Separator_1="——————————————————————�
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
-#check OS#
+#check OS
 if [ -f /etc/redhat-release ]; then
     release="centos"
     PM='yum'
@@ -58,6 +58,7 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 check_IP_address(){
 curl http://members.3322.org/dyndns/getip 
 }
+
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
     [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
@@ -106,6 +107,7 @@ ip=$(check_IP_address)
  Install_sync(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
+ 
  #Install_ytb_dl
  Install_ytb_dl(){
  cd ~
@@ -117,22 +119,27 @@ ip=$(check_IP_address)
  echo && stty erase '^H' && read -p "请输入视频地址：" address
  youtube-dl $address
  }
+ 
  #Install_EFB
  Install_EFB(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
+ 
  #Install_wordpress
  Install_wordpress(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
  }
+ 
  #Install_GoFlyway
  Install_GoFlyway(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
+ 
  #Install_ExpressBot
  Install_ExpressBot(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
  }
+ 
  #Install_bbr
  Install_bbr(){
  echo && echo -e "  安装bbr需要更换内核，可能会造成vps启动失败，请勿在生产环境中使用！
@@ -147,6 +154,7 @@ ip=$(check_IP_address)
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
  }
+ 
  #Install_something
 Install_something(){
 echo && echo -e "  你要做什么？
@@ -204,16 +212,19 @@ echo && echo -e "  你要做什么？
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
 }
+
 #CG_passwd
 CG_passwd(){
 passwd
 }
+
 #Bash_bench
 Bash_bench(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
  rm -rf superbench.sh
  echo -e "${Info} done"
 }
+
 #install openssl
  Install_openssl(){
  echo -e "${Info} 正在安装openssl..."
@@ -221,6 +232,7 @@ Bash_bench(){
  ${PM} install openssl -y
  echo -e "${Tip} 安装完成！"
  }
+ 
  #Generate_key
  Generate_key(){
  echo -e "${Info} 正在生成key..."
@@ -231,6 +243,7 @@ Bash_bench(){
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
+ 
  #modify_sshd_config
  modify_sshd_config(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
@@ -246,12 +259,14 @@ Bash_bench(){
  echo '正在重启ssh服务'
  echo '请使用key登陆测试是否成功'
  }
+ 
  #Download_key
  Download_key(){
  cd ~/.ssh
  cat id_rsa
  echo '把屏幕上面的密匙复制出来写入文件内，文件取名为 id_rsa （这个名称随意，但这个密匙文件一定要保存好！）。'
  }
+ 
  #Upload_key
  Upload_key(){
  mkdir ~/.ssh
@@ -262,12 +277,14 @@ Bash_bench(){
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
+ 
  #restart_sshd
  restart_sshd(){
  echo '正在重启ssh服务'
  service ssh restart
  service sshd restart
  }
+ 
  #close_passwd
  close_passwd(){
  echo '将PasswordAuthentication 改为no 并去掉#号'
@@ -277,6 +294,7 @@ Bash_bench(){
  vi /etc/ssh/sshd_config
  echo '记得重启'
  }
+ 
 #Login_key
 Login_key(){
 echo && echo -e "  你要做什么？
@@ -342,34 +360,6 @@ Update_shell(){
 	exit 0
 }
 
-
-echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
-	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
-	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
-	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
-	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
-		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
-		stty erase '^H' && read -p "(默认: y):" yn
-		[[ -z "${yn}" ]] && yn="y"
-		if [[ ${yn} == [Yy] ]]; then
-			cd "${file}"
-			if [[ $sh_new_type == "yun" ]]; then
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
-			else
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
-			fi
-			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
-		else
-			echo && echo "	已取消..." && echo
-		fi
-	else
-		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
-	fi
-
-
- if [[ "${action}" == "clearall" ]]; then
-	Clear_transfer_all
-else
 	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
   
