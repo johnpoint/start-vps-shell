@@ -38,10 +38,12 @@ start-vps-shell
     ├── shell
     │     ├── EFB.sh
     │     ├── install.sh (已弃用，留作备份)
-    │     ├── ssh_key.sh
+    │     ├── ssh_key.sh(已弃用，留作备份)
     │     ├── sync.sh
     │     ├── v2ray.sh
     │     ├── wordpress.sh
+    │     ├── superbench.sh
+    │
     │
     ├── start.sh
     ├── re-start.sh
@@ -52,7 +54,7 @@ start-vps-shell
 ## To Do ##
 - [x] 整理re-po
 - [ ] 增加 v2ray 安装
-- [ ] 增加VPS具体参数检测
+- [x] 增加VPS具体参数检测 - superbech.sh
 - [ ] 添加检查ssh日志功能
 - [ ] 添加检查bbr/net-speed是否安装功能
 - [x] 精简安装语句

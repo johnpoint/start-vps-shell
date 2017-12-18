@@ -184,9 +184,11 @@ echo && echo -e "  你要做什么？
 CG_passwd(){
 passwd
 }
-#Look_uname
-Look_uname(){
-uname -a
+#Bash_bench
+Bash_bench(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
+ rm -rf superbench.sh
+ echo -e "${Info} done"
 }
 #install openssl
  Install_openssl(){
@@ -364,7 +366,7 @@ case "$num" in
 	CG_passwd
 	;;
 	3)
-	Look_uname
+	Bash_bench
 	;;
 	4)
 	Login_key
