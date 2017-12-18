@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.1
+#	Version: 1.0.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
@@ -34,7 +34,7 @@ if [ -f /etc/redhat-release ];then
  fi
  #Install_lnmp
  Install_lnmp(){
- echo '正在安装wget'
+ echo -e "${Tip} 正在安装wget"
  ${PM} update
  ${PM} install wget git -y 
  echo -e "${Tip} wget安装完成"
