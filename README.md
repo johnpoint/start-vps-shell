@@ -60,5 +60,13 @@ start-vps-shell
 - [x] 精简安装语句
 - [x] 增加检测ip地址
 
+## 备注 ##
+
+有什么好主意可以联系我哦~！⊙∀⊙！~
+
+Telegram:[@johnpoint](https://t.me/johnpoint)
+
+Gmail:<jahanngauss414@gmail.com>
+
 ## License ##
 GPL v2
