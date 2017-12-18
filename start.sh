@@ -121,7 +121,17 @@ kern=$( uname -r )
  }
  #Install_bbr
  Install_bbr(){
- wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+ echo && echo -e "  安装bbr需要更换内核，可能会造成vps启动失败，请勿在生产环境中使用！
+ " && echo
+ stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" YON
+ [[ -z "${install_num}" ]] && echo "已取消..." && exit 1
+	if [[ ${YON} == "Y" ]]; then
+		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+	elif [[ ${YON} == "N" ]]; then
+		exit 1
+		else
+		echo -e "${Error} 请输入正确的选项" && exit 1
+	fi
  }
  #Install_something
 Install_something(){
@@ -142,7 +152,7 @@ echo && echo -e "  你要做什么？
   ${Green_font_prefix}10.${Font_color_suffix} 安装 wordpress博客
   ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 GoFlyway
   ${Green_font_prefix}12.${Font_color_suffix} 安装/管理 ExpressBot
-  ${Green_font_prefix}13.${Font_color_suffix} 安装 bbr
+  ${Green_font_prefix}13.${Font_color_suffix} 安装 bbr (慎重)
   ————————————————" && echo
 	stty erase '^H' && read -p "(默认: 取消):" install_num
 	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
@@ -204,7 +214,6 @@ Bash_bench(){
  echo -e "${Info} 生成成功，保存于 /root/.ssh"
  cd .ssh
  mv id_rsa.pub authorized_keys
- ls -a
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
