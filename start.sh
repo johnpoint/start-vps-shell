@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.0.2
+#	Version: 8.1.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="8.0.2"
+sh_ver="8.1.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -19,31 +19,27 @@ check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
 #check OS#
-if [ -f /etc/redhat-release ];then
- OS='CentOS'
- elif [ ! -z "`cat /etc/issue | grep bian`" ];then
- OS='Debian'
- elif [ ! -z "`cat /etc/issue | grep Ubuntu`" ];then
- OS='Ubuntu'
- else
- echo "Not support OS, Please reinstall OS and retry!"
- exit 1
- fi
-
 if [ -f /etc/redhat-release ]; then
     release="centos"
+    PM='yum'
 elif cat /etc/issue | grep -Eqi "debian"; then
     release="debian"
+    PM='apt-get'
 elif cat /etc/issue | grep -Eqi "ubuntu"; then
     release="ubuntu"
+    PM='apt-get'
 elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
+    PM='yum'
 elif cat /proc/version | grep -Eqi "debian"; then
     release="debian"
+    PM='apt-get'
 elif cat /proc/version | grep -Eqi "ubuntu"; then
     release="ubuntu"
+    PM='apt-get'
 elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
+    PM='yum'
 fi
 
 get_opsy() {
@@ -59,39 +55,24 @@ kern=$( uname -r )
 
 #Install_screen
  Install_screen(){
- echo '正在安装screen...'
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install screen -y
- else
- apt-get update
- apt-get install screen -y
- fi
- echo '安装完成！'
+ echo -e "${Info} 正在安装screen..."
+ ${PM} update
+ ${PM} install screen -y
+ echo -e "${Tip} 安装完成！"
  }
 #Install_lrzsz
  Install_lrzsz(){
- echo '正在安装lrzsz...'
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install lrzsz -y
- else
- apt-get update
- apt-get install lrzsz -y
- fi
- echo '安装完成！'
+ echo -e "${Info} 正在安装lrzsz..."
+ ${PM} update
+ ${PM} install lrzsz -y
+ echo -e "${Tip} 安装完成！"
  }
  #Install_git
  Install_git(){
- echo '正在安装git...'
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install git -y
- else
- apt-get update
- apt-get install git -y
- fi
- echo '安装完成！'
+ echo -e "${Info} 正在安装git..."
+ ${PM} update
+ ${PM} install git -y
+ echo -e "${Tip} 安装完成！"
  }
  #Install_ssr
  Install_ssr(){
@@ -139,15 +120,6 @@ kern=$( uname -r )
  Install_bbr(){
  wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
  }
- #check_bbr_status() {
- check_bbr_status() {
-    local param=$(sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}')
-    if [[ "${param}" == "bbr" ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
  #Install_something
 Install_something(){
 echo && echo -e "  你要做什么？
@@ -215,21 +187,16 @@ uname -a
 }
 #install openssl
  Install_openssl(){
- echo '正在安装openssl...'
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install openssl -y
- else
- apt-get update
- apt-get install openssl -y
- fi
- echo '安装完成！'
+ echo -e "${Info} 正在安装openssl..."
+ ${PM} update
+ ${PM} install openssl -y
+ echo -e "${Tip} 安装完成！"
  }
  #Generate_key
  Generate_key(){
- echo '正在生成key'
+ echo -e "${Info} 正在生成key..."
  ssh-keygen
- echo '生成成功，保存于 /root/.ssh'
+ echo -e "${Info} 生成成功，保存于 /root/.ssh"
  cd .ssh
  mv id_rsa.pub authorized_keys
  ls -a
@@ -260,13 +227,7 @@ uname -a
  #Upload_key
  Upload_key(){
  mkdir ~/.ssh
- if [[ ${OS} == 'CentOS' ]];then
- yum update -y
- yum install lrzsz -y
- else
- apt-get update
- apt-get install lrzsz -y
- fi
+ Install_lrzsz
  cd ~/.ssh
  rz -y
  ls -a
