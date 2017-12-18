@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.2.1
+#	Version: 8.2.2
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="8.2.1"
+sh_ver="8.2.2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -48,9 +48,9 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 		# 检查是否启动BBR
 		check_bbr_status_off=`lsmod | grep bbr`
 		if [[ "${check_bbr_status_off}" = "" ]]; then
-			bbr=BBR 已开启但未正常启动
+			bbr="BBR 已开启但未正常启动"
 		else
-			bbr=BBR 已开启并已正常启动
+			bbr="BBR 已开启并已正常启动"
 		fi
 	fi
 
