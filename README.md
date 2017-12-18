@@ -4,9 +4,9 @@
 
 写这个就是因为懒嘛～这样重装vps以后就不用重新一个个的安装（
 
-## 使用方法 ##
+## 安装&使用 ##
 
-### 正常安装 ###
+### 安装 ###
 
 ```
 wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh
@@ -26,7 +26,11 @@ wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/st
 curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash
 ```
 
-## 结构树 ##
+### 使用 ###
+
+这个脚本可是中文的，不会用我也帮不了你了...
+
+## 项目结构树 ##
 
 ```
 start-vps-shell
@@ -50,6 +54,7 @@ start-vps-shell
 - [ ] 增加 v2ray 安装
 - [ ] 增加VPS具体参数检测
 - [ ] 添加检查ssh日志功能
+- [ ] 添加检查bbr/net-speed是否安装功能
 
 ## License ##
 GPL v2
