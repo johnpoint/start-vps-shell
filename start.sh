@@ -46,12 +46,14 @@ fi
 check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	if [[ "${check_bbr_status_on}" = "bbr" ]]; then
 		# 检查是否启动BBR
-		check_bbr_status_off=`lsmod | grep bbr`
-		if [[ "${check_bbr_status_off}" = "" ]]; then
-			bbr="BBR 已开启但未正常启动"
+		  check_bbr_status_off=`lsmod | grep bbr`
+		  if [[ "${check_bbr_status_off}" = "" ]]; then
+			  bbr="BBR 已开启但未正常启动"
+		  else
+			  bbr="BBR 已开启并已正常启动"
+		  fi
 		else
-			bbr="BBR 已开启并已正常启动"
-		fi
+		   bbr="BBR 未安装"
 	fi
 
 #check_IP_address
