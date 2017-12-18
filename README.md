@@ -55,7 +55,8 @@ start-vps-shell
 - [ ] 增加VPS具体参数检测
 - [ ] 添加检查ssh日志功能
 - [ ] 添加检查bbr/net-speed是否安装功能
-- [ ] 精简安装语句 （20%）
+- [x] 精简安装语句
+- [x] 增加检测ip地址
 
 ## License ##
 GPL v2

@@ -42,6 +42,9 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     PM='yum'
 fi
 
+#check_IP_address
+IP_address=`wget -qO- -t1 -T2 http://freeapi.ipip.net/${IP}|sed 's/\"//g;s/,//g;s/\[//g;s/\]//g'`
+
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
     [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
@@ -340,7 +343,8 @@ else
   ---- johnpoint ----
   
   =============== System Information ===================
-  =		OS      : $opsy
+  =		IP_address: $IP_address
+  =        OS      : $opsy
   =		Arch    : $arch ($lbit Bit)
   =		Kernel  : $kern
   =============== System Information ===================
