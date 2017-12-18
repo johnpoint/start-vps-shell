@@ -55,8 +55,8 @@ start-vps-shell
 - [x] 整理re-po
 - [ ] 增加 v2ray 安装
 - [x] 增加VPS具体参数检测 - superbech.sh
-- [ ] 添加检查ssh日志功能
-- [ ] 添加检查bbr/net-speed是否安装功能
+- [x] 添加检查ssh日志功能
+- [x] 添加检查bbr是否安装功能
 - [x] 精简安装语句
 - [x] 增加检测ip地址
 
