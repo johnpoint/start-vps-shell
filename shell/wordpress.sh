@@ -9,7 +9,7 @@ export PATH
 #	Author: johnpoint
 #=================================================
 
-sh_ver=0.0.1
+sh_ver=1.0.1
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -21,25 +21,24 @@ check_root(){
 #check OS#
 if [ -f /etc/redhat-release ];then
  OS='CentOS'
+ PM='yum'
  elif [ ! -z "`cat /etc/issue | grep bian`" ];then
  OS='Debian'
+ PM='apt-get'
  elif [ ! -z "`cat /etc/issue | grep Ubuntu`" ];then
  OS='Ubuntu'
+ PM='apt-get'
  else
- echo "Not support OS, Please reinstall OS and retry!"
+ echo -e "${Error} 本脚本不支持此系统~"
  exit 1
  fi
  #Install_lnmp
  Install_lnmp(){
  echo '正在安装wget'
- if [[ ${OS} == 'CentOS' ]];then 
- yum update -y
- yum install wget git -y 
- else 
- apt-get update 
- apt-get install wget git -y 
- fi 
- echo '安装完成！'
+ ${PM} update
+ ${PM} install wget git -y 
+ echo -e "${Tip} wget安装完成"
+ echo -e "${Tip} 获取lnmp安装脚本"
  wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz && tar zxf lnmp1.4.tar.gz && cd lnmp1.4 && ./install.sh lnmp
  }
  #Add_vhost
@@ -67,7 +66,7 @@ else
 	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
   ${Green_font_prefix}1.${Font_color_suffix} 安装 lnmp
-  ${Green_font_prefix}2.${Font_color_suffix} 添加 虚拟主机
+  ${Green_font_prefix}2.${Font_color_suffix} 管理 虚拟主机
   ${Green_font_prefix}3.${Font_color_suffix} 安装 wordpress
  "
 	echo && stty erase '^H' && read -p "请输入数字 [1-3]：" num
