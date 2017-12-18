@@ -66,7 +66,7 @@ start-vps-shell
 
 Telegram:[@johnpoint](https://t.me/johnpoint)
 
-Gmail:<ahref="Mailto:jahanngauss414@gmail.com">给我发邮件</a>
+Gmail:jahanngauss414@gmail.com
 
 
 ## License ##
