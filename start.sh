@@ -146,7 +146,9 @@ Update_shell
  cd ~
  wget https://yt-dl.org/downloads/2017.10.01/youtube-dl -O /usr/local/bin/youtube-dl
  chmod a+rx /usr/local/bin/youtube-dl
+ echo -e "${Info}正在获取最新版本..."
  youtube-dl -U
+ echo -e "${Info}更新完成....."
  echo && stty erase '^H' && read -p "请输入保存路径：" save
  cd $save
  echo && stty erase '^H' && read -p "请输入视频地址：" address
