@@ -355,6 +355,8 @@ Update_shell(){
 				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
 			fi
 			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
+			chmod +x start.sh
+			./start.sh
 		else
 			echo && echo "	已取消..." && echo
 		fi
@@ -407,3 +409,4 @@ case "$num" in
 	;;
 esac
 fi
+
