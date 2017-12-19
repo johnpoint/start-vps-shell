@@ -4,9 +4,9 @@
 
 写这个就是因为懒嘛～这样重装vps以后就不用重新一个个的安装（
 
-## 安装&使用 ##
+## 获取&使用 ##
 
-### 安装 ###
+### 获取 ###
 
 ```
 wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh
@@ -28,7 +28,7 @@ curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start
 
 ### 使用 ###
 
-这个脚本可是中文的，不会用我也帮不了你了...
+这个脚本可是中文的，不会用~~我也帮不了你了~~来[博客](https://johnpoint.github.io/2017-12-19-start-vps-shell)看吧...
 
 ## 项目结构树 ##
 
