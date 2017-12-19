@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.3.9
+#	Version: 8.3.10
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="8.3.9"
+sh_ver="8.3.10"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -407,6 +407,6 @@ case "$num" in
 	*)
 	echo -e "${Error} 请输入正确的数字 [1-15]"
 	;;
-esac
-fi
-done
+ esac
+ fi
+ done
