@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.4.0
+#	Version: 8.4.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="8.4.0"
+sh_ver="8.4.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -361,11 +361,6 @@ echo && echo -e "  你要做什么？
 	fi
 }
 
-#look ssh log
-Look_sshlog(){
-cat /var/log/secure
-}
-
 	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
   
@@ -380,7 +375,6 @@ cat /var/log/secure
   ${Green_font_prefix}2.${Font_color_suffix} 修改 密码
   ${Green_font_prefix}3.${Font_color_suffix} 查看 vps详细参数
   ${Green_font_prefix}4.${Font_color_suffix} 更改 系统为密钥登陆
-  ${Green_font_prefix}5.${Font_color_suffix} 查看 SSH登录日志
   ——————————————————————
   ${Green_font_prefix}0.${Font_color_suffix} 更新 脚本
  "
@@ -397,9 +391,6 @@ case "$num" in
 	;;
 	4)
 	Login_key
-	;;
-	5)
-	Look_sshlog
 	;;
     0)
 	Update_shell
