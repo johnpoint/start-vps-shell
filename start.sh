@@ -4,12 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.4.2
+#	Version: 8.4.4
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
+#    USE AT YOUR OWN RISK!!!
+#    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="8.4.2"
+sh_ver="8.4.4"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -41,6 +43,11 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
     PM='yum'
 fi
+
+not_found(){
+echo -e "${Tip}404 Not Found"
+echo -e "${Green_font_prefix}你来到了一片荒芜之地~${Font_color_suffix}"
+}
 
 #Update_shell
 Update_shell(){
@@ -86,7 +93,7 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 
 #check_IP_address
 check_IP_address(){
-curl ip.cn
+curl ip.cn >/dev/null
 }
 
 get_opsy() {
@@ -95,33 +102,31 @@ get_opsy() {
     [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
 }
 
+Update_shell
 opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
 kern=$( uname -r )
 ip=$(check_IP_address)
-Update_shell
-
-#=====准备
 
 #Install_screen
  Install_screen(){
  echo -e "${Info} 正在安装screen..."
- ${PM} update > /dev/null 2>&1
+ ${PM} update >/dev/null
  ${PM} install screen -y
  echo -e "${Tip} 安装完成！"
  }
 #Install_lrzsz
  Install_lrzsz(){
  echo -e "${Info} 正在安装lrzsz..."
- ${PM} update > /dev/null 2>&1
+ ${PM} update >/dev/null
  ${PM} install lrzsz -y
  echo -e "${Tip} 安装完成！"
  }
  #Install_git
  Install_git(){
  echo -e "${Info} 正在安装git..."
- ${PM} update > /dev/null 2>&1
+ ${PM} update >/dev/null
  ${PM} install git -y
  echo -e "${Tip} 安装完成！"
  }
@@ -159,6 +164,12 @@ Update_shell
  Install_EFB(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
+ 
+ # TODO
+ #Install_v2ray
+ Install_v2ray(){
+not_found
+}
  
  #Install_wordpress
  Install_wordpress(){
@@ -263,7 +274,7 @@ Bash_bench(){
 #install openssl
  Install_openssl(){
  echo -e "${Info} 正在安装openssl..."
- ${PM} update > /dev/null 2>&1
+ ${PM} update >/dev/null
  ${PM} install openssl -y
  echo -e "${Tip} 安装完成！"
  }
