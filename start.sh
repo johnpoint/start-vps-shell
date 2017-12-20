@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.4.1
+#	Version: 8.4.2
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver="8.4.1"
+sh_ver="8.4.2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -107,21 +107,21 @@ Update_shell
 #Install_screen
  Install_screen(){
  echo -e "${Info} 正在安装screen..."
- ${PM} update
+ ${PM} update > /dev/null 2>&1
  ${PM} install screen -y
  echo -e "${Tip} 安装完成！"
  }
 #Install_lrzsz
  Install_lrzsz(){
  echo -e "${Info} 正在安装lrzsz..."
- ${PM} update
+ ${PM} update > /dev/null 2>&1
  ${PM} install lrzsz -y
  echo -e "${Tip} 安装完成！"
  }
  #Install_git
  Install_git(){
  echo -e "${Info} 正在安装git..."
- ${PM} update
+ ${PM} update > /dev/null 2>&1
  ${PM} install git -y
  echo -e "${Tip} 安装完成！"
  }
@@ -263,7 +263,7 @@ Bash_bench(){
 #install openssl
  Install_openssl(){
  echo -e "${Info} 正在安装openssl..."
- ${PM} update
+ ${PM} update > /dev/null 2>&1
  ${PM} install openssl -y
  echo -e "${Tip} 安装完成！"
  }
