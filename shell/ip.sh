@@ -51,7 +51,7 @@ ${PM} install jq -y
 config=$( curl -s ipinfo.io )
 touch ip.json
 echo "
-"ip_config":
+'ip_config':
 $config" > ip.json
 
 ip(){
