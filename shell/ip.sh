@@ -60,3 +60,4 @@ IP地址：$ip
 位置：$country $city $loc
 组织：$org
 "
+rm ip.json
