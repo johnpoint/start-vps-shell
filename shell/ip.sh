@@ -55,23 +55,23 @@ echo "
 $config" > ip.json
 
 ip(){
-jq '.ip' ip.json
+cat ip.json | jq '.ip'
 }
 
 city(){
-jq '.city' ip.json
+cat ip.json | jq '.city'
 }
 
 country(){
-jq '.country' ip.json
+cat ip.json | jq '.country'
 }
 
 loc(){
-jq '.loc' ip.json
+cat ip.json | jq '.loc'
 }
 
 org(){
-jq '.org' ip.json
+cat ip.json | jq '.org'
 }
 
 ip=$(ip)
@@ -80,9 +80,22 @@ country=$(country)
 loc=$(loc)
 org=$(org)
 
-echo -e "
-ip概况
+echo -e "[v${Green_font_prefix}${sh_ver}${Font_color_suffix}]
+============= IP INFO =============
 IP地址：$ip
 位置：$country $city $loc
 组织：$org
-"
+=================================
+" && echo
+	stty erase '^H' && read -p "是否删除ip.json?(Y/N)" YON
+	[[ -z "${YON}" ]] && echo "已取消..." && exit 1
+	if [[ ${YON} == "Y" ]]; then
+       rm ip.json
+	elif [[ ${YON} == "N" ]]; then
+		exit 0
+   else
+       echo -e "${Tip}那我删掉了喔~"
+       rm ip.json
+       exit 0
+   fi
+   
