@@ -104,7 +104,7 @@ start-vps-shell
 
 # TODO #
 
-- [ ] 完善ip检测
+- [x] 完善ip检测
 - [x] 整理re-po
 - [ ] 增加 v2ray 安装
 - [x] 增加VPS具体参数检测 - superbech.sh
