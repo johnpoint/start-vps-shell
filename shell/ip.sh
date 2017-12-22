@@ -23,7 +23,9 @@ check_root(){
 
 config=$( curl -s ipinfo.io )
 touch ip.json
-echo "$config" > ip.json
+echo "
+ip_config:
+$config" > ip.json
 
 ip(){
 jq 'ip' ip.json
