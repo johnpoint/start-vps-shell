@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.4
+#	Version: 1.0.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.0.4"
+sh_ver="1.0.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -72,28 +72,24 @@ org(){
 cat ip.json | jq '.org'
 }
 
+region(){
+cat ip.json | jq '.region'
+}
+
 ip=$(ip)
 city=$(city)
 country=$(country)
 loc=$(loc)
 org=$(org)
+region=${region}
 
 echo -e "[v${Green_font_prefix}${sh_ver}${Font_color_suffix}]
 ============= IP INFO =============
 IP地址：$ip
-位置：$country $city $loc
+位置：$country $region $city 
+经纬度：$loc
 组织：$org
 =================================
-" && echo
-	stty erase '^H' && read -p "是否删除ip.json?(Y/N)" YON
-	[[ -z "${YON}" ]] && echo "已取消..." && exit 1
-	if [[ ${YON} == "Y" ]]; then
-       rm ip.json
-	elif [[ ${YON} == "N" ]]; then
-		exit 0
-   else
-       echo -e "${Tip}那我删掉了喔~"
-       rm ip.json
-       exit 0
-   fi
+" 
+rm -rf ip.json
    
