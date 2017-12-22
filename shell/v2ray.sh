@@ -1,68 +1,97 @@
-#!/bin/bash 
- export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin 
- #Disable China 
+#!/usr/bin/env bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+
+#=================================================
+#	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
+#	Version: 0.0.1
+#	Blog: blog.lvcshu.club
+#	Author: Kirito && 雨落无声'
+#    修改：johnpoint
+#    USE AT YOUR OWN RISK!!!
+#    Publish under GNU General Public License v2
+#=================================================
+
+sh_ver="0.0.1"
+Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
+Info="${Green_font_prefix}[信息]${Font_color_suffix}"
+Error="${Red_font_prefix}[错误]${Font_color_suffix}"
+Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
+Separator_1="——————————————————————————————"
+
+#check OS
+if [ -f /etc/redhat-release ]; then
+    release="centos"
+    PM='yum'
+elif cat /etc/issue | grep -Eqi "debian"; then
+    release="debian"
+    PM='apt-get'
+elif cat /etc/issue | grep -Eqi "ubuntu"; then
+    release="ubuntu"
+    PM='apt-get'
+elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
+    release="centos"
+    PM='yum'
+elif cat /proc/version | grep -Eqi "debian"; then
+    release="debian"
+    PM='apt-get'
+elif cat /proc/version | grep -Eqi "ubuntu"; then
+    release="ubuntu"
+    PM='apt-get'
+elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
+    release="centos"
+    PM='yum'
+else
+    echo -e "${Error}无法识别~"
+    exit 0
+fi
+ 
+ #Disable China
+Disable China(){
  wget http://iscn.kirito.moe/run.sh 
- . ./run.sh 
+ bash run.sh 
  if [[ $area == cn ]];then 
  echo "Unable to install in china" 
  exit 
  fi 
+ }
  #Check Root 
  [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; } 
   
- #Check OS 
- if [ -f /etc/redhat-release ];then 
- OS='CentOS' 
- elif [ ! -z "`cat /etc/issue | grep bian`" ];then 
- OS='Debian' 
- elif [ ! -z "`cat /etc/issue | grep Ubuntu`" ];then 
- OS='Ubuntu' 
- else 
- echo "Not support OS, Please reinstall OS and retry!" 
- exit 1 
- fi 
-  
-  
  # Get Public IP address 
+ Get_ip(){
  ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
  if [[ "$IP" = "" ]]; then 
  ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
  fi 
-  
+ }
+ 
+Get_uuid(){
  uuid=$(cat /proc/sys/kernel/random/uuid) 
+ }
   
- function Install(){ 
- #Install Basic Packages 
- if [[ ${OS} == 'CentOS' ]];then 
- yum install curl wget unzip ntp ntpdate -y 
- else 
- apt-get update 
- apt-get install curl unzip ntp wget ntpdate -y 
- fi 
+   #Install Basic Packages 
+ ${PM} update
+ ${PM} install curl wget unzip ntp ntpdate -y 
   
- #Set DNS 
+   #Set DNS 
  echo "nameserver 8.8.8.8" > /etc/resolv.conf 
  echo "nameserver 8.8.4.4" >> /etc/resolv.conf 
   
-  
- #Update NTP settings 
+   #Update NTP settings 
  rm -rf /etc/localtime 
  ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
  ntpdate us.pool.ntp.org 
-  
- #Disable SELinux 
+ 
+  #Disable SELinux 
  if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config; then 
  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config 
  setenforce 0 
  fi 
-  
- #Run Install 
- cd /root 
-  
+ 
+ function Install(){ 
+cd /root 
  bash <(curl -L -s https://install.direct/go.sh) 
-  
- } 
-  
  clear 
  echo 'V2Ray 一键安装|配置脚本 Author：Kirito && 雨落无声' 
   
@@ -395,3 +424,52 @@
  echo '' 
  echo "程序主端口：$mainport" 
  echo "UUID: $uuid" 
+ 
+ 
+ echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+  ---- johnpoint ----
+  
+  ${Green_font_prefix}1.${Font_color_suffix} 安装 v2ray
+  ${Green_font_prefix}2.${Font_color_suffix} 卸载 v2ray
+   ——————————————————————
+  ${Green_font_prefix}3.${Font_color_suffix} 启动 v2ray
+  ${Green_font_prefix}4.${Font_color_suffix} 停止 v2ray
+  ${Green_font_prefix}5.${Font_color_suffix} 重启 v2ray
+   ——————————————————————
+  ${Green_font_prefix}6.${Font_color_suffix} 查看 v2ray配置
+  ${Green_font_prefix}7.${Font_color_suffix} 设置 v2ray配置
+   ——————————————————————
+  ${Green_font_prefix}0.${Font_color_suffix} 更新 脚本
+  ${Tip}此脚本会关闭iptables防火墙，切勿用于生产环境!
+ "
+	echo && stty erase '^H' && read -p "请输入数字 [1-15]：" num
+case "$num" in
+	1)
+	Install
+	;;
+	2)
+	Uninstall
+	;;
+	3)
+	Start
+	;;
+	4)
+	Stop
+	;;
+	5)
+	Restart
+	;;
+	6)
+	Look
+	;;
+	7)
+	Set
+	;;
+    0)
+	Update_shell
+	;;
+	*)
+	echo -e "${Error} 请输入正确的数字 [1-15]"
+	;;
+ esac
+ fi
