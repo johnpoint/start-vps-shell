@@ -21,7 +21,7 @@
 ## 获取 ##
 
 ```
-wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh && ./start.sh
+wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
 ```
 
 备用下载：(有至多24小时延迟!)
@@ -35,7 +35,7 @@ wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/st
 有些系统精简得太厉害，连wget都没有安装，用这个：
 
 ```
-curl https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/re-start.sh |bash
+curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 ```
 
 ~~我是不是很贴心呀~~
@@ -102,7 +102,23 @@ start-vps-shell
     ├── LICENSE
 ```
 
+# TODO #
+
+- [ ] 完善ip检测
+- [x] 整理re-po
+- [ ] 增加 v2ray 安装
+- [x] 增加VPS具体参数检测 - superbech.sh
+- [ ] 添加检查ssh日志功能
+- [x] 添加检查bbr是否安装功能
+- [x] 精简安装语句
+- [x] 增加检测ip地址
+- [ ] 添加软件重复安装判定
+- [x] 菜单美化
 
 # 总结 #
 
 真的是懒人/小白必备，~~我就是懒人~~
+
+# License #
+
+[GPL v2](https://github.com/johnpoint/start-vps-shell/blob/master/LICENSE)
