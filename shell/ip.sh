@@ -21,24 +21,28 @@ check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
 
+config=$( curl -s ipinfo.io )
+touch ip.json
+echo "$config" > ip.json
+
 ip(){
-curl -s 'ipconfig.io' | jq 'ip'
+jq 'ip' ip.json
 }
 
 city(){
-curl -s 'ipconfig.io' | jq 'city'
+jq 'city' ip.json
 }
 
 country(){
-curl -s 'ipconfig.io' | jq 'country'
+jq 'country' ip.json
 }
 
 loc(){
-curl -s 'ipconfig.io' | jq 'loc'
+jq 'loc' ip.json
 }
 
 org(){
-curl -s 'ipconfig.io' | jq 'org'
+jq 'org' ip.json
 }
 
 
