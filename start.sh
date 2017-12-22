@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.4.6
+#	Version: 8.5.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="8.4.6"
+sh_ver="8.5.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -81,6 +81,34 @@ Update_shell(){
 	fi
 }
 
+config=$( curl -s ipinfo.io )
+touch ip.json
+echo "$config" > ip.json
+
+ip(){
+cat ip.json | jq '.ip' | sed 's/\"//g'
+}
+
+city(){
+cat ip.json | jq '.city' | sed 's/\"//g'
+}
+
+country(){
+cat ip.json | jq '.country' | sed 's/\"//g'
+}
+
+loc(){
+cat ip.json | jq '.loc' | sed 's/\"//g'
+}
+
+org(){
+cat ip.json | jq '.org' | sed 's/\"//g'
+}
+
+region(){
+cat ip.json | jq '.region' | sed 's/\"//g'
+}
+
 #check_bbr
 check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	if [[ "${check_bbr_status_on}" = "bbr" ]]; then
@@ -95,11 +123,6 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 		   bbr="BBR 未安装或未启动"
 	fi
 
-#check_IP_address
-check_IP_address(){
-curl -s ip.cn
-}
-
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
     [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
@@ -111,7 +134,13 @@ opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
 kern=$( uname -r )
-ip=$(check_IP_address)
+ip=$(ip)
+city=$(city)
+country=$(country)
+loc=$(loc)
+org=$(org)
+region=${region}
+
 
 #Install_screen
  Install_screen(){
@@ -205,6 +234,10 @@ not_found
 	fi
  }
  
+ Install_jq(){
+ ${PM} install jq
+ }
+ 
  #Install_something
 Install_something(){
 echo && echo -e "  你要做什么？
@@ -225,6 +258,7 @@ echo && echo -e "  你要做什么？
   ${Green_font_prefix}11.${Font_color_suffix} 安装/管理 GoFlyway
   ${Green_font_prefix}12.${Font_color_suffix} 安装/管理 ExpressBot
   ${Green_font_prefix}13.${Font_color_suffix} 安装 bbr (慎重)
+  ${Green_font_prefix}14.${Font_color_suffix} 安装 jq解释器
   ————————————————" && echo
 	stty erase '^H' && read -p "(默认: 取消):" install_num
 	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
@@ -258,6 +292,8 @@ echo && echo -e "  你要做什么？
 	Install_ExpressBot
 	elif [[ ${install_num} == "13" ]]; then
 	Install_bbr
+	elif [[ ${install_num} == "14" ]]; then
+	Install_jq
 	else
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
@@ -381,13 +417,17 @@ echo && echo -e "  你要做什么？
 	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
   
-  =============== System Information ===================
+  ================= IP Information =====================
   =${Green_font_prefix}$ip${Font_color_suffix}
+  =${Green_font_prefix}位置：${Font_color_suffix}$country $region $city 
+  =${Green_font_prefix}经纬：${Font_color_suffix}$loc
+  =${Green_font_prefix}组织：${Font_color_suffix}$org
+  =============== System Information ===================
   =${Green_font_prefix}OS${Font_color_suffix} : $opsy
   =${Green_font_prefix}Arch${Font_color_suffix} : $arch ($lbit Bit)
   =${Green_font_prefix}Kernel${Font_color_suffix} : $kern
   =${Green_font_prefix}BBR${Font_color_suffix} : $bbr
-  =============== System Information ===================
+  ==================================================
   ${Green_font_prefix}1.${Font_color_suffix} 安装 软件
   ${Green_font_prefix}2.${Font_color_suffix} 修改 密码
   ${Green_font_prefix}3.${Font_color_suffix} 查看 vps详细参数
