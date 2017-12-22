@@ -20,24 +20,29 @@ Separator_1="——————————————————————�
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
+
+ipconfig=$(curl ipinfo.io)
+
+echo "$(ipconfig)" > ipconfig.txt
+
 ip(){
-curl ipinfo.io | grep -Po '"ip":".*?"' | grep -Po '\d+'
+ grep -Po '"ip":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 city(){
-curl ipinfo.io | grep -Po '"city":".*?"' | grep -Po '\d+'
+ grep -Po '"city":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 country(){
-curl ipinfo.io | grep -Po '"country":".*?"' | grep -Po '\d+'
+ grep -Po '"country":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 loc(){
-curl ipinfo.io | grep -Po '"loc":".*?"' | grep -Po '\d+'
+grep -Po '"loc":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 org(){
-curl ipinfo.io | grep -Po '"org":".*?"' | grep -Po '\d+'
+ grep -Po '"org":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 
