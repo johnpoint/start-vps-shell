@@ -22,23 +22,23 @@ check_root(){
 }
 
 ip(){
-curl -s 'ipinfo.io' grep -Po '"ip":".*?"' | grep -Po '\d+'
+curl -s 'ipinfo.io' | grep -Po '"ip":".*?"' | grep -Po '\d+'
 }
 
 city(){
-curl -s 'ipinfo.io' grep -Po '"city":".*?"' | grep -Po '\d+' ipconfig.txt
+curl -s 'ipinfo.io' | grep -Po '"city":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 country(){
-curl -s 'ipinfo.io' grep -Po '"country":".*?"' | grep -Po '\d+' ipconfig.txt
+curl -s 'ipinfo.io' | grep -Po '"country":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 loc(){
-curl -s 'ipinfo.io' grep -Po '"loc":".*?"' | grep -Po '\d+' ipconfig.txt
+curl -s 'ipinfo.io' | grep -Po '"loc":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 org(){
-curl -s 'ipinfo.io' grep -Po '"org":".*?"' | grep -Po '\d+' ipconfig.txt
+curl -s 'ipinfo.io' | grep -Po '"org":".*?"' | grep -Po '\d+' ipconfig.txt
 }
 
 
