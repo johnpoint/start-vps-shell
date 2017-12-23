@@ -1,4 +1,4 @@
->本文最后更新于 2017-12-20 11:18 
+>本文最后更新于 2017-12-23 14:44
 >本文可能有些内容已失效，请与作者联系
 >>[telegram](https://t.me/johnpoint)
 
@@ -69,44 +69,24 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - GoFlyway （新的代理软件）来自：[toyo](https://doub.io)
 - 『原创』ExpressBot （telegram查询快递bot-benny出品）
 - bbr （秋水逸冰一键安装bbr脚本）
+- TODO: rss_bot安装
 
 ## 功能二：系统相关操作 ##
 
 - 修改密码 ~~老是觉得有点多此一举~~
 - 『原创』修改登录方式为密匙登录
 - 查看vps详细参数 （来自：oooldking和teddysun）
+- 『原创』查询外网ip及相关信息
 
 ## 功能三：脚本自动更新 ##
 
 代码来自toyo大佬的[博客](https://doub.io)
 
-
-## 项目结构树 ##
-
-```
-start-vps-shell
-    │
-    ├── shell
-    │     ├── EFB.sh
-    │     ├── install.sh (已弃用，留作备份)
-    │     ├── ssh_key.sh(已弃用，留作备份)
-    │     ├── sync.sh
-    │     ├── v2ray.sh
-    │     ├── wordpress.sh
-    │     ├── superbench.sh
-    │
-    │
-    ├── start.sh
-    ├── re-start.sh
-    ├── README.md
-    ├── LICENSE
-```
-
 # TODO #
 
 - [x] 完善ip检测
 - [x] 整理re-po
-- [x] 增加 v2ray 安装
+- [x] ~~增加 v2ray 安装~~
 - [x] 增加VPS具体参数检测 - superbech.sh
 - [ ] 添加检查ssh日志功能
 - [x] 添加检查bbr是否安装功能
@@ -114,6 +94,9 @@ start-vps-shell
 - [x] 增加检测ip地址
 - [ ] 添加软件重复安装判定
 - [x] 菜单美化
+- [ ] 配置文件生成
+- [ ] 完善v2ray安装
+- [ ] 安装rss_bot
 
 # 总结 #
 
