@@ -1,0 +1,36 @@
+"ipconfig":
+{
+"ip": "127.0.0.1",
+"city": "beijing",
+"region": ""
+"country": "CN",
+"loc": "none",
+"org": "org"
+},
+
+"Basic_Packages"
+{
+"curl": "1",
+"wget": "1",
+"unzip": "1",
+"ntp": "1",
+"ntpdate": "1",
+"lrzsz": "1",
+"git": "1",
+"screen": "1"
+},
+
+"apt":
+{
+"build-essential": "1",
+"python-dev": "1",
+"python-pip": "1",
+"libssl-dev": "1",
+"libcurl4-openssl-dev": "1"
+},
+
+"yum":
+{
+"epel-release": "1",
+"python-pip": "1"
+}

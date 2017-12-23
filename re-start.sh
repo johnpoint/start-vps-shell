@@ -43,4 +43,4 @@ fi
  
  echo '正在获取脚本'
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
-chmod +x start.sh && ./start.sh
+./start.sh
