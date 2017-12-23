@@ -106,7 +106,7 @@ start-vps-shell
 
 - [x] 完善ip检测
 - [x] 整理re-po
-- [ ] 增加 v2ray 安装
+- [x] 增加 v2ray 安装
 - [x] 增加VPS具体参数检测 - superbech.sh
 - [ ] 添加检查ssh日志功能
 - [x] 添加检查bbr是否安装功能
