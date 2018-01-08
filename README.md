@@ -73,7 +73,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 ## 功能二：系统相关操作 ##
 
-- 修改密码 ~~老是觉得有点多此一举~~
+- ~~修改密码~~
 - 『原创』修改登录方式为密匙登录
 - 查看vps详细参数 （来自：oooldking和teddysun）
 - 『原创』查询外网ip及相关信息
@@ -94,9 +94,10 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [x] 增加检测ip地址
 - [ ] 添加软件重复安装判定
 - [x] 菜单美化
-- [ ] 配置文件生成
 - [ ] 完善v2ray安装
 - [ ] 安装rss_bot
+- [ ] centos安装jq解释器
+- [x] 调整脚本菜单排序
 
 # 总结 #
 

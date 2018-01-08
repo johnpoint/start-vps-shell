@@ -4,12 +4,12 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.0.1
+#	Version: 1.2.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #=================================================
 
-sh_ver=1.0.1
+sh_ver="1.2.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -67,16 +67,14 @@ fi
  echo -e "${Info} done"
  }
  
- 
- 
- if [[ "${action}" == "clearall" ]]; then
-	Clear_transfer_all
-else
-	echo -e "  VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+	echo -e "  wordpress一键安装脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
+ {Tip} 建议在screen环境中安装lnmp！ 
   ${Green_font_prefix}1.${Font_color_suffix} 安装 lnmp
   ${Green_font_prefix}2.${Font_color_suffix} 管理 虚拟主机
   ${Green_font_prefix}3.${Font_color_suffix} 安装 wordpress
+  ————————————————
+  ${Green_font_prefix}4.${Font_color_suffix} 一键安装
  "
 	echo && stty erase '^H' && read -p "请输入数字 [1-3]：" num
 case "$num" in
@@ -87,6 +85,11 @@ case "$num" in
 	Add_vhost
 	;;
 	3)
+	Install_wordpress
+	;;
+	4)
+	Install_lnmp
+	Add_vhost
 	Install_wordpress
 	;;
 	*)

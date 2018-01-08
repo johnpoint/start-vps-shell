@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.1
+#	Version: 0.0.3
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.0.1"
+sh_ver="0.0.3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -84,12 +84,9 @@ cd /home/rssbot
  ./rssbot rss.json $apikey &
 }
 
-
-
-
 echo -e "  rss_bot ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
-  
+  ${Tip}建议在screen环境中运行此脚本
   ${Green_font_prefix}1.${Font_color_suffix} 安装 rss bot
   ${Green_font_prefix}2.${Font_color_suffix} 卸载 rss bot
    ——————————————————————
