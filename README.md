@@ -1,8 +1,6 @@
->本文最后更新于 2017-12-23 14:44
+>本文最后更新于 2018-01-09 21:50
 >本文可能有些内容已失效，请与作者联系
 >>[telegram](https://t.me/johnpoint)
-
-本作品采用[知识共享署名-相同方式共享 4.0 国际许可协议](http://creativecommons.org/licenses/by-sa/4.0/)进行许可。
 
 # 前言 #
 
@@ -56,6 +54,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - lrzsz  （Xshell 转机神器）
 - git （这个应该不用说了）
 - unzip （解压缩）
+- jq解释器
 
 ### 安装软件 ###
 
@@ -80,7 +79,13 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 ## 功能三：脚本自动更新 ##
 
-代码来自toyo大佬的[博客](https://doub.io)
+代码来自toyo的[博客](https://doub.io)
+
+# 版本号说明 #
+
+脚本采用**X.Y.Z-W**格式命名版本
+
+含义 **主版本 . 添加小功能 . 修复bug - beta版**
 
 # TODO #
 
@@ -95,7 +100,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [ ] 添加软件重复安装判定
 - [x] 菜单美化
 - [ ] 完善v2ray安装
-- [ ] 安装rss_bot
+- [x] 安装rss_bot
 - [ ] centos安装jq解释器
 - [x] 调整脚本菜单排序
 

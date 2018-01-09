@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.8.1
+#	Version: 2.0.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="8.8.1"
+sh_ver="2.0.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -454,7 +454,7 @@ echo && echo -e "  主菜单 > 更改系统为密钥登陆
   ---- johnpoint ----
   
   ================= IP Information =====================
-  =${Green_font_prefix}$ip${Font_color_suffix}
+  =ip地址：${Green_font_prefix}$ip${Font_color_suffix}
   =${Green_font_prefix}位置：${Font_color_suffix}$country $region $city 
   =${Green_font_prefix}经纬：${Font_color_suffix}$loc
   =${Green_font_prefix}组织：${Font_color_suffix}$org
