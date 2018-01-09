@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.7.1-6
+#	Version: 8.8.0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="8.7.1-6"
+sh_ver="8.8.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -105,6 +105,7 @@ ${Green_font_prefix}* 重整菜单结构${Font_color_suffix}
 ${Green_font_prefix}* 增加 RSS Bot 安装${Font_color_suffix}
 ${Green_font_prefix}* 改善界面${Font_color_suffix}
 ${Green_font_prefix}* 精简多余功能${Font_color_suffix}
+${Green_font_prefix}* 修复很多bug${Font_color_suffix}
 "
 }
 
@@ -126,7 +127,9 @@ Update_shell(){
 				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
 			fi
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
-			chmod +x start.sh
+			View_updatelog
+            chmod +x start.sh
+			./start.sh
 		else
 			echo && echo "	已取消..." && echo
 		fi
@@ -343,6 +346,11 @@ Bash_bench(){
 vi /etc/ssh/sshd_config
  restart_sshd
  }
+ 
+ Install_rss(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
+ ./rssbot.sh
+}
  
   #Install_soft
 Install_soft(){
