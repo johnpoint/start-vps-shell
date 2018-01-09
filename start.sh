@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 8.7.1-5
+#	Version: 8.7.1-6
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="8.7.1-5"
+sh_ver="8.7.1-6"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -376,7 +376,7 @@ echo && echo -e "  主菜单 > 安装软件
 	elif [[ ${install_num} == "5" ]]; then
 		Install_EFB
 	elif [[ ${install_num} == "6" ]]; then
-		
+		Install_rss
 	elif [[ ${install_num} == "7" ]]; then
 		Install_wordpress
 	elif [[ ${install_num} == "8" ]]; then
