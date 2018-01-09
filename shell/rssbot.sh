@@ -62,7 +62,12 @@ wget https://github.com/iovxw/rssbot/releases/download/v1.4.1-limited/rssbot-v1.
 unzip rssbot-v1.4.1-limited-linux.zip
 rm -rf rssbot-v1.4.1-limited-linux.zip
  echo && stty erase '^H' && read -p "请输入bot api key：" apikey
- ./rssbot rss.json $apikey &
+ touch rss_config.json
+ echo "key = $apikey"
+ wget https://github.com/johnpoint/start-vps-shell/raw/master/shell/rssbot.service
+ cp rssbot.service /lib/systemd/system/rssbot.service
+ systemctl daemon-reload
+systemctl enable rssbot.service
 }
 
 Uninstall(){
@@ -73,6 +78,10 @@ echo "确定要 卸载 rss_bot ？[y/N]" && echo
 	Stop
     cd /
     rm -rf /home/rssbot
+    systemctl stop rssbot.service
+systemctl disable rssbot.service
+rm /lib/systemd/system/rssbot.service
+systemctl daemon-reload
 	echo -e "${Tip} 卸载完成~"
 	else
 	echo -e "${Info} 卸载已取消...."
@@ -80,8 +89,11 @@ fi
 }
 
 Start(){
-cd /home/rssbot
- ./rssbot rss.json $apikey &
+  systemctl start rssbot.service
+}
+
+Stop(){
+  systemctl stop rssbot.service
 }
 
 echo -e "  rss_bot ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
