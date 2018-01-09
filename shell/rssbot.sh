@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.3
+#	Version: 0.0.4-1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.0.3"
+sh_ver="0.0.4-1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -62,12 +62,25 @@ wget https://github.com/iovxw/rssbot/releases/download/v1.4.1-limited/rssbot-v1.
 unzip rssbot-v1.4.1-limited-linux.zip
 rm -rf rssbot-v1.4.1-limited-linux.zip
  echo && stty erase '^H' && read -p "请输入bot api key：" apikey
- touch rss_config.txt
- echo "key = $apikey" > rss_config.txt
- wget https://github.com/johnpoint/start-vps-shell/raw/master/shell/rssbot.service
- cp rssbot.service /lib/systemd/system/rssbot.service
- systemctl daemon-reload
- systemctl enable rssbot.service
+touch rssbot_config.json
+echo "
+{
+"key" = "$apikey"
+}
+" > rss_config.json
+touch rssbotactive.sh
+echo "
+#!/usr/bin/env bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+
+cd ~
+./rssbot.sh s
+" > rssbotactive.sh
+echo "*/1 * * * * bash /home/rssbot/rssbotactive.sh" >> /var/spool/cron/root
+ echo -e "${Tip} 服务端部署完成~"
+ cd ~
+ ./rssbot.sh
 }
 
 Uninstall(){
@@ -78,24 +91,29 @@ echo "确定要 卸载 rss_bot ？[y/N]" && echo
 	Stop
     cd /
     rm -rf /home/rssbot
-    systemctl stop rssbot.service
-    systemctl disable rssbot.service
-   rm /lib/systemd/system/rssbot.service
-   systemctl daemon-reload
+
 	echo -e "${Tip} 卸载完成~"
 	else
 	echo -e "${Info} 卸载已取消...."
 fi
 }
 
+key(){
+cat rss_config.json | jq '.key' | sed 's/\"//g'
+}
+
 Start(){
-  systemctl start rssbot.service
+key=$(key)
+ cd /home/rssbot
+  ./rssbot rss.json $key
 }
 
 Stop(){
-  systemctl stop rssbot.service
+  exit 1
 }
 
+
+menu(){
 echo -e "  rss_bot ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
   ${Tip}建议在screen环境中运行此脚本
@@ -129,3 +147,15 @@ case "$num" in
 	;;
  esac
  fi
+ }
+ 
+action=$1
+if [[ ! -z $action ]]; then
+	if [[ $action = "s" ]]; then
+		Start
+	else
+	echo "正常打开脚本"
+	menu
+else
+	menu
+fi
