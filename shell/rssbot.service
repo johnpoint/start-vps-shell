@@ -3,8 +3,8 @@ Description=A Telegram Bot for subscribe to rss
 After=network.target network-online.target nss-lookup.target
 
 [Service]
-EnvironmentFile=/root/rss_config.json
-ExecStart=/bin/sh /home/rssbot rss.json $key 
+EnvironmentFile=/root/rss_config.txt
+ExecStart=./ /home/rssbot rss.json $key 
 Restart=always
 Type=simple
 
