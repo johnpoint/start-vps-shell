@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.0
+#	Version: 2.0.1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.0"
+sh_ver="2.0.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -47,7 +47,6 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     echo -e "${Error}无法识别~"
     exit 0
 fi
-
 
 config=$( curl -s ipinfo.io )
 touch ip.json
@@ -138,7 +137,6 @@ org=$(org)
 region=${region}
 rm -rf ip.json
 
-
 #Install_screen
  Install_screen(){
  echo -e "${Info} 正在安装screen..."
@@ -146,6 +144,7 @@ rm -rf ip.json
  ${PM} install screen -y
  echo -e "${Tip} 安装完成！"
  }
+ 
 #Install_lrzsz
  Install_lrzsz(){
  echo -e "${Info} 正在安装lrzsz..."
@@ -153,6 +152,7 @@ rm -rf ip.json
  ${PM} install lrzsz -y
  echo -e "${Tip} 安装完成！"
  }
+ 
  #Install_git
  Install_git(){
  echo -e "${Info} 正在安装git..."
@@ -160,6 +160,7 @@ rm -rf ip.json
  ${PM} install git -y
  echo -e "${Tip} 安装完成！"
  }
+ 
  #Install_ssr
  Install_ssr(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
@@ -235,8 +236,9 @@ rm -rf ip.json
  if [[ ${PM} == "apt-get" ]]; then
  ${PM} install jq
  else
- echo -e "${Error} 暂未完成~"
- exit 0
+ wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ rpm -ivh epel-release-latest-7.noarch.rpm
+ ${PM} install--enablerepo=*epel* jq
  fi
 }
  
