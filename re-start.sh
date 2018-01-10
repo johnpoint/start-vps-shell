@@ -42,6 +42,16 @@ fi
  echo -e "${Tip} 安装完成！"
  
  echo '正在获取脚本'
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh
+ cd ~
+ git clone https://github.con/johnpoint/start-vps-shell.git
+ cd start-vps-shell
 chmod +x start.sh
+cd shell
+cd ~
+mkdir shell && cd shell
+ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
+  wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh
+   wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh 
+    wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && 
 ./start.sh

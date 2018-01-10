@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.1
+#	Version: 2.0.1:local
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.1"
+sh_ver="2.0.1:local"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -109,9 +109,11 @@ Update_shell(){
 		if [[ ${yn} == [Yy] ]]; then
 			cd "${file}"
 			if [[ $sh_new_type == "yun" ]]; then
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+				cd /root/start-vps-shell
+				git pull
 			else
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+				cd /root/start-vps-shell
+				git pull
 			fi
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x start.sh
@@ -163,18 +165,18 @@ rm -rf ip.json
  
  #Install_ssr
  Install_ssr(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
+
  }
 
  #Install_status
  Install_status(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
+
  bash status.sh s
  }
  
  #Install_sync
  Install_sync(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
+chmod +x sync.sh && ./sync.sh
  }
  
  #Install_ytb_dl
@@ -193,7 +195,7 @@ rm -rf ip.json
  
  #Install_EFB
  Install_EFB(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ chmod +x EFB.sh && ./EFB.sh
  }
  
  # TODO
@@ -204,17 +206,17 @@ rm -rf ip.json
  
  #Install_wordpress
  Install_wordpress(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
+chmod +x wordpress.sh && ./wordpress.sh
  }
  
  #Install_GoFlyway
  Install_GoFlyway(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
+
  }
  
  #Install_ExpressBot
  Install_ExpressBot(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
+./install.sh
  }
  
  #Install_bbr
@@ -224,7 +226,7 @@ rm -rf ip.json
  stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" YON
  [[ -z "${install_num}" ]] && echo "已取消..." && exit 1
 	if [[ ${YON} == "Y" ]]; then
-		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+		chmod +x bbr.sh && ./bbr.sh
 	elif [[ ${YON} == "N" ]]; then
 		exit 1
 		else
@@ -244,8 +246,8 @@ rm -rf ip.json
  
 #Bash_bench
 Bash_bench(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
- rm -rf superbench.sh
+
+
  echo -e "${Info} done"
 }
 
@@ -273,27 +275,25 @@ Bash_bench(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
  echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
 	if [[ ${ynn} == "Yy" ]]; then
-		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+		 mkdir ~/sshd_config
+		 cp /etc/ssh/sshd_config /root/sshd_config
+ 		echo '请寻找RSAAuthentication yes PubkeyAuthentication yes 如不为yes 则改为yes'
+ 		 echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynnn
+		if [[ ${ynnn} == "Yy" ]]; then
+			vi /etc/ssh/sshd_config
+ 			echo -e "${Tip} 正在重启ssh服务"
+			 restart_sshd
+			echo '请使用key登陆测试是否成功'
+		elif [[ ${ynnn} == "Nn" ]]; then
+			echo "已取消..." && exit 1
+			else
+	 	   echo "已取消..." && exit 1
+		fi
 	elif [[ ${ynn} == "Nn" ]]; then
 		echo "已取消..." && exit 1
 		else
 	    echo "已取消..." && exit 1
 	fi
- mkdir ~/sshd_config
- cp /etc/ssh/sshd_config /root/sshd_config
- echo '请寻找RSAAuthentication yes PubkeyAuthentication yes 如不为yes 则改为yes'
-  echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynnn
-	if [[ ${ynnn} == "Yy" ]]; then
-		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
-	elif [[ ${ynnn} == "Nn" ]]; then
-		echo "已取消..." && exit 1
-		else
-	    echo "已取消..." && exit 1
-	fi
- vi /etc/ssh/sshd_config
- echo -e "${Tip} 正在重启ssh服务"
- restart_sshd
- echo '请使用key登陆测试是否成功'
  }
  
  #Download_key
@@ -326,18 +326,17 @@ Bash_bench(){
  echo '将PasswordAuthentication 改为no 并去掉#号'
    echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
 	if [[ ${yynnn} == "Yy" ]]; then
-		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+		vi /etc/ssh/sshd_config
+ 		restart_sshd
 	elif [[ ${yynnn} == "Nn" ]]; then
 		echo "已取消..." && exit 1
 		else
 	    echo "已取消..." && exit 1
 	fi
-vi /etc/ssh/sshd_config
- restart_sshd
  }
  
  Install_rss(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
+chmod +x rssbot.sh
  ./rssbot.sh
 }
  
