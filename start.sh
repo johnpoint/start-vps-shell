@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.2-2
+#	Version: 2.0.2-3
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.2-2"
+sh_ver="2.0.2-3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -271,7 +271,7 @@ Bash_bench(){
  #modify_sshd_config
  modify_sshd_config(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
-&& echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
+echo && echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
 	if [[ ${ynn} == "Yy" ]]; then
 		 mkdir ~/sshd_config
 		 cp /etc/ssh/sshd_config /root/sshd_config
@@ -322,7 +322,7 @@ Bash_bench(){
  #close_passwd
  close_passwd(){
  echo '将PasswordAuthentication 改为no 并去掉#号'
-  && echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
+echo && echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
 	if [[ ${yynnn} == "Yy" ]]; then
 		vi /etc/ssh/sshd_config
  		restart_sshd
