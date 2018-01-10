@@ -40,12 +40,6 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 ~~我是不是很贴心呀~~
 
-### 开发版 ###
-
-```
-wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/dev/start.sh && chmod +x start.sh && ./start.sh
-```
-
 ## 使用 ##
 
 首先，当你执行了上面的命令后应该已经弹出了**主菜单**，然后就可以按照*中文提示*来进行操作了~  ╮( •́ω•̀ )╭

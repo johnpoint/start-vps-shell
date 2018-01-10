@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.2-5
+#	Version: 2.1.0-0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.2-5"
+sh_ver="2.1.0-0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -103,10 +103,10 @@ Update_shell(){
 	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
-		echo -e "发现新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ]，是否更新？[Y/n]"
+		echo -e "发现新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ]，是否更新？[y/n]"
 		stty erase '^H' && read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
-		if [[ ${yn} == [Yy] ]]; then
+		if [[ ${yn} == [yY] ]]; then
 			cd "${file}"
 			if [[ $sh_new_type == "yun" ]]; then
 				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
@@ -223,9 +223,9 @@ rm -rf ip.json
  " && echo
  stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" YON
  [[ -z "${install_num}" ]] && echo "已取消..." && exit 1
-	if [[ ${YON} == "Y" ]]; then
+	if [[ ${YON} == "y" ]]; then
 		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
-	elif [[ ${YON} == "N" ]]; then
+	elif [[ ${YON} == "n" ]]; then
 		exit 1
 		else
 		echo -e "${Error} 请输入正确的选项" && exit 1
@@ -271,23 +271,23 @@ Bash_bench(){
  #modify_sshd_config
  modify_sshd_config(){
  echo && echo -e  "警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件" && echo 
-stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
-	if [[ ${ynn} == "Y" ]]; then
+stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
+	if [[ ${ynn} == "y" ]]; then
 		 mkdir ~/sshd_config
 		 cp /etc/ssh/sshd_config /root/sshd_config
  		echo && echo -e "请寻找RSAAuthentication yes PubkeyAuthentication yes 如不为yes 则改为yes" && echo
- 		 stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynnn
-		if [[ ${ynnn} == "Y" ]]; then
+ 		 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynnn
+		if [[ ${ynnn} == "y" ]]; then
 			vi /etc/ssh/sshd_config
  			echo -e "${Tip} 正在重启ssh服务"
 			 restart_sshd
 			echo '请使用key登陆测试是否成功'
-		elif [[ ${ynnn} == "N" ]]; then
+		elif [[ ${ynnn} == "n" ]]; then
 			echo "已取消..." && exit 1
 			else
 	 	   echo "已取消..." && exit 1
 		fi
-	elif [[ ${ynn} == "N" ]]; then
+	elif [[ ${ynn} == "n" ]]; then
 		echo "已取消..." && exit 1
 		else
 	    echo "已取消..." && exit 1
@@ -322,11 +322,11 @@ stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
  #close_passwd
  close_passwd(){
  echo && echo -e "将PasswordAuthentication 改为no 并去掉#号" && echo
-stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
-	if [[ ${yynnn} == "Y" ]]; then
+stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
+	if [[ ${yynnn} == "y" ]]; then
 		vi /etc/ssh/sshd_config
  		restart_sshd
-	elif [[ ${yynnn} == "N" ]]; then
+	elif [[ ${yynnn} == "n" ]]; then
 		echo "已取消..." && exit 1
 		else
 	    echo "已取消..." && exit 1
@@ -336,6 +336,23 @@ stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
  Install_rss(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
  ./rssbot.sh
+}
+
+Update_sys(){
+ echo && echo -e "即将更新系统中的包" && echo
+stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
+	if [[ ${yynnn} == "y" ]]; then
+		if [[ ${PM} == "yum" ]]; then
+ 		${PM} update -y
+ 		else
+ 		${PM} update
+ 		${PM} upgrade
+ 		fi
+	elif [[ ${yynnn} == "n" ]]; then
+		echo "已取消..." && exit 1
+		else
+	    echo "已取消..." && exit 1
+	fi
 }
  
   #Install_soft
@@ -418,6 +435,7 @@ echo && echo -e "  主菜单 > 安装依赖
 
 #Login_key
 Login_key(){
+Update_sys
 echo && echo -e "  主菜单 > 更改系统为密钥登陆
 
   ${Green_font_prefix}1.${Font_color_suffix} 安装 openssl
