@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.1-1
+#	Version: 2.0.2-1
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.1-1"
+sh_ver="2.0.2-1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -174,7 +174,7 @@ rm -rf ip.json
  
  #Install_sync
  Install_sync(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  
  #Install_ytb_dl
@@ -193,7 +193,7 @@ rm -rf ip.json
  
  #Install_EFB
  Install_EFB(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
  # TODO
@@ -204,17 +204,17 @@ rm -rf ip.json
  
  #Install_wordpress
  Install_wordpress(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
  }
  
  #Install_GoFlyway
  Install_GoFlyway(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
+ wget -N --no-check-certificate https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
  
  #Install_ExpressBot
  Install_ExpressBot(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
+ wget -N --no-check-certificate https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
  }
  
  #Install_bbr
