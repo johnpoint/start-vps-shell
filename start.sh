@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.0.1-1
+#	Version: 2.0.2-3
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.1-1"
+sh_ver="2.0.2-3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -99,8 +99,8 @@ get_opsy() {
 #Update_shell
 Update_shell(){
 	echo -e "当前版本为 [ ${Green_font_prefix}${sh_ver}${Font_color_suffix} ]，开始检测最新版本..."
-	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
-	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/dev/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
+	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/dev/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "发现新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ]，是否更新？[Y/n]"
@@ -109,9 +109,9 @@ Update_shell(){
 		if [[ ${yn} == [Yy] ]]; then
 			cd "${file}"
 			if [[ $sh_new_type == "yun" ]]; then
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/dev/start.sh && chmod +x start.sh
 			else
-				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/dev/start.sh && chmod +x start.sh
 			fi
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x start.sh
@@ -174,7 +174,7 @@ rm -rf ip.json
  
  #Install_sync
  Install_sync(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  
  #Install_ytb_dl
@@ -193,7 +193,7 @@ rm -rf ip.json
  
  #Install_EFB
  Install_EFB(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
  # TODO
@@ -204,17 +204,17 @@ rm -rf ip.json
  
  #Install_wordpress
  Install_wordpress(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
+ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
  }
  
  #Install_GoFlyway
  Install_GoFlyway(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
+ wget -N --no-check-certificate https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
  
  #Install_ExpressBot
  Install_ExpressBot(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
+ wget -N --no-check-certificate https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
  }
  
  #Install_bbr
@@ -271,7 +271,7 @@ Bash_bench(){
  #modify_sshd_config
  modify_sshd_config(){
  echo '警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件'
- echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
+echo && echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" ynn
 	if [[ ${ynn} == "Yy" ]]; then
 		 mkdir ~/sshd_config
 		 cp /etc/ssh/sshd_config /root/sshd_config
@@ -322,7 +322,7 @@ Bash_bench(){
  #close_passwd
  close_passwd(){
  echo '将PasswordAuthentication 改为no 并去掉#号'
-   echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
+echo && echo stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" yynnn
 	if [[ ${yynnn} == "Yy" ]]; then
 		vi /etc/ssh/sshd_config
  		restart_sshd
