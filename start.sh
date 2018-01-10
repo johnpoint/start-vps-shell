@@ -4,22 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-<<<<<<< HEAD
 #	Version: 2.0.1-1
-=======
-#	Version: 0.0.1-1:local
->>>>>>> refs/remotes/origin/local
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-<<<<<<< HEAD
 sh_ver="2.0.1-1"
-=======
-sh_ver="0.0.1-1:local"
->>>>>>> refs/remotes/origin/local
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -107,8 +99,8 @@ get_opsy() {
 #Update_shell
 Update_shell(){
 	echo -e "当前版本为 [ ${Green_font_prefix}${sh_ver}${Font_color_suffix} ]，开始检测最新版本..."
-	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/local/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
-	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/local/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="yun"
+	[[ -z ${sh_new_ver} ]] && sh_new_ver=$(wget --no-check-certificate -qO- "https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "发现新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ]，是否更新？[Y/n]"
@@ -117,13 +109,9 @@ Update_shell(){
 		if [[ ${yn} == [Yy] ]]; then
 			cd "${file}"
 			if [[ $sh_new_type == "yun" ]]; then
-				cd /root/start-vps-shell
-				git pull
-				./re-start.sh
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
 			else
-				cd /root/start-vps-shell
-				git pull
-				./re-start.sh
+				wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/start.sh && chmod +x start.sh
 			fi
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x start.sh
@@ -175,18 +163,18 @@ rm -rf ip.json
  
  #Install_ssr
  Install_ssr(){
-
+ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
 
  #Install_status
  Install_status(){
-
+ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
  
  #Install_sync
  Install_sync(){
-chmod +x sync.sh && ./sync.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  
  #Install_ytb_dl
@@ -205,7 +193,7 @@ chmod +x sync.sh && ./sync.sh
  
  #Install_EFB
  Install_EFB(){
- chmod +x EFB.sh && ./EFB.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
  # TODO
@@ -216,17 +204,17 @@ chmod +x sync.sh && ./sync.sh
  
  #Install_wordpress
  Install_wordpress(){
-chmod +x wordpress.sh && ./wordpress.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
  }
  
  #Install_GoFlyway
  Install_GoFlyway(){
-
+ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
  
  #Install_ExpressBot
  Install_ExpressBot(){
-./install.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/BennyThink/ExpressBot/master/install.sh && chmod +x install.sh && ./install.sh
  }
  
  #Install_bbr
@@ -236,7 +224,7 @@ chmod +x wordpress.sh && ./wordpress.sh
  stty erase '^H' && read -p "是否继续？（Y/N）（默认：取消）" YON
  [[ -z "${install_num}" ]] && echo "已取消..." && exit 1
 	if [[ ${YON} == "Y" ]]; then
-		chmod +x bbr.sh && ./bbr.sh
+		 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
 	elif [[ ${YON} == "N" ]]; then
 		exit 1
 		else
@@ -256,8 +244,8 @@ chmod +x wordpress.sh && ./wordpress.sh
  
 #Bash_bench
 Bash_bench(){
-
-
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
+ rm -rf superbench.sh
  echo -e "${Info} done"
 }
 
@@ -304,11 +292,7 @@ Bash_bench(){
 		else
 	    echo "已取消..." && exit 1
 	fi
-<<<<<<< HEAD
 }
-=======
- }
->>>>>>> refs/remotes/origin/local
  
  #Download_key
  Download_key(){
@@ -350,7 +334,7 @@ Bash_bench(){
  }
  
  Install_rss(){
-chmod +x rssbot.sh
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
  ./rssbot.sh
 }
  
