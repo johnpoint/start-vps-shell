@@ -18,6 +18,8 @@
 
 ## 获取 ##
 
+### 正式版 ###
+
 ```
 wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
 ```
@@ -28,7 +30,7 @@ wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/
 wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh
 ```
 
-### 特殊的 ###
+#### 特殊的 ####
 
 有些系统精简得太厉害，连wget都没有安装，用这个：
 
@@ -37,6 +39,12 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 ```
 
 ~~我是不是很贴心呀~~
+
+### 开发版 ###
+
+```
+wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/dev/start.sh && chmod +x start.sh && ./start.sh
+```
 
 ## 使用 ##
 
@@ -64,18 +72,18 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - sync （便利地建立私人云盘，大硬盘vps福利）
 - YouTube-dl （命令行下载YouTube视频）
 - EFB_bot （telegram-微信互联，慎用可能会造成微信网页版被封禁）
-- 『原创』WordPress （自助安装博客必备环境）
+- **『原创』**WordPress （自助安装博客必备环境）
 - GoFlyway （新的代理软件）来自：[toyo](https://doub.io)
-- 『原创』ExpressBot （telegram查询快递bot-benny出品）
+- **『原创』**ExpressBot （telegram查询快递bot-benny出品）
 - bbr （秋水逸冰一键安装bbr脚本）
 - TODO: rss_bot安装
 
 ## 功能二：系统相关操作 ##
 
 - ~~修改密码~~
-- 『原创』修改登录方式为密匙登录
+- **『原创』**修改登录方式为密匙登录
 - 查看vps详细参数 （来自：oooldking和teddysun）
-- 『原创』查询外网ip及相关信息
+- **『原创』**查询外网ip及相关信息
 
 ## 功能三：脚本自动更新 ##
 
@@ -83,9 +91,9 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 # 版本号说明 #
 
-脚本采用**X.Y.Z-W**格式命名版本
+脚本采用**X.Y.Z-W:T**格式命名版本
 
-含义 **主版本 . 添加小功能 . 修复bug - beta版**
+含义 **主版本 . 小功能 . 修复bug - beta版**
 
 # TODO #
 
