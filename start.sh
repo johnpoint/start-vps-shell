@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.2.0-5
+#	Version: 2.2.0-6
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.2.0-5"
+sh_ver="2.2.0-6"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -117,7 +117,6 @@ Update_shell(){
 			fi
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x start.sh
-			./start.sh
 		else
 			echo && echo "	已取消..." && echo
 		fi
@@ -139,7 +138,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 	elif [[ ${yynnn} == "n" ]]; then
 		echo "已取消..."
 		else
-	    echo "已取消..."=
+	    echo "已取消..."
 	fi
 }
 
@@ -162,10 +161,6 @@ org=$(org)
 region=$(region)
 time=$( date )
 rm -rf ip.json
-
-###############
-#		准备完成		#
-###############
 
 ############
 #		依赖		#
