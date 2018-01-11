@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.2.0-6
+#	Version: 2.2.0-7
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.2.0-6"
+sh_ver="2.2.0-7"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -77,7 +77,7 @@ cat ip.json | jq '.region' | sed 's/\"//g'
 }
 
 #check_bbr
-check_bbr(){
+Check_bbr(){
 check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	if [[ "${check_bbr_status_on}" = "bbr" ]]; then
 		# 检查是否启动BBR
@@ -148,7 +148,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 
 Update_shell
 Update_sys
-check_bbr
+Check_bbr
 opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
@@ -486,3 +486,4 @@ case "$num" in
 	;;
  esac
  fi
+ end;
