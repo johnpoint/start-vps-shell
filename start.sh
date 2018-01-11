@@ -220,7 +220,6 @@ fi
  
  #Install_EFB
  Install_EFB(){
- sh_name=EFB
  wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
