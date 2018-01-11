@@ -4,11 +4,11 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.2.0
+#	Version: 1.2.1
 #	Author: johnpoint
 #=================================================
 
-sh_ver="1.2.0"
+sh_ver="1.2.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -55,6 +55,7 @@ check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
 
+menu(){
 	echo -e "  sync一键管理脚本 ${Red_font_prefix}[v$sh_ver]
   ---- johnpoint ----
   ${Green_font_prefix}1.${Font_color_suffix} 安装 Resilio Sync
@@ -80,7 +81,7 @@ case "$num" in
 	echo -e "${Error} 请输入正确的数字 [1-2]"
 	;;
 esac
-fi
+}
 
 action=$1
 if [[ ! -z $action ]]; then
