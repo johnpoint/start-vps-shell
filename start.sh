@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.1.0-0
+#	Version: 2.2.0-0
 #	Blog: blog.lvcshu.club
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.1.0-0"
+sh_ver="2.2.0-0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -77,6 +77,7 @@ cat ip.json | jq '.region' | sed 's/\"//g'
 }
 
 #check_bbr
+check_bbr(){
 check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	if [[ "${check_bbr_status_on}" = "bbr" ]]; then
 		# 检查是否启动BBR
@@ -89,6 +90,7 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 		else
 		   bbr="BBR 未安装或未启动"
 	fi
+}
 
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
@@ -124,7 +126,30 @@ Update_shell(){
 	fi
 }
 
+Update_sys(){
+ echo && echo -e "即将更新系统中的包" && echo
+stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
+	if [[ ${yynnn} == "y" ]]; then
+		if [[ ${PM} == "yum" ]]; then
+ 		${PM} update -y
+ 		else
+ 		${PM} update
+ 		${PM} upgrade
+ 		fi
+	elif [[ ${yynnn} == "n" ]]; then
+		echo "已取消..." && exit 1
+		else
+	    echo "已取消..." && exit 1
+	fi
+}
+
+###############
+#		脚本执行		#
+###############
+
 Update_shell
+Update_sys
+check_bbr
 opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
@@ -136,30 +161,27 @@ loc=$(loc)
 org=$(org)
 region=${region}
 rm -rf ip.json
+###############
+#		准备完成		#
+###############
 
-#Install_screen
- Install_screen(){
- echo -e "${Info} 正在安装screen..."
- ${PM} update >/dev/null
- ${PM} install screen -y
- echo -e "${Tip} 安装完成！"
- }
+############
+#		依赖		#
+############
+
+Install_depend_now(){
+# ${PM} update >/dev/null
+ ${PM} install ${depend_name}
+if  [ ! -e '/usr/bin/${depend_name}' ]; then
+        echo -e "${Error}${depend_nane}未能成功安装，有可能是包名错误，请确认!"
+	else
+		echo -e "${Info} ${depend_name} 安装完成"
+fi
+}
  
-#Install_lrzsz
- Install_lrzsz(){
- echo -e "${Info} 正在安装lrzsz..."
- ${PM} update >/dev/null
- ${PM} install lrzsz -y
- echo -e "${Tip} 安装完成！"
- }
- 
- #Install_git
- Install_git(){
- echo -e "${Info} 正在安装git..."
- ${PM} update >/dev/null
- ${PM} install git -y
- echo -e "${Tip} 安装完成！"
- }
+ ############
+ #		软件		#
+############
  
  #Install_ssr
  Install_ssr(){
@@ -177,6 +199,11 @@ rm -rf ip.json
  wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  
+ Install_rss(){
+ wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
+ ./rssbot.sh
+}
+ 
  #Install_ytb_dl
  Install_ytb_dl(){
  cd ~
@@ -193,6 +220,7 @@ rm -rf ip.json
  
  #Install_EFB
  Install_EFB(){
+ sh_name=EFB
  wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
@@ -232,22 +260,16 @@ rm -rf ip.json
 	fi
  }
  
- Install_jq(){
- if [[ ${PM} == "apt-get" ]]; then
- ${PM} install jq
- else
- wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
- rpm -ivh epel-release-latest-7.noarch.rpm
- ${PM} install--enablerepo=*epel* jq
- fi
-}
- 
 #Bash_bench
 Bash_bench(){
  wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
  rm -rf superbench.sh
  echo -e "${Info} done"
 }
+
+##################
+#		更换密钥登录		#
+##################
 
 #install openssl
  Install_openssl(){
@@ -333,28 +355,10 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 	fi
  }
  
- Install_rss(){
- wget -N --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
- ./rssbot.sh
-}
+ ###############
+ #		交互界面		#
+###############
 
-Update_sys(){
- echo && echo -e "即将更新系统中的包" && echo
-stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
-	if [[ ${yynnn} == "y" ]]; then
-		if [[ ${PM} == "yum" ]]; then
- 		${PM} update -y
- 		else
- 		${PM} update
- 		${PM} upgrade
- 		fi
-	elif [[ ${yynnn} == "n" ]]; then
-		echo "已取消..." && exit 1
-		else
-	    echo "已取消..." && exit 1
-	fi
-}
- 
   #Install_soft
 Install_soft(){
 echo && echo -e "  主菜单 > 安装软件
@@ -405,37 +409,13 @@ echo && echo -e "  主菜单 > 安装软件
  
   #Install_depend
 Install_depend(){
-echo && echo -e "  主菜单 > 安装依赖
-
-  ${Green_font_prefix}1.${Font_color_suffix} 安装 screen
-  ${Green_font_prefix}2.${Font_color_suffix} 安装 lrzsz
-  ${Green_font_prefix}3.${Font_color_suffix} 安装 git
-  ${Green_font_prefix}4.${Font_color_suffix} 安装 jq解释器
-  ————————————————
-  ${Green_font_prefix}A.${Font_color_suffix} 以上全部安装
-  ————————————————" && echo
-	stty erase '^H' && read -p "(默认: 取消):" install_num
-	[[ -z "${install_num}" ]] && echo "已取消..." && exit 1
-	if [[ ${install_num} == "1" ]]; then
-		Install_screen
-	elif [[ ${install_num} == "2" ]]; then
-		Install_lrzsz
-	elif [[ ${install_num} == "3" ]]; then
-		Install_git
-	elif [[ ${install_num} == "4" ]]; then
-		Install_jq
-	elif [[ ${install_num} == "A" ]]; then
-		Install_screen
-		Install_lrzsz
-		Install_git
-	else
-		echo -e "${Error} 请输入正确的选项" && exit 1
-	fi
+echo -e "${Info} 请输入要安装的依赖名："
+read depend_name
+Install_depend_now
 }
 
 #Login_key
 Login_key(){
-Update_sys
 echo && echo -e "  主菜单 > 更改系统为密钥登陆
 
   ${Green_font_prefix}1.${Font_color_suffix} 安装 openssl
