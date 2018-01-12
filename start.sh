@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.2.0-9
+#	Version: 2.2.0-10
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,17 +12,23 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.2.0-9"
+sh_ver="2.2.0-10"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 Separator_1="——————————————————————————————"
 
-#check_root
+###############
+#		检查权限		#
+###############
+
 [[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 
-#check OS
+############
+#		检测		#
+############
+
 if [ -f /etc/redhat-release ]; then
     release="centos"
     PM='yum'
@@ -53,27 +59,27 @@ config=$( curl -s ipinfo.io )
 touch ip.json
 echo "$config" > ip.json
 
-ip(){
+Ip(){
 cat ip.json | jq '.ip' | sed 's/\"//g'
 }
 
-city(){
+City(){
 cat ip.json | jq '.city' | sed 's/\"//g'
 }
 
-country(){
+Country(){
 cat ip.json | jq '.country' | sed 's/\"//g'
 }
 
-loc(){
+Loc(){
 cat ip.json | jq '.loc' | sed 's/\"//g'
 }
 
-org(){
+Org(){
 cat ip.json | jq '.org' | sed 's/\"//g'
 }
 
-region(){
+Region(){
 cat ip.json | jq '.region' | sed 's/\"//g'
 }
 
@@ -154,12 +160,12 @@ opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
 kern=$( uname -r )
-ip=$(ip)
-city=$(city)
-country=$(country)
-loc=$(loc)
-org=$(org)
-region=$(region)
+ip=$(Ip)
+city=$(City)
+country=$(Country)
+loc=$(Loc)
+org=$(Org)
+region=$(Region)
 time=$( date )
 rm -rf ip.json
 
