@@ -373,7 +373,7 @@ echo && echo -e "  主菜单 > 安装软件
   ${Green_font_prefix}5.${Font_color_suffix} EFB Bot 服务端（限Ubuntu）
   ${Green_font_prefix}6.${Font_color_suffix} RSS Bot 服务端
   ————————————————
-  ${Green_font_prefix}7.${Font_color_suffix} wordpress
+  ${Green_font_prefix}7.${Font_color_suffix} 搭建网站服务
   ${Green_font_prefix}8.${Font_color_suffix} 逗比云监控
   ${Green_font_prefix}9.${Font_color_suffix} Sync
   ————————————————

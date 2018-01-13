@@ -1,4 +1,4 @@
->本文最后更新于 2018-01-09 21:50
+>本文最后更新于 2018-01-13 08:41
 >本文可能有些内容已失效，请与作者联系
 >>[telegram](https://t.me/johnpoint)
 
@@ -70,7 +70,8 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - GoFlyway （新的代理软件）来自：[toyo](https://doub.io)
 - **『原创』**ExpressBot （telegram查询快递bot-benny出品）
 - bbr （秋水逸冰一键安装bbr脚本）
-- TODO: rss_bot安装
+- **『原创』**rss_bot安装脚本
+- **『原创』**一键安装DirectoryLister脚本
 
 ## 功能二：系统相关操作 ##
 
@@ -81,7 +82,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 ## 功能三：脚本自动更新 ##
 
-代码来自toyo的[博客](https://doub.io)
+代码来自toyo的[博客](https://doub.io)（不明原因无法访问）
 
 # 版本号说明 #
 
@@ -105,6 +106,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [x] 安装rss_bot
 - [ ] centos安装jq解释器
 - [x] 调整脚本菜单排序
+- [x] 安装DirectoryLister
 
 # 总结 #
 
