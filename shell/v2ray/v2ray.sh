@@ -4,15 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.2
-#	Blog: blog.lvcshu.club
-#	Author: Kirito && 雨落无声'
-#    修改：johnpoint
+#	Version: 0.0.3
+#	Blog: johnpoint.github.io
+#	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.0.2"
+sh_ver="0.0.3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -86,17 +85,26 @@ Get_uuid(){
  fi 
  }
  
+ Get_ip(){
+  ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
+ if [[ "$IP" = "" ]]; then 
+ ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
+ fi 
+ }
+ 
  Start(){
+ echo -e "${Info} 正在开启v2ray"
 service v2ray start 
 }
 
 Stop(){
+ echo -e "${Info} 正在关闭v2ray"
 service v2ray stop
 }
 
 Restart(){
-service v2ray stop
-service v2ray start 
+Stop
+Start
 }
  
  Install_main(){
@@ -106,124 +114,307 @@ service v2ray start
  echo -e "${Tip} 安装完成~"
  }
  
- Set_config(){
- echo  "请明确知晓，以下填写内容全都必须填写，否则程序有可能启动失败"
- echo "请输入主端口"
- read port
- echo "请输入动态端口起点"
- read port1
- echo "请输入动态端口终点"
- read port2
- echo "请输入动态端口刷新时间"
- read refresh
- echo "同时开放端口数"
- read port_num
- email='123456789@qq.com'
+ Disable_iptables(){
+ iptables -P INPUT ACCEPT 
+ iptables -P FORWARD ACCEPT 
+ iptables -P OUTPUT ACCEPT 
+ iptables -F 
+}
+ 
+  Port_main(){
+ read -p "输入主要端口（默认：32000）:" port 
+ [ -z "$port" ] && port=32000 
  }
  
+ Http_set(){
+ read -p "是否启用HTTP伪装?（默认开启） [y/n]:" ifhttpheader 
+ [ -z "$ifhttpheader" ] && ifhttpheader='y' 
+ if [[ $ifhttpheader == 'y' ]];then 
+	 httpheader=', 
+ "streamSettings": { 
+ "network": "tcp", 
+ "tcpSettings": { 
+ "connectionReuse": true, 
+ "header": { 
+ "type": "http", 
+ "request": { 
+ "version": "1.1", 
+ "method": "GET", 
+ "path": ["/"], 
+ "headers": { 
+ "Host": ["www.baidu.com", "www.sogou.com/"], 
+ "User-Agent": [ 
+ "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36", 
+ "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46" 
+ ], 
+ "Accept-Encoding": ["gzip, deflate"], 
+ "Connection": ["keep-alive"], 
+ "Pragma": "no-cache" 
+ } 
+ }, 
+ "response": { 
+ "version": "1.1", 
+ "status": "200", 
+ "reason": "OK", 
+ "headers": { 
+ "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"], 
+ "Transfer-Encoding": ["chunked"], 
+ "Connection": ["keep-alive"], 
+ "Pragma": "no-cache" 
+ } 
+ } 
+ } 
+ } 
+ }' 
+ else 
+ httpheader='' 
+
+#mkcp
+ read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
+ [ -z "$ifmkcp" ] && ifmkcp='y' 
+ if [[ $ifmkcp == 'y' ]];then 
+ mkcp=', 
+ "streamSettings": { 
+ "network": "kcp" 
+ }' 
+ else 
+ mkcp='' 
+ fi 
+ fi 
+ }
+ 
+Move_port(){
+  read -p "是否启用动态端口?（默认开启） [y/n]:" ifdynamicport 
+ [ -z "$ifdynamicport" ] && ifdynamicport='y' 
+ if [[ $ifdynamicport == 'y' ]];then 
+  
+ read -p "输入数据端口起点（默认：32001）:" subport1 
+ [ -z "$subport1" ] && subport1=32000 
+  
+ read -p "输入数据端口终点（默认：32500）:" subport2 
+ [ -z "$subport2" ] && subport2=32500 
+  
+ read -p "输入每次开放端口数（默认：10）:" portnum 
+ [ -z "$portnum" ] && portnum=10 
+  
+ read -p "输入端口变更时间（单位：分钟）:" porttime 
+ [ -z "$porttime" ] && porttime=5 
+ dynamicport=" 
+ \"inboundDetour\": [ 
+ { 
+ \"protocol\": \"vmess\", 
+ \"port\": \"$subport1-$subport2\", 
+ \"tag\": \"detour\", 
+ \"settings\": {}, 
+ \"allocate\": { 
+ \"strategy\": \"random\", 
+ \"concurrency\": $portnum, 
+ \"refresh\": $porttime 
+ }${mkcp}${httpheader} 
+ } 
+ ], 
+ " 
+ else 
+ dynamicport='' 
+ fi 
+ }
+ 
+ Max_Cool(){
+  read -p "是否启用 Mux.Cool?（默认开启） [y/n]:" ifmux 
+ [ -z "$ifmux" ] && ifmux='y' 
+ if [[ $ifmux == 'y' ]];then 
+ mux=', 
+ "mux": { 
+ "enabled": true 
+ } 
+ ' 
+ else 
+ mux="" 
+ fi 
+ }
+ 
+ Client_proxy(){
+  while :; do echo 
+ echo '1. HTTP代理（默认）' 
+ echo '2. Socks代理' 
+ read -p "请选择客户端代理类型: " chooseproxytype 
+ [ -z "$chooseproxytype" ] && chooseproxytype=1 
+ if [[ ! $chooseproxytype =~ ^[1-2]$ ]]; then 
+ echo '输入错误，请输入正确的数字！' 
+ else 
+ break 
+ fi 
+ done 
+  
+ if [[ $chooseproxytype == 1 ]];then 
+ proxy='http' 
+ else 
+ proxy='socks' 
+ fi 
+ }
+ 
+ Set_config(){
+ echo  "请明确知晓，以下填写内容全都必须填写，否则程序有可能启动失败"
+ Port_main
+Http_set
+Move_port
+Max_Cool
+Client_proxy
+}
+ 
 Save_config(){
+Stop
 echo -e "${Tip}保存配置~"
 echo "
-{
-"inbound": {
-  "port": ${port},
-  "protocol": "vmess",
-  "settings": {
-    "clients": [ 
-      {
-        "id": "${uuid}",
-        "level": 1,
-        "alterId": 10,
-        "email": "${email}"
-      }
-    ],
-    "detour": {
-      "to": "detour"
-    }
-  }
-}
+ {"log" : { 
+ "access": "/var/log/v2ray/access.log", 
+ "error": "/var/log/v2ray/error.log", 
+ "loglevel": "warning" 
+ }, 
+ "inbound": { 
+ "port": $port, 
+ "protocol": "vmess", 
+ "settings": { 
+ "clients": [ 
+ { 
+ "id": "$uuid", 
+ "level": 1, 
+ "alterId": 100 
+ } 
+ ] 
+ }${mkcp}${httpheader} 
+ }, 
+ "outbound": { 
+ "protocol": "freedom", 
+ "settings": {} 
+ }, 
   
-  "outbound": {
-    "protocol": "freedom",
-    "settings": {}
-  }
+ ${dynamicport} 
   
-  {
-  "protocol": "vmess",
-  "port": "${port1}-${port2}", 
-  "tag": "detour", 
-  "settings": {
-    "default": {
-      "level": 1,
-      "alterId": 32
-    }
-  },
-  
-  "allocate": { 
-    "strategy": "random", 
-    "concurrency": ${port_num},
-    "refresh": ${refresh}
-  }
-}
-}
+ "outboundDetour": [ 
+ { 
+ "protocol": "blackhole", 
+ "settings": {}, 
+ "tag": "blocked" 
+ } 
+ ], 
+ "routing": { 
+ "strategy": "rules", 
+ "settings": { 
+ "rules": [ 
+ { 
+ "type": "field", 
+ "ip": [ 
+ "0.0.0.0/8", 
+ "10.0.0.0/8", 
+ "100.64.0.0/10", 
+ "127.0.0.0/8", 
+ "169.254.0.0/16", 
+ "172.16.0.0/12", 
+ "192.0.0.0/24", 
+ "192.0.2.0/24", 
+ "192.168.0.0/16", 
+ "198.18.0.0/15", 
+ "198.51.100.0/24", 
+ "203.0.113.0/24", 
+ "::1/128", 
+ "fc00::/7", 
+ "fe80::/10" 
+ ], 
+ "outboundTag": "blocked" 
+ } 
+ ] 
+ } 
+ } 
+ } 
 " > /etc/v2ray/config.json
 }
 
 User_config(){
 cd ~
 echo "
-{
-  "inbound": {
-    "port": 1080, 
-    "listen": "127.0.0.1",
-    "protocol": "socks",
-    "settings": {
-      "udp": true
-    }
-  },
-  "outbound": {
-    "protocol": "vmess",
-    "settings": {
-      "vnext": [{
-        "address": "${server}", 
-        "port": ${port}, 
-        "users": [{ "id": "${uuid}" }]
-      }]
-    }
-  },
-  "outboundDetour": [{
-    "protocol": "freedom",
-    "tag": "direct",
-    "settings": {}
-  }],
-  "routing": {
-    "strategy": "rules",
-    "settings": {
-      "domainStrategy": "IPOnDemand",
-      "rules": [{
-        "type": "field",
-        "ip": [
-          "0.0.0.0/8",
-          "10.0.0.0/8",
-          "100.64.0.0/10",
-          "127.0.0.0/8",
-          "169.254.0.0/16",
-          "172.16.0.0/12",
-          "192.0.0.0/24",
-          "192.0.2.0/24",
-          "192.168.0.0/16",
-          "198.18.0.0/15",
-          "198.51.100.0/24",
-          "203.0.113.0/24",
-          "::1/128",
-          "fc00::/7",
-          "fe80::/10"
-        ],
-        "outboundTag": "direct"
-      }]
-    }
-  }
-}
+ { 
+ "log": { 
+ "loglevel": "info" 
+ }, 
+ "inbound": { 
+ "port": 1080, 
+ "listen": "127.0.0.1", 
+ "protocol": "$proxy", 
+ "settings": { 
+ "auth": "noauth", 
+ "udp": true, 
+ "ip": "127.0.0.1" 
+ } 
+ }, 
+ "outbound": { 
+ "protocol": "vmess", 
+ "settings": { 
+ "vnext": [ 
+ { 
+ "address": "$ipc", 
+ "port": $port, 
+ "users": [ 
+ { 
+ "id": "$uuid", 
+ "alterId": 100 
+ } 
+ ] 
+ } 
+ ] 
+ }${mkcp}${httpheader}${mux} 
+ }, 
+ "outboundDetour": [ 
+ { 
+ "protocol": "freedom", 
+ "settings": {}, 
+ "tag": "direct" 
+ } 
+ ], 
+ "dns": { 
+ "servers": [ 
+ "8.8.8.8", 
+ "8.8.4.4", 
+ "localhost" 
+ ] 
+ }, 
+ "routing": { 
+ "strategy": "rules", 
+ "settings": { 
+ "rules": [ 
+ { 
+ "type": "chinasites", 
+ "outboundTag": "direct" 
+ }, 
+ { 
+ "type": "field", 
+ "ip": [ 
+ "0.0.0.0/8", 
+ "10.0.0.0/8", 
+ "100.64.0.0/10", 
+ "127.0.0.0/8", 
+ "169.254.0.0/16", 
+ "172.16.0.0/12", 
+ "192.0.0.0/24", 
+ "192.0.2.0/24", 
+ "192.168.0.0/16", 
+ "198.18.0.0/15", 
+ "198.51.100.0/24", 
+ "203.0.113.0/24", 
+ "::1/128", 
+ "fc00::/7", 
+ "fe80::/10" 
+ ], 
+ "outboundTag": "direct" 
+ }, 
+ { 
+ "type": "chinaip", 
+ "outboundTag": "direct" 
+ } 
+ ] 
+ } 
+ } 
+ } 
 " > /root/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
 echo "路径：/root/user_config.json"
@@ -237,5 +428,34 @@ Install_main
 Set_config
 Save_config
 User_config
+clear
 echo -e "${Info}配置程序执行完毕~"
+Start
 }
+
+echo "请选择
+～～～～～～～
+～1.安装v2ray～
+～2.卸载v2ray～
+～～～～～～～
+～3.启动v2ray～
+～4.停止v2ray～
+～5.重启v2ray～
+～～～～～～～
+"
+read mainset
+if [[ ${mainset} == '1' ]]; then
+	Install
+elif [[ ${mainset} == '2' ]]; then
+	
+elif [[ ${mainset} == '3' ]]; then
+	Start
+elif [[ ${mainset} == '4' ]]; then
+	Stop
+elif [[ ${mainset} == '5' ]]; then
+	Restart
+else
+	echo "输入不正确!"
+	exit 0
+fi
+	
