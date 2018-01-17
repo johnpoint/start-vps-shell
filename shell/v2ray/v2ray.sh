@@ -87,39 +87,11 @@ Start
  [ -z "$port" ] && port=32000 
  }
  
- Http_set(){
- read -p "是否启用HTTP伪装?（默认开启） [y/n]:" ifhttpheader 
- [ -z "$ifhttpheader" ] && ifhttpheader='y' 
- if [[ $ifhttpheader == 'y' ]];then 
-	 httpheader=', 
-    "streamSettings": {
-      "network": "tcp",
-      "tcpSettings": {
-        "header": {
-          "type": "http",
-          "request": {
-            "version": "1.1",
-            "method": "GET",
-            "path": ["/"],
-            "headers": {
-              "Host": ["www.cloudflare.com", "www.amazon.com"],
-              "User-Agent": [
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36",
-                        "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46"
-              ],
-              "Accept-Encoding": ["gzip, deflate"],
-              "Connection": ["keep-alive"],
-              "Pragma": "no-cache"
-            }
-          }
-        }
-      }
-    }'
- else 
- httpheader='' 
- fi 
- }
- 
+
+
+
+
+
 Move_port(){
   read -p "是否启用动态端口?（默认开启） [y/n]:" ifdynamicport 
  [ -z "$ifdynamicport" ] && ifdynamicport='y' 
@@ -203,67 +175,93 @@ Save_config(){
 Stop
 echo -e "${Tip}保存配置~"
 echo "
- {"log" : { 
- "access": "/var/log/v2ray/access.log", 
- "error": "/var/log/v2ray/error.log", 
- "loglevel": "warning" 
- }, 
- "inbound": { 
- "port": $port, 
- "protocol": "vmess", 
- "settings": { 
- "clients": [ 
- { 
- "id": "$uuid", 
- "level": 1, 
- "alterId": 100 
- } 
- ] 
- }${httpheader} 
- }, 
- "outbound": { 
- "protocol": "freedom", 
- "settings": {} 
- }, 
-  
- ${dynamicport} 
-  
- "outboundDetour": [ 
- { 
- "protocol": "blackhole", 
- "settings": {}, 
- "tag": "blocked" 
- } 
- ], 
- "routing": { 
- "strategy": "rules", 
- "settings": { 
- "rules": [ 
- { 
- "type": "field", 
- "ip": [ 
- "0.0.0.0/8", 
- "10.0.0.0/8", 
- "100.64.0.0/10", 
- "127.0.0.0/8", 
- "169.254.0.0/16", 
- "172.16.0.0/12", 
- "192.0.0.0/24", 
- "192.0.2.0/24", 
- "192.168.0.0/16", 
- "198.18.0.0/15", 
- "198.51.100.0/24", 
- "203.0.113.0/24", 
- "::1/128", 
- "fc00::/7", 
- "fe80::/10" 
- ], 
- "outboundTag": "blocked" 
- } 
- ] 
- } 
- } 
- } 
+ {
+    "log": {
+        "access": "/var/log/v2ray/access.log",
+        "error": "/var/log/v2ray/error.log",
+        "loglevel": "warning"
+    },
+    "inbound": {
+        "port": ${port},
+        "protocol": "vmess",
+        "settings": {
+            "clients": [
+                {
+                    "id": "${uuid}",
+                    "level": 1,
+                    "alterId": 100
+                }
+            ]
+        },
+        /////////////////////////////
+        "streamSettings": {
+            "network": "kcp"
+        },
+        /////////////////////////////
+        "detour": {
+            "to": "detour"
+        }
+    },
+    "outbound": {
+        "protocol": "freedom",
+        "settings": {}
+    },
+    "inboundDetour": [
+    /////////////////////
+        {
+            "protocol": "vmess",
+            "port": "${port1}-${port2}",
+            "tag": "detour",
+            "settings": {},
+            "allocate": {
+                "strategy": "random",
+                "concurrency": ${port_num},
+                "refresh": ${refresh}
+            },
+            ////////////////////
+            "streamSettings": {
+                "network": "kcp"
+            }
+            ////////////////////
+        }
+        ///////////////////////////
+    ],
+    "outboundDetour": [
+        {
+            "protocol": "blackhole",
+            "settings": {},
+            "tag": "blocked"
+        }
+    ],
+    "routing": {
+        "strategy": "rules",
+        "settings": {
+            "rules": [
+                {
+                    "type": "field",
+                    "ip": [
+                        "0.0.0.0/8",
+                        "10.0.0.0/8",
+                        "100.64.0.0/10",
+                        "127.0.0.0/8",
+                        "169.254.0.0/16",
+                        "172.16.0.0/12",
+                        "192.0.0.0/24",
+                        "192.0.2.0/24",
+                        "192.168.0.0/16",
+                        "198.18.0.0/15",
+                        "198.51.100.0/24",
+                        "203.0.113.0/24",
+                        "::1/128",
+                        "fc00::/7",
+                        "fe80::/10"
+                    ],
+                    "outboundTag": "blocked"
+                }
+            ]
+        }
+    }
+} 
 " > /etc/v2ray/config.json
 }
 
@@ -286,11 +284,11 @@ echo "
     "settings": {
       "vnext": [
         {
-          "address": "serveraddr.com",
-          "port": 80,
+          "address": "${ip}",
+          "port": ${port},
           "users": [
             {
-              "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+              "id": "${uuid}",
               "alterId": 64
             }
           ]
