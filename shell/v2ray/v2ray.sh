@@ -30,14 +30,9 @@ Disable_China(){
  #Check Root 
  [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; } 
   
-
-Get_uuid(){
- uuid=$(cat /proc/sys/kernel/random/uuid) 
- }
-  
  Install_Basic_Packages(){
  apt update
- apt install curl wget unzip ntp ntpdate -y 
+ apt install curl wget unzip ntp jq ntpdate -y 
   }
   
  Set_DNS(){
@@ -55,13 +50,6 @@ Get_uuid(){
  if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config; then 
  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config 
  setenforce 0 
- fi 
- }
- 
- Get_ip(){
-  ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1) 
- if [[ "$IP" = "" ]]; then 
- ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com) 
  fi 
  }
  
@@ -104,55 +92,31 @@ Start
  [ -z "$ifhttpheader" ] && ifhttpheader='y' 
  if [[ $ifhttpheader == 'y' ]];then 
 	 httpheader=', 
- "streamSettings": { 
- "network": "tcp", 
- "tcpSettings": { 
- "connectionReuse": true, 
- "header": { 
- "type": "http", 
- "request": { 
- "version": "1.1", 
- "method": "GET", 
- "path": ["/"], 
- "headers": { 
- "Host": ["www.baidu.com", "www.sogou.com/"], 
- "User-Agent": [ 
- "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36", 
- "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46" 
- ], 
- "Accept-Encoding": ["gzip, deflate"], 
- "Connection": ["keep-alive"], 
- "Pragma": "no-cache" 
- } 
- }, 
- "response": { 
- "version": "1.1", 
- "status": "200", 
- "reason": "OK", 
- "headers": { 
- "Content-Type": ["application/octet-stream", "application/x-msdownload", "text/html", "application/x-shockwave-flash"], 
- "Transfer-Encoding": ["chunked"], 
- "Connection": ["keep-alive"], 
- "Pragma": "no-cache" 
- } 
- } 
- } 
- } 
- }' 
+    "streamSettings": {
+      "network": "tcp",
+      "tcpSettings": {
+        "header": {
+          "type": "http",
+          "request": {
+            "version": "1.1",
+            "method": "GET",
+            "path": ["/"],
+            "headers": {
+              "Host": ["www.cloudflare.com", "www.amazon.com"],
+              "User-Agent": [
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36",
+                        "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_2 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A456 Safari/601.1.46"
+              ],
+              "Accept-Encoding": ["gzip, deflate"],
+              "Connection": ["keep-alive"],
+              "Pragma": "no-cache"
+            }
+          }
+        }
+      }
+    }'
  else 
  httpheader='' 
-
-#mkcp
- read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
- [ -z "$ifmkcp" ] && ifmkcp='y' 
- if [[ $ifmkcp == 'y' ]];then 
- mkcp=', 
- "streamSettings": { 
- "network": "kcp" 
- }' 
- else 
- mkcp='' 
- fi 
  fi 
  }
  
@@ -183,7 +147,7 @@ Move_port(){
  \"strategy\": \"random\", 
  \"concurrency\": $portnum, 
  \"refresh\": $porttime 
- }${mkcp}${httpheader} 
+ }${httpheader} 
  } 
  ], 
  " 
@@ -255,7 +219,7 @@ echo "
  "alterId": 100 
  } 
  ] 
- }${mkcp}${httpheader} 
+ }${httpheader} 
  }, 
  "outbound": { 
  "protocol": "freedom", 
@@ -307,54 +271,76 @@ User_config(){
 cd ~
 echo "
 {
+  "log": {
+    "loglevel": "warning"
+  },
   "inbound": {
-    "port": 1080, 
-    "listen": "127.0.0.1",
+    "port": 1080,
     "protocol": "socks",
     "settings": {
-      "udp": true
+      "auth": "noauth"
     }
   },
   "outbound": {
     "protocol": "vmess",
     "settings": {
-      "vnext": [{
-        "address": "${ipc}", 
-        "port": ${port}, 
-        "users": [{ "id": "${uuid}" }]
-      }]
-    }
+      "vnext": [
+        {
+          "address": "serveraddr.com",
+          "port": 80,
+          "users": [
+            {
+              "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+              "alterId": 64
+            }
+          ]
+        }
+      ]
+    },
+${mux}${httpheader}
   },
-  "outboundDetour": [{
-    "protocol": "freedom",
-    "tag": "direct",
-    "settings": {}
-  }],
+  "outboundDetour": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    }
+  ],
   "routing": {
     "strategy": "rules",
     "settings": {
-      "domainStrategy": "IPOnDemand",
-      "rules": [{
-        "type": "field",
-        "ip": [
-          "0.0.0.0/8",
-          "10.0.0.0/8",
-          "100.64.0.0/10",
-          "127.0.0.0/8",
-          "169.254.0.0/16",
-          "172.16.0.0/12",
-          "192.0.0.0/24",
-          "192.0.2.0/24",
-          "192.168.0.0/16",
-          "198.18.0.0/15",
-          "198.51.100.0/24",
-          "203.0.113.0/24",
-          "::1/128",
-          "fc00::/7",
-          "fe80::/10"
-        ],
-        "outboundTag": "direct"
-      }]
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "ip": [
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "100.64.0.0/10",
+            "127.0.0.0/8",
+            "169.254.0.0/16",
+            "172.16.0.0/12",
+            "192.0.0.0/24",
+            "192.0.2.0/24",
+            "192.168.0.0/16",
+            "198.18.0.0/15",
+            "198.51.100.0/24",
+            "203.0.113.0/24",
+            "::1/128",
+            "fc00::/7",
+            "fe80::/10"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "chinasites",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "chinaip",
+          "outboundTag": "direct"
+        }
+      ]
     }
   }
 }
@@ -369,6 +355,8 @@ Set_DNS
 Update_NTP_settings
 Install_main
 Set_config
+ip=$( curl -s ipinfo.io | jq '.ip' | sed 's/\"//g' )
+uuid=$(cat /proc/sys/kernel/random/uuid) 
 Save_config
 User_config
 clear
