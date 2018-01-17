@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.0.0
+#	Version: 1.1.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.0.0"
+sh_ver="1.1.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -54,6 +54,30 @@ Disable_China(){
  fi 
  }
  
+ 
+ Update_shell(){
+	echo -e "当前版本为 [ ${Green_font_prefix}${sh_ver}${Font_color_suffix} ]，开始检测最新版本..."
+	sh_new_ver=$(wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
+	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && exit 0
+	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
+		echo -e "发现新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ]，是否更新？[y/n]"
+		stty erase '^H' && read -p "(默认: y):" yn
+		[[ -z "${yn}" ]] && yn="y"
+		if [[ ${yn} == [yY] ]]; then
+			wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh
+			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
+            chmod +x v2ray.sh
+            ./v2ray.sh
+            exit
+		else
+			echo && echo "	已取消..." && echo
+		fi
+	else
+		echo -e "当前已是最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
+	fi
+}
+
+
  Start(){
  echo -e "${Info} 正在开启v2ray"
 service v2ray start 
@@ -221,7 +245,7 @@ Max_Cool
 Client_proxy
 }
  
- Config_Shadowsocks(){
+ Install_Shadowsocks(){
  Set_passwd
  Set_method
  Port_main
@@ -230,7 +254,7 @@ Client_proxy
  }
  
  View_config(){
-echo "TO DO"
+cat /etc/v2ray/user_config.json
  }
  
  Set_config_Shadowsocks(){
