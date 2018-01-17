@@ -3,15 +3,15 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 #=================================================
-#	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.1.1
+#	System Required: Ubuntu 14.04+
+#	Version: 0.1.2-q
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.1.1"
+sh_ver="0.1.2-1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -27,6 +27,7 @@ Disable_China(){
  exit 
  fi 
  }
+ 
  #Check Root 
  [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; } 
   
@@ -82,9 +83,52 @@ Start
  iptables -F 
 }
  
+ Set_type(){
+ echo "
+请选择服务类型：
+1.Shadowsocks
+2.Vmess"
+read type
+if [[ ${type} == '1' ]]; then
+	Install_Shadowsocks
+elif [[ ${type} == '2' ]]; then
+	Install
+else
+	echo "选择1或2"
+	exit 0
+fi
+}
+ 
+ Set_passwd(){
+ echo "设置密码"
+ read pw
+ }
+ 
+ Set_method(){
+ echo "选择加密方法
+1.aes-256-cfb
+2.aes-128-cfb
+3.chacha20
+4.chacha20-ietf
+"
+read setm
+if [[ ${setm} == '1' ]]; then
+	method='aes-256-cfb'
+elif [[ ${setm} == '2' ]]; then
+	method='aes-128-cfb'
+elif [[ ${setm} == '3' ]]; then
+	method='chacha20'
+elif [[ ${setm} == '4' ]]; then 
+	method='chacha20-ietf'
+else
+	echo "请输入正确选项!" 
+	Set_method
+fi
+} 
+ 
   Port_main(){
  read -p "输入主要端口（默认：32000）:" port 
- [ -z "$port" ] && port=32000 
+ [ -z "$port" ] && port=32000
  }
  
 Mkcp(){
@@ -177,9 +221,93 @@ Max_Cool
 Client_proxy
 }
  
+ Config_Shadowsocks(){
+ Set_passwd
+ Set_method
+ Port_main
+ Set_config_Shadowsocks
+ Start
+ }
+ 
+ View_config(){
+ config_ip=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.address' )
+ config_port=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.port' )
+ config_protocol=( cat /etc/v2ray/config.json | jq -r '.inbound|.protocol' )
+ config_uuid=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.users|.id' )
+ echo -e "
+IP地址：${config_ip}
+端口：${config_port}
+UUID：${config_uuid}
+协议：${comfig_protocol}
+"
+ }
+ 
+ Set_config_Shadowsocks(){
+ Stop
+ echo -e "${Info}正在保存配置~"
+ echo "
+ {
+    "log": {
+        "access": "/var/log/v2ray/access.log",
+        "error": "/var/log/v2ray/error.log",
+        "loglevel": "warning"
+    },
+    "inbound": {
+        "protocol": "shadowsocks",
+        "port": ${port},
+        "settings": {
+            "method": "${method}",
+            "password": "${pw}",
+            "level": 1
+        }
+    },
+    "outbound": {
+        "protocol": "freedom",
+        "settings": {}
+    },
+    "inboundDetour": [],
+    "outboundDetour": [
+        {
+            "protocol": "blackhole",
+            "settings": {},
+            "tag": "blocked"
+        }
+    ],
+    "routing": {
+        "strategy": "rules",
+        "settings": {
+            "rules": [
+                {
+                    "type": "field",
+                    "ip": [
+                        "0.0.0.0/8",
+                        "10.0.0.0/8",
+                        "100.64.0.0/10",
+                        "127.0.0.0/8",
+                        "169.254.0.0/16",
+                        "172.16.0.0/12",
+                        "192.0.0.0/24",
+                        "192.0.2.0/24",
+                        "192.168.0.0/16",
+                        "198.18.0.0/15",
+                        "198.51.100.0/24",
+                        "203.0.113.0/24",
+                        "::1/128",
+                        "fc00::/7",
+                        "fe80::/10"
+                    ],
+                    "outboundTag": "blocked"
+                }
+            ]
+        }
+    }
+} 
+" > /etc/v2ray/config.json
+}
+ 
 Save_config(){
 Stop
-echo -e "${Tip}保存配置~"
+echo -e "${Info}保存配置~"
 echo "
  {
     "log": {
@@ -355,7 +483,7 @@ ${mux}
         }
     }
 }
-" > /root/user_config.json
+" > /etc/v2ray/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
 echo "路径：/root/user_config.json"
 }
@@ -366,7 +494,7 @@ Set_DNS
 Update_NTP_settings
 Install_main
 Set_config
-ip=$( curl -s ipinfo.io | jq '.ip' | sed 's/\"//g' )
+ip=$( curl -s ipinfo.io | jq -r '.ip' )
 uuid=$(cat /proc/sys/kernel/random/uuid) 
 Save_config
 User_config
@@ -375,26 +503,45 @@ echo -e "${Info}配置程序执行完毕~"
 Start
 }
 
-echo "
-v[${sh_ver}]
-请选择
-1.安装v2ray
-2.卸载v2ray
-3.启动v2ray
-4.停止v2ray
-5.重启v2ray
+clear
+echo "v2ray安装/管理脚本 [v${Green_font_prefix}${sh_ver}${Font_color_suffix}]
+———— Author:johnpoint ————
+
+  ${Green_font_prefix}1.${Font_color_suffix} 安装 v2ray
+  ${Green_font_prefix}2.${Font_color_suffix} 卸载 v2ray
+  ——————————————————————
+  ${Green_font_prefix}3.${Font_color_suffix} 修改 v2ray 用户设置
+  ${Green_font_prefix}4.${Font_color_suffix} 修改 v2ray 服务端设置
+  ${Green_font_prefix}5.${Font_color_suffix} 查看 v2ray 用户设置
+  ——————————————————————
+  ${Green_font_prefix}6.${Font_color_suffix} 启动 v2ray 
+  ${Green_font_prefix}7.${Font_color_suffix} 停止 v2ray 
+  ${Green_font_prefix}8.${Font_color_suffix} 重启 v2ray 
+  ${Green_font_prefix}9.${Font_color_suffix} 查看 v2ray 状态
+  ——————————————————————
+  ${Green_font_prefix}0.${Font_color_suffix} 更新 脚本
 "
 read mainset
 if [[ ${mainset} == '1' ]]; then
-	Install
+	Set_type
 elif [[ ${mainset} == '2' ]]; then
 	Uninstall
 elif [[ ${mainset} == '3' ]]; then
-	Start
+	Cg_user
 elif [[ ${mainset} == '4' ]]; then
-	Stop
+	Cg_service
 elif [[ ${mainset} == '5' ]]; then
+	View_config
+elif [[ ${mainset} == '6' ]]; then
+	Start
+elif [[ ${mainset} == '7' ]]; then
+	Stop
+elif [[ ${mainset} == '8' ]]; then
 	Restart
+elif [[ ${mainset} == '9' ]]; then
+	Status
+elif [[ ${mainset} == '0' ]]; then
+	Update_shell
 else
 	echo "输入不正确!"
 	exit 0
