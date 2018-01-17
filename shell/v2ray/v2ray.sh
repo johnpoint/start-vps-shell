@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.0.3
+#	Version: 0.1.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.0.3"
+sh_ver="0.1.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -87,7 +87,19 @@ Start
  [ -z "$port" ] && port=32000 
  }
  
-
+ 
+mkcp(){
+read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
+ [ -z "$ifmkcp" ] && ifmkcp='y' 
+ if [[ $ifmkcp == 'y' ]];then 
+ mkcp='
+         "streamSettings": {
+            "network": "kcp"
+        }'
+ else 
+ mkcp='' 
+ fi 
+ }
 
 
 
@@ -97,31 +109,28 @@ Move_port(){
  [ -z "$ifdynamicport" ] && ifdynamicport='y' 
  if [[ $ifdynamicport == 'y' ]];then 
   
- read -p "输入数据端口起点（默认：32001）:" subport1 
- [ -z "$subport1" ] && subport1=32000 
+ read -p "输入数据端口起点（默认：32001）:" port1 
+ [ -z "$port1" ] && port1=32000 
   
- read -p "输入数据端口终点（默认：32500）:" subport2 
- [ -z "$subport2" ] && subport2=32500 
+ read -p "输入数据端口终点（默认：32500）:" port2 
+ [ -z "$port2" ] && port2=32500 
   
- read -p "输入每次开放端口数（默认：10）:" portnum 
- [ -z "$portnum" ] && portnum=10 
+ read -p "输入每次开放端口数（默认：10）:" port_num 
+ [ -z "$port_num" ] && portnum=10 
   
- read -p "输入端口变更时间（单位：分钟）:" porttime 
- [ -z "$porttime" ] && porttime=5 
+ read -p "输入端口变更时间（单位：分钟）:" refresh 
+ [ -z "$refresh" ] && refresh=5 
  dynamicport=" 
- \"inboundDetour\": [ 
- { 
- \"protocol\": \"vmess\", 
- \"port\": \"$subport1-$subport2\", 
- \"tag\": \"detour\", 
- \"settings\": {}, 
- \"allocate\": { 
- \"strategy\": \"random\", 
- \"concurrency\": $portnum, 
- \"refresh\": $porttime 
- }${httpheader} 
- } 
- ], 
+        {
+            "protocol": "vmess",
+            "port": "${port1}-${port2}",
+            "tag": "detour",
+            "settings": {},
+            "allocate": {
+                "strategy": "random",
+                "concurrency": ${port_num},
+                "refresh": ${refresh}
+            },
  " 
  else 
  dynamicport='' 
@@ -132,10 +141,11 @@ Move_port(){
   read -p "是否启用 Mux.Cool?（默认开启） [y/n]:" ifmux 
  [ -z "$ifmux" ] && ifmux='y' 
  if [[ $ifmux == 'y' ]];then 
- mux=', 
- "mux": { 
- "enabled": true 
- } 
+ mux='
+        "mux": {
+            "enabled": true,
+            "concurrency": 8
+        } 
  ' 
  else 
  mux="" 
@@ -193,11 +203,7 @@ echo "
                 }
             ]
         },
-        /////////////////////////////
-        "streamSettings": {
-            "network": "kcp"
-        },
-        /////////////////////////////
+${mkcp},
         "detour": {
             "to": "detour"
         }
@@ -207,24 +213,9 @@ echo "
         "settings": {}
     },
     "inboundDetour": [
-    /////////////////////
-        {
-            "protocol": "vmess",
-            "port": "${port1}-${port2}",
-            "tag": "detour",
-            "settings": {},
-            "allocate": {
-                "strategy": "random",
-                "concurrency": ${port_num},
-                "refresh": ${refresh}
-            },
-            ////////////////////
-            "streamSettings": {
-                "network": "kcp"
-            }
-            ////////////////////
+${dynamicport}
+${mkcp}
         }
-        ///////////////////////////
     ],
     "outboundDetour": [
         {
@@ -268,79 +259,105 @@ echo "
 User_config(){
 cd ~
 echo "
-{
-  "log": {
-    "loglevel": "warning"
-  },
-  "inbound": {
-    "port": 1080,
-    "protocol": "socks",
-    "settings": {
-      "auth": "noauth"
-    }
-  },
-  "outbound": {
-    "protocol": "vmess",
-    "settings": {
-      "vnext": [
-        {
-          "address": "${ip}",
-          "port": ${port},
-          "users": [
-            {
-              "id": "${uuid}",
-              "alterId": 64
-            }
-          ]
-        }
-      ]
+      {
+    "log": {
+        "loglevel": "warning"
     },
-${mux}${httpheader}
-  },
-  "outboundDetour": [
-    {
-      "protocol": "freedom",
-      "settings": {},
-      "tag": "direct"
-    }
-  ],
-  "routing": {
-    "strategy": "rules",
-    "settings": {
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "type": "field",
-          "ip": [
-            "0.0.0.0/8",
-            "10.0.0.0/8",
-            "100.64.0.0/10",
-            "127.0.0.0/8",
-            "169.254.0.0/16",
-            "172.16.0.0/12",
-            "192.0.0.0/24",
-            "192.0.2.0/24",
-            "192.168.0.0/16",
-            "198.18.0.0/15",
-            "198.51.100.0/24",
-            "203.0.113.0/24",
-            "::1/128",
-            "fc00::/7",
-            "fe80::/10"
-          ],
-          "outboundTag": "direct"
-        },
-        {
-          "type": "chinasites",
-          "outboundTag": "direct"
-        },
-        {
-          "type": "chinaip",
-          "outboundTag": "direct"
+    "inbound": {
+        "listen": "127.0.0.1",
+        "port": 1080,
+        "protocol": "socks",
+        "settings": {
+            "auth": "noauth",
+            "udp": true,
+            "ip": "127.0.0.1"
         }
-      ]
+    },
+    "outbound": {
+        "protocol": "vmess",
+        "settings": {
+            "vnext": [
+                {
+                    "address": "${ip}",
+                    "port": ${port},
+                    "users": [
+                        {
+                            "id": "${uuid}",
+                            "level": 1,
+                            "alterId": 100
+                        }
+                    ]
+                }
+            ]
+        },
+${mkcp},
+${mux}
+    },
+    "outboundDetour": [
+        {
+            "protocol": "freedom",
+            "settings": {},
+            "tag": "direct"
+        }
+    ],
+    "routing": {
+        "strategy": "rules",
+        "settings": {
+            "rules": [
+                {
+                    "type": "field",
+                    "port": "54-79",
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "field",
+                    "port": "81-442",
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "field",
+                    "port": "444-65535",
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "field",
+                    "domain": [
+                        "gc.kis.scr.kaspersky-labs.com"
+                    ],
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "chinasites",
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "field",
+                    "ip": [
+                        "0.0.0.0/8",
+                        "10.0.0.0/8",
+                        "100.64.0.0/10",
+                        "127.0.0.0/8",
+                        "169.254.0.0/16",
+                        "172.16.0.0/12",
+                        "192.0.0.0/24",
+                        "192.0.2.0/24",
+                        "192.168.0.0/16",
+                        "198.18.0.0/15",
+                        "198.51.100.0/24",
+                        "203.0.113.0/24",
+                        "::1/128",
+                        "fc00::/7",
+                        "fe80::/10"
+                    ],
+                    "outboundTag": "direct"
+                },
+                {
+                    "type": "chinaip",
+                    "outboundTag": "direct"
+                }
+            ]
+        }
     }
-  }
 }
 " > /root/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
