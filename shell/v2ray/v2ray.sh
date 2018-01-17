@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.1.0
+#	Version: 1.1.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.1.0"
+sh_ver="1.1.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -64,7 +64,7 @@ Disable_China(){
 		stty erase '^H' && read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [yY] ]]; then
-			wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh
+			wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh"
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x v2ray.sh
             ./v2ray.sh
@@ -315,7 +315,7 @@ cat /etc/v2ray/user_config.json
                 }
             ]
         }
-    }
+   }
 } 
 " > /etc/v2ray/config.json
 }
