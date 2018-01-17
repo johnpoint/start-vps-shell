@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 0.1.0
+#	Version: 0.1.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.1.0"
+sh_ver="0.1.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -87,8 +87,7 @@ Start
  [ -z "$port" ] && port=32000 
  }
  
- 
-mkcp(){
+Mkcp(){
 read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
  [ -z "$ifmkcp" ] && ifmkcp='y' 
  if [[ $ifmkcp == 'y' ]];then 
@@ -100,9 +99,6 @@ read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp
  mkcp='' 
  fi 
  }
-
-
-
 
 Move_port(){
   read -p "是否启用动态端口?（默认开启） [y/n]:" ifdynamicport 
@@ -175,7 +171,7 @@ Move_port(){
  Set_config(){
  echo  "请明确知晓，以下填写内容全都必须填写，否则程序有可能启动失败"
  Port_main
-Http_set
+Mkcp
 Move_port
 Max_Cool
 Client_proxy
@@ -379,7 +375,9 @@ echo -e "${Info}配置程序执行完毕~"
 Start
 }
 
-echo "请选择
+echo "
+v[${sh_ver}]
+请选择
 1.安装v2ray
 2.卸载v2ray
 3.启动v2ray
