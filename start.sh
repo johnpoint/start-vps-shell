@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.3.0-1
+#	Version: 2.3.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.3.0-1"
+sh_ver="2.3.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -60,27 +60,27 @@ touch ip.json
 echo "$config" > ip.json
 
 Ip(){
-cat ip.json | jq '.ip' | sed 's/\"//g'
+cat ip.json | jq -r '.ip' 
 }
 
 City(){
-cat ip.json | jq '.city' | sed 's/\"//g'
+cat ip.json | jq -r '.city'
 }
 
 Country(){
-cat ip.json | jq '.country' | sed 's/\"//g'
+cat ip.json | jq -r '.country'
 }
 
 Loc(){
-cat ip.json | jq '.loc' | sed 's/\"//g'
+cat ip.json | jq -r '.loc'
 }
 
 Org(){
-cat ip.json | jq '.org' | sed 's/\"//g'
+cat ip.json | jq -r '.org'
 }
 
 Region(){
-cat ip.json | jq '.region' | sed 's/\"//g'
+cat ip.json | jq -r '.region'
 }
 
 #check_bbr
