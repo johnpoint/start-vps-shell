@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 0.1.2-q
+#	Version: 0.1.2-2
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="0.1.2-1"
+sh_ver="0.1.2-2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -230,10 +230,10 @@ Client_proxy
  }
  
  View_config(){
- config_ip=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.address' )
- config_port=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.port' )
- config_protocol=( cat /etc/v2ray/config.json | jq -r '.inbound|.protocol' )
- config_uuid=( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.users|.id' )
+ config_ip=$( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.address' )
+ config_port=$( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.port' )
+ config_protocol=$( cat /etc/v2ray/config.json | jq -r '.inbound|.protocol' )
+ config_uuid=$( cat /etc/v2ray/user_config.json | jq -r '.outbound|.settings|.vnext|.users|.id' )
  echo -e "
 IP地址：${config_ip}
 端口：${config_port}
