@@ -17,33 +17,6 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 Separator_1="——————————————————————————————"
-
-#check OS
-if [ -f /etc/redhat-release ]; then
-    release="centos"
-    PM='yum'
-elif cat /etc/issue | grep -Eqi "debian"; then
-    release="debian"
-    PM='apt-get'
-elif cat /etc/issue | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-    PM='apt-get'
-elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-    PM='yum'
-elif cat /proc/version | grep -Eqi "debian"; then
-    release="debian"
-    PM='apt-get'
-elif cat /proc/version | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-    PM='apt-get'
-elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-    PM='yum'
-else
-    echo -e "${Error}无法识别~"
-    exit 0
-fi
  
  #Disable China
 Disable_China(){
@@ -63,8 +36,8 @@ Get_uuid(){
  }
   
  Install_Basic_Packages(){
- ${PM} update
- ${PM} install curl wget unzip ntp ntpdate -y 
+ apt update
+ apt install curl wget unzip ntp ntpdate -y 
   }
   
  Set_DNS(){
@@ -246,7 +219,7 @@ Move_port(){
  fi 
  done 
   
- if [[ $chooseproxytype == 1 ]];then 
+ if [[ $chooseproxytype == 1 ]]; then 
  proxy='http' 
  else 
  proxy='socks' 
@@ -333,88 +306,58 @@ echo "
 User_config(){
 cd ~
 echo "
- { 
- "log": { 
- "loglevel": "info" 
- }, 
- "inbound": { 
- "port": 1080, 
- "listen": "127.0.0.1", 
- "protocol": "$proxy", 
- "settings": { 
- "auth": "noauth", 
- "udp": true, 
- "ip": "127.0.0.1" 
- } 
- }, 
- "outbound": { 
- "protocol": "vmess", 
- "settings": { 
- "vnext": [ 
- { 
- "address": "$ipc", 
- "port": $port, 
- "users": [ 
- { 
- "id": "$uuid", 
- "alterId": 100 
- } 
- ] 
- } 
- ] 
- }${mkcp}${httpheader}${mux} 
- }, 
- "outboundDetour": [ 
- { 
- "protocol": "freedom", 
- "settings": {}, 
- "tag": "direct" 
- } 
- ], 
- "dns": { 
- "servers": [ 
- "8.8.8.8", 
- "8.8.4.4", 
- "localhost" 
- ] 
- }, 
- "routing": { 
- "strategy": "rules", 
- "settings": { 
- "rules": [ 
- { 
- "type": "chinasites", 
- "outboundTag": "direct" 
- }, 
- { 
- "type": "field", 
- "ip": [ 
- "0.0.0.0/8", 
- "10.0.0.0/8", 
- "100.64.0.0/10", 
- "127.0.0.0/8", 
- "169.254.0.0/16", 
- "172.16.0.0/12", 
- "192.0.0.0/24", 
- "192.0.2.0/24", 
- "192.168.0.0/16", 
- "198.18.0.0/15", 
- "198.51.100.0/24", 
- "203.0.113.0/24", 
- "::1/128", 
- "fc00::/7", 
- "fe80::/10" 
- ], 
- "outboundTag": "direct" 
- }, 
- { 
- "type": "chinaip", 
- "outboundTag": "direct" 
- } 
- ] 
- } 
- } 
- } 
+{
+  "inbound": {
+    "port": 1080, 
+    "listen": "127.0.0.1",
+    "protocol": "socks",
+    "settings": {
+      "udp": true
+    }
+  },
+  "outbound": {
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [{
+        "address": "${ipc}", 
+        "port": ${port}, 
+        "users": [{ "id": "${uuid}" }]
+      }]
+    }
+  },
+  "outboundDetour": [{
+    "protocol": "freedom",
+    "tag": "direct",
+    "settings": {}
+  }],
+  "routing": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPOnDemand",
+      "rules": [{
+        "type": "field",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.0.2.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "198.51.100.0/24",
+          "203.0.113.0/24",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "outboundTag": "direct"
+      }]
+    }
+  }
+}
 " > /root/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
 echo "路径：/root/user_config.json"
@@ -434,20 +377,17 @@ Start
 }
 
 echo "请选择
-～～～～～～～
-～1.安装v2ray～
-～2.卸载v2ray～
-～～～～～～～
-～3.启动v2ray～
-～4.停止v2ray～
-～5.重启v2ray～
-～～～～～～～
+1.安装v2ray
+2.卸载v2ray
+3.启动v2ray
+4.停止v2ray
+5.重启v2ray
 "
 read mainset
 if [[ ${mainset} == '1' ]]; then
 	Install
 elif [[ ${mainset} == '2' ]]; then
-	
+	Uninstall
 elif [[ ${mainset} == '3' ]]; then
 	Start
 elif [[ ${mainset} == '4' ]]; then
@@ -458,4 +398,3 @@ else
 	echo "输入不正确!"
 	exit 0
 fi
-	
