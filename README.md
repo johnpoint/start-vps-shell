@@ -62,7 +62,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 - ssr (一款优秀的代理软件) 来自：[toyo](https://doub.io)
 - 逗比云监控 （多vps党必备）来自：[toyo](https://doub.io)
-- ~~v2ray （可定制化代理软件）~~[目前无法安装]
+- **『原创』**v2ray （可定制化代理软件）
 - sync （便利地建立私人云盘，大硬盘vps福利）
 - YouTube-dl （命令行下载YouTube视频）
 - EFB_bot （telegram-微信互联，慎用可能会造成微信网页版被封禁）
@@ -94,7 +94,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 - [x] 完善ip检测
 - [x] 整理re-po
-- [x] ~~增加 v2ray 安装~~
+- [x] 增加 v2ray 安装
 - [x] 增加VPS具体参数检测 - superbech.sh
 - [ ] 添加检查ssh日志功能
 - [x] 添加检查bbr是否安装功能
@@ -102,7 +102,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [x] 增加检测ip地址
 - [ ] 添加软件重复安装判定
 - [x] 菜单美化
-- [ ] 完善v2ray安装
+- [x] 完善v2ray安装
 - [x] 安装rss_bot
 - [ ] centos安装jq解释器
 - [x] 调整脚本菜单排序
