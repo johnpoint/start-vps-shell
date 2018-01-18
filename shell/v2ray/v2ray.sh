@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.3.1
+#	Version: 1.3.1-1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.3.1"
+sh_ver="1.3.1-1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -303,7 +303,7 @@ cat /etc/v2ray/user_config.json
  Set_config_Shadowsocks(){
  Stop
  echo -e "${Info}正在保存配置~"
- echo '
+ echo 
 {
   "inbound": {
     "port": ${port},
@@ -319,13 +319,13 @@ cat /etc/v2ray/user_config.json
     "settings": {}
   }
 }
-' > /etc/v2ray/config.json
+ > /etc/v2ray/config.json
 }
  
 Save_config(){
 Stop
 echo -e "${Info}保存配置~"
-echo '
+echo 
 {
   "log":{
     "loglevel": "${loglv}",
@@ -350,12 +350,12 @@ ${dynamicPort}
     "settings": {}
   }
 }
-' > /etc/v2ray/config.json
+ > /etc/v2ray/config.json
 }
 
 User_config(){
 cd ~
-echo '
+echo 
 {
   "log":{
     "loglevel": "warning",
@@ -409,14 +409,14 @@ echo '
       ]
     }${mux}
 }
-' > /etc/v2ray/user_config.json
+ > /etc/v2ray/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
 echo "路径：/etc/v2ray/user_config.json"
 }
 
 User_Shadowsocks(){
 Stop
-echo '
+echo 
 {
   "inbound": {
     "port": 1080,
@@ -440,7 +440,7 @@ echo '
     }
   }
 }
-' > /etc/v2ray/user_config.json
+ > /etc/v2ray/user_config.json
 echo -e "${Info} 完成~"
 }
 
