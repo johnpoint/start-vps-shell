@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.4.1
+#	Version: 1.4.2
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.4.1"
+sh_ver="1.4.2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -321,6 +321,7 @@ fi
  
  Install_socks(){
  Set_auth
+ Port_main
  Save_socks
  }
  
@@ -330,21 +331,26 @@ cat /etc/v2ray/user_config.json
  
  Save_socks(){
  Stop
+  echo -e "${Info}正在保存配置~"
  echo "
- {
+{
 	\"log\":{
     	\"loglevel\": \"${loglv}\",
     	\"access\": \"/var/log/v2ray/access.log\",
     	\"error\": \"/var/log/v2ray/error.log\"
   	},
   	\"inbound\": {
+     	 \"port\": ${port},
+   	   \"protocol\": \"socks\",
+       \"settings\": {
 		 \"auth\": \"${auth}\",
  		 \"accounts\": [
    	 {
       		\"user\": \"${username}\",
     		  \"pass\": \"${pw}\"
    	 }
-  ],
+  	],
+  }
   \"udp\": false,
   \"ip\": \"127.0.0.1\",
   \"timeout\": 0,
