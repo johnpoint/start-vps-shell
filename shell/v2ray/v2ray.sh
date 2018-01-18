@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.3.1-2
+#	Version: 1.3.1-3
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.3.1-2"
+sh_ver="1.3.1-3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -201,7 +201,8 @@ DynamicPort(){
   
  read -p "输入端口变更时间（单位：分钟）:" refresh 
  [ -z "$refresh" ] && refresh=5 
- dynamicport='
+
+ moveport='
    "inboundDetour":[
     {
       "protocol": "vmess",
@@ -220,15 +221,14 @@ DynamicPort(){
       }
     }
   ]
-},
- '
+},'
 detour='
 ,
       "detour": {        
         "to": "dynamicPort"   
       }'
  else 
- dynamicport='' 
+ moveport='' 
  detour=''
  fi 
  }
@@ -305,18 +305,18 @@ cat /etc/v2ray/user_config.json
  echo -e "${Info}正在保存配置~"
  echo "
 {
-  "inbound": {
-    "port": ${port},
-    "protocol": "shadowsocks",
-    "settings": {
-      "method": "${method}",
-      "ota": true,
-      "password": "${pw}"
+  \"inbound\": {
+    \"port\": ${port},
+    \"protocol\": \"shadowsocks\",
+    \"settings\": {
+      \"method\": \"${method}\",
+      \"ota\": true,
+      \"password\": \"${pw}\"
     }
   },
-  "outbound": {
-    "protocol": "freedom",  
-    "settings": {}
+  \"outbound\": {
+    \"protocol\": \"freedom\",  
+    \"settings\": {}
   }
 }
 " > /etc/v2ray/config.json
@@ -327,27 +327,27 @@ Stop
 echo -e "${Info}保存配置~"
 echo "
 {
-  "log":{
-    "loglevel": "${loglv}",
-    "access": "/var/log/v2ray/access.log",
-    "error": "/var/log/v2ray/error.log"
+  \"log\":{
+    \"loglevel\": \"${loglv}\",
+    \"access\": \"/var/log/v2ray/access.log\",
+    \"error\": \"/var/log/v2ray/error.log\"
   },
-  "inbound": {
-    "port": ${port},
-    "protocol": "vmess",
-    "settings": {
-      "clients": [
+  \"inbound\": {
+    \"port\": ${port},
+    \"protocol\": \"vmess\",
+    \"settings\": {
+      \"clients\": [
         {
-          "id": "${uuid}", 
-          "alterId": 64
+          \"id\": \"${uuid}\", 
+          \"alterId\": 64
         }
       ]${detour}
     }
   },
-${dynamicPort}
-  "outbound": {
-    "protocol": "freedom",
-    "settings": {}
+${movePort}
+  \"outbound\": {
+    \"protocol\": \"freedom\",
+    \"settings\": {}
   }
 }
 " > /etc/v2ray/config.json
@@ -357,52 +357,52 @@ User_config(){
 cd ~
 echo "
 {
-  "log":{
-    "loglevel": "warning",
-    "access": "",
-    "error": ""
+  \"log\":{
+    \"loglevel\": \"warning\",
+    \"access\": \"\",
+    \"error\": \"\"
   },
-  "inbound": {
-    "port": 1080,
-    "protocol": "${proxy}",
-    "settings": {
-      "auth": "noauth"
+  \"inbound\": {
+    \"port\": 1080,
+    \"protocol\": \"${proxy}\",
+    \"settings\": {
+      \"auth\": \"noauth\"
     }
   },
-    "outboundDetour": [
+    \"outboundDetour\": [
     {
-      "protocol": "freedom",
-      "settings": {},
-      "tag": "direct"
+      \"protocol\": \"freedom\",
+      \"settings\": {},
+      \"tag\": \"direct\"
     }
   ],
-    "routing": {
-    "strategy": "rules",
-    "settings": {
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
+    \"routing\": {
+    \"strategy\": \"rules\",
+    \"settings\": {
+      \"domainStrategy\": \"IPIfNonMatch\",
+      \"rules\": [
         {
-          "type": "chinasites",
-          "outboundTag": "direct"
+          \"type\": \"chinasites\",
+          \"outboundTag\": \"direct\"
         },
         {
-          "type": "chinaip",
-          "outboundTag": "direct"
+          \"type\": \"chinaip\",
+          \"outboundTag\": \"direct\"
         }
       ]
     }
   },
-  "outbound": {
-    "protocol": "vmess",
-    "settings": {
-      "vnext": [
+  \"outbound\": {
+    \"protocol\": \"vmess\",
+    \"settings\": {
+      \"vnext\": [
         {
-          "address": "${ip}",
-          "port": ${port},
-          "users": [
+          \"address\": \"${ip}\",
+          \"port\": ${port},
+          \"users\": [
             {
-              "id": "${uuid}",
-              "alterId": 64
+              \"id\": \"${uuid}\",
+              \"alterId\": 64
             }
           ]
         }
@@ -418,23 +418,23 @@ User_Shadowsocks(){
 Stop
 echo "
 {
-  "inbound": {
-    "port": 1080,
-    "protocol": "socks",
-    "settings": {
-      "auth": "noauth"
+  \"inbound\": {
+    \"port\": 1080,
+    \"protocol\": \"socks\",
+    \"settings\": {
+      \"auth\": \"noauth\"
     }
   },
-  "outbound":{
-    "protocol": "shadowsocks",
-    "settings": {
-      "servers": [
+  \"outbound\":{
+    \"protocol\": \"shadowsocks\",
+    \"settings\": {
+      \"servers\": [
         {
-          "address": "${ip}", 
-          "method": "${method}",
-          "ota": true,
-          "password": "${pw}",
-          "port": ${port}
+          \"address\": \"${ip}\", 
+          \"method\": \"${method}\",
+          \"ota\": true,
+          \"password\": \"${pw}\",
+          \"port\": ${port}
         }
       ]
     }
