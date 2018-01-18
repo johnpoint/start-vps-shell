@@ -120,7 +120,7 @@ read type
 if [[ ${type} == '1' ]]; then
 	Install_Shadowsocks
 elif [[ ${type} == '2' ]]; then
-	Install
+	Install_vmess
 else
 	echo "选择1或2"
 	exit 0
@@ -153,26 +153,39 @@ else
 	Set_method
 fi
 } 
- 
-  Port_main(){
+
+Log_lv(){
+echo "请输入日志等级：
+1.debug
+2.info
+3.warning(默认)
+4.error
+5.none
+"
+echo "输入：" && read setlv
+[[ -z "${setlv}" ]] && setlv="3"
+if [[ ${setlv} == '1' ]]; then
+	loglv='debug'
+elif [[ ${setlv} == '2' ]]; then
+	loglv='info'
+elif [[ ${setlv} == '3' ]]; then
+	loglv='warning'
+elif [[ ${setlv} == '4' ]]; then
+	loglv='error'
+elif [[ ${setlv} == '5' ]]; then
+	loglv='none'
+else
+	echo -e "${Error} 输入错误！"
+	Log_lv
+fi
+}
+
+ Port_main(){
  read -p "输入主要端口（默认：32000）:" port 
  [ -z "$port" ] && port=32000
  }
- 
-Mkcp(){
-read -p "是否启用mKCP协议?（默认开启） [y/n]:" ifmkcp 
- [ -z "$ifmkcp" ] && ifmkcp='y' 
- if [[ $ifmkcp == 'y' ]];then 
- mkcp='
-         "streamSettings": {
-            "network": "kcp"
-        }'
- else 
- mkcp='' 
- fi 
- }
 
-Move_port(){
+DynamicPort(){
   read -p "是否启用动态端口?（默认开启） [y/n]:" ifdynamicport 
  [ -z "$ifdynamicport" ] && ifdynamicport='y' 
  if [[ $ifdynamicport == 'y' ]];then 
@@ -189,19 +202,34 @@ Move_port(){
  read -p "输入端口变更时间（单位：分钟）:" refresh 
  [ -z "$refresh" ] && refresh=5 
  dynamicport=" 
-        {
-            "protocol": "vmess",
-            "port": "${port1}-${port2}",
-            "tag": "detour",
-            "settings": {},
-            "allocate": {
-                "strategy": "random",
-                "concurrency": ${port_num},
-                "refresh": ${refresh}
-            },
+   "inboundDetour":[
+    {
+      "protocol": "vmess",
+      "port": "${port1}-${port2}",
+      "tag": "dynamicPort",       
+      "settings": {
+        "default": {
+          "level": 1,
+          "alterId": 32
+        }
+      },
+      "allocate": {
+        "strategy": "random",
+        "concurrency": ${port_num},
+        "refresh": ${refresh}
+      }
+    }
+  ]
+},
  " 
+detour='
+,
+      "detour": {        
+        "to": "dynamicPort"   
+      }'
  else 
  dynamicport='' 
+ detour=''
  fi 
  }
  
@@ -209,11 +237,9 @@ Move_port(){
   read -p "是否启用 Mux.Cool?（默认开启） [y/n]:" ifmux 
  [ -z "$ifmux" ] && ifmux='y' 
  if [[ $ifmux == 'y' ]];then 
- mux='
-        "mux": {
-            "enabled": true,
-            "concurrency": 8
-        } 
+ mux=',
+    "mux": {"enabled": true}
+   }
  ' 
  else 
  mux="" 
@@ -242,19 +268,25 @@ Move_port(){
  
  Set_config(){
  echo  "请明确知晓，以下填写内容全都必须填写，否则程序有可能启动失败"
- Port_main
-Mkcp
-Move_port
-Max_Cool
-Client_proxy
+ 
 }
  
  Install_Shadowsocks(){
- Set_passwd
- Set_method
+ Install_main
+ Log_lv
+ 
+ }
+ 
+ Install_vmess(){
+ Install_main
+ Set_config
+ Log_lv
  Port_main
- Set_config_Shadowsocks
- Start
+ DynamicPort
+ Max_Cool
+ Client_proxy
+ Save_config
+ echo -e "${Info} 安装完成~" 
  }
  
  View_config(){
@@ -265,62 +297,7 @@ cat /etc/v2ray/user_config.json
  Stop
  echo -e "${Info}正在保存配置~"
  echo "
- {
-    "log": {
-        "access": "/var/log/v2ray/access.log",
-        "error": "/var/log/v2ray/error.log",
-        "loglevel": "warning"
-    },
-    "inbound": {
-        "protocol": "shadowsocks",
-        "port": ${port},
-        "settings": {
-            "method": "${method}",
-            "password": "${pw}",
-            "level": 1
-        }
-    },
-    "outbound": {
-        "protocol": "freedom",
-        "settings": {}
-    },
-    "inboundDetour": [],
-    "outboundDetour": [
-        {
-            "protocol": "blackhole",
-            "settings": {},
-            "tag": "blocked"
-        }
-    ],
-    "routing": {
-        "strategy": "rules",
-        "settings": {
-            "rules": [
-                {
-                    "type": "field",
-                    "ip": [
-                        "0.0.0.0/8",
-                        "10.0.0.0/8",
-                        "100.64.0.0/10",
-                        "127.0.0.0/8",
-                        "169.254.0.0/16",
-                        "172.16.0.0/12",
-                        "192.0.0.0/24",
-                        "192.0.2.0/24",
-                        "192.168.0.0/16",
-                        "198.18.0.0/15",
-                        "198.51.100.0/24",
-                        "203.0.113.0/24",
-                        "::1/128",
-                        "fc00::/7",
-                        "fe80::/10"
-                    ],
-                    "outboundTag": "blocked"
-                }
-            ]
-        }
-   }
-} 
+
 " > /etc/v2ray/config.json
 }
  
@@ -328,199 +305,97 @@ Save_config(){
 Stop
 echo -e "${Info}保存配置~"
 echo "
- {
-    "log": {
-        "access": "/var/log/v2ray/access.log",
-        "error": "/var/log/v2ray/error.log",
-        "loglevel": "warning"
-    },
-    "inbound": {
-        "port": ${port},
-        "protocol": "vmess",
-        "settings": {
-            "clients": [
-                {
-                    "id": "${uuid}",
-                    "level": 1,
-                    "alterId": 100
-                }
-            ]
-        },
-${mkcp},
-        "detour": {
-            "to": "detour"
-        }
-    },
-    "outbound": {
-        "protocol": "freedom",
-        "settings": {}
-    },
-    "inboundDetour": [
-${dynamicport}
-${mkcp}
-        }
-    ],
-    "outboundDetour": [
+{
+  "log":{
+    "loglevel": "${loglv}",
+    "access": "/var/log/v2ray/access.log",
+    "error": "/var/log/v2ray/error.log"
+  },
+  "inbound": {
+    "port": ${port},
+    "protocol": "vmess",
+    "settings": {
+      "clients": [
         {
-            "protocol": "blackhole",
-            "settings": {},
-            "tag": "blocked"
+          "id": "${uuid}", 
+          "alterId": ${alterld}
         }
-    ],
-    "routing": {
-        "strategy": "rules",
-        "settings": {
-            "rules": [
-                {
-                    "type": "field",
-                    "ip": [
-                        "0.0.0.0/8",
-                        "10.0.0.0/8",
-                        "100.64.0.0/10",
-                        "127.0.0.0/8",
-                        "169.254.0.0/16",
-                        "172.16.0.0/12",
-                        "192.0.0.0/24",
-                        "192.0.2.0/24",
-                        "192.168.0.0/16",
-                        "198.18.0.0/15",
-                        "198.51.100.0/24",
-                        "203.0.113.0/24",
-                        "::1/128",
-                        "fc00::/7",
-                        "fe80::/10"
-                    ],
-                    "outboundTag": "blocked"
-                }
-            ]
-        }
+      ]${detour}
     }
-} 
+  },
+${dynamicPort}
+  "outbound": {
+    "protocol": "freedom",
+    "settings": {}
+  }
+}
 " > /etc/v2ray/config.json
 }
 
 User_config(){
+ip=$( curl ipinfo.io | jq -r '.ip' )
+uuid=$(
 cd ~
 echo "
-      {
-    "log": {
-        "loglevel": "warning"
-    },
-    "inbound": {
-        "listen": "127.0.0.1",
-        "port": 1080,
-        "protocol": "socks",
-        "settings": {
-            "auth": "noauth",
-            "udp": true,
-            "ip": "127.0.0.1"
-        }
-    },
-    "outbound": {
-        "protocol": "vmess",
-        "settings": {
-            "vnext": [
-                {
-                    "address": "${ip}",
-                    "port": ${port},
-                    "users": [
-                        {
-                            "id": "${uuid}",
-                            "level": 1,
-                            "alterId": 100
-                        }
-                    ]
-                }
-            ]
-        },
-${mkcp},
-${mux}
-    },
-    "outboundDetour": [
-        {
-            "protocol": "freedom",
-            "settings": {},
-            "tag": "direct"
-        }
-    ],
-    "routing": {
-        "strategy": "rules",
-        "settings": {
-            "rules": [
-                {
-                    "type": "field",
-                    "port": "54-79",
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "field",
-                    "port": "81-442",
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "field",
-                    "port": "444-65535",
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "field",
-                    "domain": [
-                        "gc.kis.scr.kaspersky-labs.com"
-                    ],
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "chinasites",
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "field",
-                    "ip": [
-                        "0.0.0.0/8",
-                        "10.0.0.0/8",
-                        "100.64.0.0/10",
-                        "127.0.0.0/8",
-                        "169.254.0.0/16",
-                        "172.16.0.0/12",
-                        "192.0.0.0/24",
-                        "192.0.2.0/24",
-                        "192.168.0.0/16",
-                        "198.18.0.0/15",
-                        "198.51.100.0/24",
-                        "203.0.113.0/24",
-                        "::1/128",
-                        "fc00::/7",
-                        "fe80::/10"
-                    ],
-                    "outboundTag": "direct"
-                },
-                {
-                    "type": "chinaip",
-                    "outboundTag": "direct"
-                }
-            ]
-        }
+{
+  "log":{
+    "loglevel": "warning",
+    "access": "",
+    "error": ""
+  },
+  "inbound": {
+    "port": 1080,
+    "protocol": "socks",
+    "settings": {
+      "auth": "noauth"
     }
+  },
+    "outboundDetour": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    }
+  ],
+    "routing": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "chinasites",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "chinaip",
+          "outboundTag": "direct"
+        }
+      ]
+    }
+  },
+  "outbound": {
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [
+        {
+          "address": "${ip}",
+          "port": ${port},
+          "users": [
+            {
+              "id": "${uuid}",
+              "alterId": 64
+            }
+          ]
+        }
+      ]
+    }${mux}
 }
 " > /etc/v2ray/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
-echo "路径：/root/user_config.json"
+echo "路径：/etc/v2ray/user_config.json"
 }
 
-Install(){
-Install_Basic_Packages
-Set_DNS
-Update_NTP_settings
-Install_main
-Set_config
-ip=$( curl -s ipinfo.io | jq -r '.ip' )
-uuid=$(cat /proc/sys/kernel/random/uuid) 
-Save_config
-User_config
-clear
-echo -e "${Info}配置程序执行完毕~"
-Start
-}
+
 
 Update_shell
 clear

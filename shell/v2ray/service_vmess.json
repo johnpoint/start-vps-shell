@@ -1,40 +1,22 @@
 {
   "log":{
-    "loglevel": "warning",
+    "loglevel": "${loglv}",
     "access": "/var/log/v2ray/access.log",
     "error": "/var/log/v2ray/error.log"
   },
   "inbound": {
-    "port": 16823,
+    "port": ${port},
     "protocol": "vmess",
     "settings": {
       "clients": [
         {
-          "id": "b831381d-6324-4d53-ad4f-8cda48b30811", 
-          "alterId": 64
+          "id": "${uuid}", 
+          "alterId": ${alterld}
         }
-      ]
+      ]${detour}
     }
   },
-   "inboundDetour":[
-    {
-      "protocol": "vmess",
-      "port": "10000-20000",
-      "tag": "dynamicPort",       
-      "settings": {
-        "default": {
-          "level": 1,
-          "alterId": 32
-        }
-      },
-      "allocate": {
-        "strategy": "random",
-        "concurrency": 2,
-        "refresh": 3
-      }
-    }
-  ]
-},
+${dynamicPort}
   "outbound": {
     "protocol": "freedom",
     "settings": {}
