@@ -1,0 +1,23 @@
+{
+  "inbound": {
+    "port": 1080,
+    "protocol": "socks",
+    "settings": {
+      "auth": "noauth"
+    }
+  },
+  "outbound":{
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
+        {
+          "address": "serveraddr.com", 
+          "method": "aes-256-cfb",
+          "ota": true,
+          "password": "sspasswd",
+          "port": 1024  
+        }
+      ]
+    }
+  }
+}
