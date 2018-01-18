@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.2.0
+#	Version: 1.3.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.2.0"
+sh_ver="1.3.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -273,8 +273,12 @@ detour='
  
  Install_Shadowsocks(){
  Install_main
- Log_lv
- 
+ Port_main
+ Set_passwd
+ Set_method
+ ip=$( curl ipinfo.io | jq -r '.ip' )
+ Set_config_Shadowsocks
+ User_Shadowsocks
  }
  
  Install_vmess(){
@@ -285,6 +289,9 @@ detour='
  DynamicPort
  Max_Cool
  Client_proxy
+ ip=$( curl ipinfo.io | jq -r '.ip' )
+ uuid=$(cat /proc/sys/kernel/random/uuid) 
+ User_config
  Save_config
  echo -e "${Info} 安装完成~" 
  }
@@ -297,7 +304,21 @@ cat /etc/v2ray/user_config.json
  Stop
  echo -e "${Info}正在保存配置~"
  echo "
-
+{
+  "inbound": {
+    "port": ${port},
+    "protocol": "shadowsocks",
+    "settings": {
+      "method": "${method}",
+      "ota": true,
+      "password": "${pw}"
+    }
+  },
+  "outbound": {
+    "protocol": "freedom",  
+    "settings": {}
+  }
+}
 " > /etc/v2ray/config.json
 }
  
@@ -318,7 +339,7 @@ echo "
       "clients": [
         {
           "id": "${uuid}", 
-          "alterId": ${alterld}
+          "alterId": 64
         }
       ]${detour}
     }
@@ -333,8 +354,6 @@ ${dynamicPort}
 }
 
 User_config(){
-ip=$( curl ipinfo.io | jq -r '.ip' )
-uuid=$(
 cd ~
 echo "
 {
@@ -345,7 +364,7 @@ echo "
   },
   "inbound": {
     "port": 1080,
-    "protocol": "socks",
+    "protocol": "${proxy}",
     "settings": {
       "auth": "noauth"
     }
@@ -393,6 +412,36 @@ echo "
 " > /etc/v2ray/user_config.json
 echo -e "${Tip} 客户端配置已生成~"
 echo "路径：/etc/v2ray/user_config.json"
+}
+
+User_Shadowsocks(){
+Stop
+echo "
+{
+  "inbound": {
+    "port": 1080,
+    "protocol": "socks",
+    "settings": {
+      "auth": "noauth"
+    }
+  },
+  "outbound":{
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
+        {
+          "address": "${ip}", 
+          "method": "${method}",
+          "ota": true,
+          "password": "${pw}",
+          "port": ${port}
+        }
+      ]
+    }
+  }
+}
+" > /etc/v2ray/user_config.json
+echo -e "${Info} 完成~"
 }
 
 

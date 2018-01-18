@@ -11,11 +11,11 @@
     "settings": {
       "servers": [
         {
-          "address": "serveraddr.com", 
-          "method": "aes-256-cfb",
+          "address": "${ip}", 
+          "method": "${method}",
           "ota": true,
-          "password": "sspasswd",
-          "port": 1024  
+          "password": "${pw}",
+          "port": ${port}
         }
       ]
     }

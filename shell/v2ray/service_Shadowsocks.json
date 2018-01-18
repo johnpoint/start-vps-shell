@@ -1,11 +1,11 @@
 {
   "inbound": {
-    "port": 1024,
+    "port": ${port},
     "protocol": "shadowsocks",
     "settings": {
-      "method": "aes-256-cfb",
+      "method": "${method}",
       "ota": true,
-      "password": "sspasswd"
+      "password": "${pw}"
     }
   },
   "outbound": {
