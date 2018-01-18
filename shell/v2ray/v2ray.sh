@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.4.3
+#	Version: 1.5.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.4.3"
+sh_ver="1.5.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -64,7 +64,7 @@ Disable_China(){
 		stty erase '^H' && read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [yY] ]]; then
-			wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh"
+			wget --no-check-certificate -qO- https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x v2ray.sh
             ./v2ray.sh
@@ -110,6 +110,10 @@ service v2ray status
  iptables -P OUTPUT ACCEPT 
  iptables -F 
 }
+
+#########
+#	设置	#
+########
  
  Set_type(){
  echo "
@@ -121,12 +125,21 @@ service v2ray status
 read type
 if [[ ${type} == '1' ]]; then
 	Install_Shadowsocks
+	echo "	——————————————————————
+	服务类型：Shadowsocks
+	——————————————————————"
 elif [[ ${type} == '2' ]]; then
 	Install_vmess
+	echo "	——————————————————————
+	服务类型：Vmess
+	——————————————————————"
 elif [[ ${type} == '3' ]]; then
 	Install_socks
+	echo "	——————————————————————
+	服务类型：Socks
+	——————————————————————"
 else
-	echo "选择1或2"
+	echo "选择1，2或3"
 	exit 0
 fi
 }
@@ -134,6 +147,9 @@ fi
  Set_passwd(){
  echo "设置密码"
  read pw
+ echo "	——————————————————————
+	密码：${pw}
+	——————————————————————"
  }
  
  Set_method(){
@@ -156,6 +172,9 @@ else
 	echo "请输入正确选项!" 
 	Set_method
 fi
+echo "	——————————————————————
+	加密：${method}
+	——————————————————————"
 } 
 
 Log_lv(){
@@ -182,11 +201,17 @@ else
 	echo -e "${Error} 输入错误！"
 	Log_lv
 fi
+echo "	——————————————————————
+	日志等级：${loglv}
+	——————————————————————"
 }
 
  Port_main(){
  read -p "输入主要端口（默认：32000）:" port 
  [ -z "$port" ] && port=32000
+ echo "	——————————————————————
+	主要端口：${port}
+	——————————————————————"
  }
 
 DynamicPort(){
@@ -205,6 +230,13 @@ DynamicPort(){
   
  read -p "输入端口变更时间（单位：分钟）:" refresh 
  [ -z "$refresh" ] && refresh=5 
+ 
+ echo "	——————————————————————
+	动态端口配置：
+	端口范围：${port1}-${port2}
+	开放端口：${port_num}
+	刷新时间：${refresh}
+	——————————————————————"
 
  movePort='
    "inboundDetour":[
@@ -234,6 +266,14 @@ detour='
  else 
  movePort='' 
  detour=''
+  echo "	——————————————————————
+	动态端口配置：
+							
+								不开启
+								
+								
+	——————————————————————"
+
  fi 
  }
  
@@ -245,8 +285,14 @@ detour='
     "mux": {"enabled": true}
    }
  ' 
+ echo "	——————————————————————
+	Mux.Cool多路复用：开启
+	——————————————————————"
  else 
  mux="" 
+  echo "	——————————————————————
+	Mux.Cool多路复用：不开启
+	——————————————————————"
  fi 
  }
  
@@ -268,6 +314,9 @@ detour='
  else 
  proxy='socks' 
  fi 
+  echo "	——————————————————————
+	客户端代理类型：	${proxy}
+	——————————————————————"
  }
  
  Set_config(){
@@ -287,12 +336,21 @@ elif [[ ${cauth} == '2' ]]; then
 	echo "输入用户名"
 	read username
 	Set_passwd
+	 echo "	——————————————————————
+	Socks配置：
+	认证方式：${auth}
+	用户名：${username}
+	密码：${pw}
+	——————————————————————"
 else
 	echo -e "${Error} 输入错误，请重试~"
 	Set_auth
 fi
 }
  
+ #########
+ #	安装	#
+ ########
  
  Install_Shadowsocks(){
  Install_main
@@ -301,6 +359,7 @@ fi
  Set_method
  ip=$( curl ipinfo.io | jq -r '.ip' )
  Set_config_Shadowsocks
+ Disable_iptables
  User_Shadowsocks
  }
  
@@ -314,6 +373,7 @@ fi
  Client_proxy
  ip=$( curl ipinfo.io | jq -r '.ip' )
  uuid=$(cat /proc/sys/kernel/random/uuid) 
+ Disable_iptables
  User_config
  Save_config
  echo -e "${Info} 安装完成~" 
@@ -322,12 +382,38 @@ fi
  Install_socks(){
  Set_auth
  Port_main
+ Disable_iptables
  Save_socks
  }
  
  View_config(){
 cat /etc/v2ray/user_config.json
  }
+ 
+ Unistall(){
+ echo -e "${Info}确定要卸载？(y/n)默认n"
+ read yn
+ if [[ ${yn} == 'y' ]]; then
+ systemctl stop v2ray
+systemctl disable v2ray
+
+service v2ray stop
+update-rc.d -f v2ray remove
+
+rm -rf /etc/v2ray/*
+rm -rf /usr/bin/v2ray/*
+rm -rf /var/log/v2ray/*
+rm -rf /lib/systemd/system/v2ray.service
+rm -rf /etc/init.d/v2ray
+echo -e "${Info}卸载完成~"
+	else
+	echo "已取消..."
+	exit 0
+}
+ 
+ #########
+ #	配置	#
+ ########
  
  Save_socks(){
  Stop
@@ -357,6 +443,7 @@ cat /etc/v2ray/user_config.json
     \"settings\": {}
   }
 }" > /etc/v2ray/config.json
+echo -e "${Info} 配置完成"
 Start
  }
  
@@ -381,6 +468,7 @@ Start
   }
 }
 " > /etc/v2ray/config.json
+echo -e "${Info}配置完成"
 Start
 }
  
@@ -413,11 +501,12 @@ ${movePort}
   }
 }
 " > /etc/v2ray/config.json
+echo -e "${Info}配置完成"
 Start
 }
 
 User_config(){
-cd ~
+echo -e "${Info}保存配置~"
 echo "
 {
   \"log\":{
