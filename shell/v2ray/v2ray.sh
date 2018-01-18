@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.3.2
+#	Version: 1.4.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.3.2"
+sh_ver="1.4.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -115,12 +115,16 @@ service v2ray status
  echo "
 请选择服务类型：
 1.Shadowsocks
-2.Vmess"
+2.Vmess
+3.socks 5
+"
 read type
 if [[ ${type} == '1' ]]; then
 	Install_Shadowsocks
 elif [[ ${type} == '2' ]]; then
 	Install_vmess
+elif [[ ${type} == '3' ]]; then
+	Install_socks
 else
 	echo "选择1或2"
 	exit 0
@@ -268,8 +272,27 @@ detour='
  
  Set_config(){
  echo  "请明确知晓，以下填写内容全都必须填写，否则程序有可能启动失败"
- 
 }
+ 
+ Set_auth(){
+ echo "请选择socks协议验证方式
+1.匿名
+2.用户密码
+" 
+read cauth
+if [[ ${cauth} == '1' ]]; then
+	auth='none'
+elif [[ ${cauth} == '2' ]]; then
+	auth='password'
+	echo "输入用户名"
+	read username
+	Set_passwd
+else
+	echo -e "${Error} 输入错误，请重试~"
+	Set_auth
+fi
+}
+ 
  
  Install_Shadowsocks(){
  Install_main
@@ -296,9 +319,45 @@ detour='
  echo -e "${Info} 安装完成~" 
  }
  
+ Install_socks(){
+ Set_auth
+ Save_socks
+ }
+ 
  View_config(){
 cat /etc/v2ray/user_config.json
  }
+ 
+ Save_socke(){
+ Stop
+ echo "
+ {
+	\"log\":{
+    	\"loglevel\": \"${loglv}\",
+    	\"access\": \"/var/log/v2ray/access.log\",
+    	\"error\": \"/var/log/v2ray/error.log\"
+  	},
+  	\"inbound\": {
+		 \"auth\": \"${auth}\",
+ 		 \"accounts\": [
+   	 {
+      		\"user\": \"${username}\",
+    		  \"pass\": \"${pw}\"
+   	 }
+  ],
+  \"udp\": false,
+  \"ip\": \"127.0.0.1\",
+  \"timeout\": 0,
+  \"userLevel\": 0
+  },
+  \"outbound\": {
+    \"protocol\": \"freedom\",
+    \"settings\": {}
+  }
+}" > /etc/v2ray/config.json
+Start
+ }
+ 
  
  Set_config_Shadowsocks(){
  Stop
@@ -320,6 +379,7 @@ cat /etc/v2ray/user_config.json
   }
 }
 " > /etc/v2ray/config.json
+Start
 }
  
 Save_config(){
@@ -351,6 +411,7 @@ ${movePort}
   }
 }
 " > /etc/v2ray/config.json
+Start
 }
 
 User_config(){
