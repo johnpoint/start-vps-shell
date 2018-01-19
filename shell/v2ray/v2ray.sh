@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.2
+#	Version: 1.5.3
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.2"
+sh_ver="1.5.3"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -397,7 +397,7 @@ fi
  }
  
  Sh_config(){
-echo '
+echo "
 {
 	\"loglv\":\"${loglv}\"
 	\"type\":\"${type}\"
@@ -411,7 +411,7 @@ echo '
 	\"method\":\"${method}\"
 	\"auth\":\"${auth}\"
 	\"uuid\":\"${uuid}\"
-}' > /etc/v2ray/sh_config.json
+}" > /etc/v2ray/sh_config.json
 }
 
  View_config(){
@@ -470,7 +470,7 @@ elif [[ ${type} == 'Shadowsocks' ]]; then
 	fi
  }
  
- Unistall(){
+ Uninstall(){
  echo -e "${Info}确定要卸载？(y/n)默认n"
  read yn
  if [[ ${yn} == 'y' ]]; then
