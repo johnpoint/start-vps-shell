@@ -347,6 +347,26 @@ else
 	Set_auth
 fi
 }
+
+Sh_config(){
+echo '
+{
+	\"loglv\":\"${loglv}\"
+	\"type\":\"${type}\"
+	\"ip\":\"${ip}\"
+	\"port\":\"${main_port}\"
+	\"move\":\"${port1}~${port2}
+	\"mux\":\"${ifmux}\"
+	\"proxy\":\"${proxy}\"
+	\"user\":\"${username}\"
+	\"passwd\":\"${pw}\"
+	\"method\":\"${method}\"
+}' > /etc/v2ray/sh_config.json
+
+
+
+
+}
  
  #########
  #	安装	#
