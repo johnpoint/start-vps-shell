@@ -24,7 +24,7 @@
 wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
 ```
 
-备用下载：(有至多24小时延迟!)
+备用下载：
 
 ```
 wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh
@@ -45,8 +45,6 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 首先，当你执行了上面的命令后应该已经弹出了**主菜单**，然后就可以按照*中文提示*来进行操作了~  ╮( •́ω•̀ )╭
 
 # 功能详析 #
-
-接下来的内容就是解释脚本内容的步骤~~我知道你们看源码能看懂~~
 
 ## 功能一：安装软件（应该是 ##
 
@@ -90,9 +88,31 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 # 版本号说明 #
 
-脚本采用**X.Y.Z**格式命名版本
+脚本采用 `X.Y.Z` 格式命名版本
 
-含义 **主版本 . 小功能 . 修复bug**
+含义  `主版本 . 小功能 . 修复bug`
+
+# 故障排查 #
+
+## 1.wget:command not found ##
+
+原因：系统太过精简，没有安装wget
+
+解决办法：
+
+- Centos系：`yum install wget`
+- Debian系：`apt install wget`
+- 使用`curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash`
+
+## 2.脚本运行异常 ##
+
+原因：我技术不到家...
+
+解决办法：
+
+- 在issue处反馈，注意说明错误详情和所用系统
+- 耐心等待
+- 使用备份脚本`wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh`
 
 # TODO #
 
