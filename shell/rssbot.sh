@@ -147,7 +147,6 @@ case "$num" in
 	;;
  esac
  exit
- fi
 }
  
 action=$1
