@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.5
+#	Version: 1.5.6
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.5"
+sh_ver="1.5.6"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -428,11 +428,11 @@ method=$( cat /etc/v2ray/sh_config.json | jq -r '.method' )
 auth=$( cat /etc/v2ray/sh_config.json | jq -r '.auth' )
 uuid=$( cat /etc/v2ray/sh_config.json | jq -r '.uuid' )
 ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
- if [[ ${type} == 'Vmess' ]]; then
+ if [[ ${type} == '2' ]]; then
  	echo "	——————————————————————
 	V2ray配置
 	————————
-	服务模式：${type}
+	服务模式：Vmess
 	————————
 	IP地址：${ip}
 	端口：${port}
@@ -444,11 +444,11 @@ ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
 	Mux.Cool多路复用：${Green_font_prefix}${ifmux}${ifmux}${Font_color_suffix}
 	用户配置路径：/etc/v2ray/user_config.json
 	——————————————————————"
-elif [[ ${type} == 'Shadowsocks' ]]; then
+elif [[ ${type} == '1' ]]; then
 	echo "	——————————————————————
 	V2ray配置
 	————————
-	服务模式：${type}
+	服务模式：Shadowsocks
 	————————
 	IP地址：${ip}
 	端口：${port}
@@ -459,7 +459,7 @@ elif [[ ${type} == 'Shadowsocks' ]]; then
 	echo "	——————————————————————
 	V2ray配置
 	————————
-	服务模式：${type}
+	服务模式：Socks
 	————————
 	IP地址：${ip}
 	端口：${port}
