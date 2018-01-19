@@ -489,7 +489,7 @@ echo -e "${Info}卸载完成~"
 	else
 	echo "已取消..."
 	exit 0
-	fi
+fi
 }
  
  #########
