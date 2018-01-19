@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.3
+#	Version: 1.5.4
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.3"
+sh_ver="1.5.4"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -399,17 +399,17 @@ fi
  Sh_config(){
 echo "
 {
-	\"loglv\":\"${loglv}\"
-	\"type\":\"${type}\"
-	\"ip\":\"${ip}\"
-	\"port\":\"${main_port}\"
-	\"move\":\"${port1} ~ ${port2}\"
-	\"mux\":\"${ifmux}\"
-	\"proxy\":\"${proxy}\"
-	\"user\":\"${username}\"
-	\"passwd\":\"${pw}\"
-	\"method\":\"${method}\"
-	\"auth\":\"${auth}\"
+	\"loglv\":\"${loglv}\",
+	\"type\":\"${type}\",
+	\"ip\":\"${ip}\",
+	\"port\":\"${main_port}\",
+	\"move\":\"${port1} ~ ${port2}\",
+	\"mux\":\"${ifmux}\",
+	\"proxy\":\"${proxy}\",
+	\"user\":\"${username}\",
+	\"passwd\":\"${pw}\",
+	\"method\":\"${method}\",
+	\"auth\":\"${auth}\",
 	\"uuid\":\"${uuid}\"
 }" > /etc/v2ray/sh_config.json
 }
