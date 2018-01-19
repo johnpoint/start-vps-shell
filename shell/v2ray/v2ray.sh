@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.13
+#	Version: 1.5.14
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.13"
+sh_ver="1.5.14"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -239,8 +239,9 @@ DynamicPort(){
 	刷新时间：${refresh}
 	——————————————————————"
 
- movePort="
-   "inboundDetour":[
+ movePort='
+,
+    "inboundDetour":[
     {
       "protocol": "vmess",
       "port": "${port1}-${port2}",
@@ -248,7 +249,7 @@ DynamicPort(){
       "settings": {
         "default": {
           "level": 1,
-          "alterId": 32
+          "alterId": 64
         }
       },
       "allocate": {
@@ -257,10 +258,8 @@ DynamicPort(){
         "refresh": ${refresh}
       }
     }
-  ]
-},"
-detour='
-,
+  ],'
+detour=',
       "detour": {        
         "to": "dynamicPort"   
       }'
@@ -283,8 +282,7 @@ detour='
  [ -z "$ifmux" ] && ifmux='y' 
  if [[ $ifmux == 'y' ]];then 
  mux=',
-    "mux": {"enabled": true}
-   }
+            "mux": {"enabled": true}
  ' 
  ifmux='Yes'
  echo "	——————————————————————
@@ -565,17 +563,15 @@ echo "
   },
   \"inbound\": {
     \"port\": ${port},
-    \"protocol\": \"vmess\",
+    \"protocol\": \"vmess\",    
     \"settings\": {
       \"clients\": [
         {
-          \"id\": \"${uuid}\", 
-          \"alterId\": 64
+          \"id\": \"${uuid}\"
         }
       ]${detour}
     }
-  },
-${movePort}
+  }${movePort}
   \"outbound\": {
     \"protocol\": \"freedom\",
     \"settings\": {}
@@ -599,17 +595,35 @@ echo "
     \"port\": 1080,
     \"protocol\": \"${proxy}\",
     \"settings\": {
-      \"auth\": \"noauth\"
+      \"auth\": \"noauth\",
+      \"udp\": true
     }
   },
-    \"outboundDetour\": [
+  \"outbound\": {
+    \"protocol\": \"vmess\",
+    \"settings\": {
+      \"vnext\": [
+        {
+          \"address\": \"${ip}\",
+          \"port\": ${port},  
+          \"users\": [
+            {
+              \"id\": \"${uuid}\",
+              \"alterId\": 64
+            }
+          ]
+        }
+      ]
+    }
+  },
+  \"outboundDetour\": [
     {
       \"protocol\": \"freedom\",
       \"settings\": {},
       \"tag\": \"direct\"
     }
   ],
-    \"routing\": {
+  \"routing\": {
     \"strategy\": \"rules\",
     \"settings\": {
       \"domainStrategy\": \"IPIfNonMatch\",
@@ -624,23 +638,7 @@ echo "
         }
       ]
     }
-  },
-  \"outbound\": {
-    \"protocol\": \"vmess\",
-    \"settings\": {
-      \"vnext\": [
-        {
-          \"address\": \"${ip}\",
-          \"port\": ${port},
-          \"users\": [
-            {
-              \"id\": \"${uuid}\",
-              \"alterId\": 64
-            }
-          ]
-        }
-      ]
-    }${mux}
+  }
 }
 " > /etc/v2ray/user_config.json
 echo -e "${Tip} 客户端配置已生成~"

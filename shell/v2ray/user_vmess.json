@@ -6,19 +6,37 @@
   },
   "inbound": {
     "port": 1080,
-    "protocol": "socks",
+    "protocol": "${proxy}",
     "settings": {
-      "auth": "noauth"
+      "auth": "noauth",
+      "udp": true
     }
   },
-    "outboundDetour": [
+  "outbound": {
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [
+        {
+          "address": "${ip}",
+          "port": ${port},  
+          "users": [
+            {
+              "id": "${uuid}",
+              "alterId": 64
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "outboundDetour": [
     {
       "protocol": "freedom",
       "settings": {},
       "tag": "direct"
     }
   ],
-    "routing": {
+  "routing": {
     "strategy": "rules",
     "settings": {
       "domainStrategy": "IPIfNonMatch",
@@ -33,23 +51,5 @@
         }
       ]
     }
-  },
-  "outbound": {
-    "protocol": "vmess",
-    "settings": {
-      "vnext": [
-        {
-          "address": "${ip}",
-          "port": ${port},
-          "users": [
-            {
-              "id": "${uuid}",
-              "alterId": 64
-            }
-          ]
-        }
-      ]
-    },
-    "mux": {"enabled": true}
-   }
+  }
 }

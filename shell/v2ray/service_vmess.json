@@ -6,17 +6,15 @@
   },
   "inbound": {
     "port": ${port},
-    "protocol": "vmess",
+    "protocol": "vmess",    
     "settings": {
       "clients": [
         {
-          "id": "${uuid}", 
-          "alterId": ${alterld}
+          "id": "${uuid}"
         }
       ]${detour}
     }
-  },
-${dynamicPort}
+  }${movePort}
   "outbound": {
     "protocol": "freedom",
     "settings": {}
