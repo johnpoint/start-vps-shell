@@ -358,7 +358,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 
   #Install_soft
 Install_soft(){
-echo && echo -e "  主菜单 > 安装软件
+echo -e "  主菜单 > 安装软件
 
   ${Green_font_prefix}1.${Font_color_suffix} shadowsocksR 服务端
   ${Green_font_prefix}2.${Font_color_suffix} GoFlyway 服务端
@@ -414,7 +414,7 @@ Install_depend_now
 
 #Login_key
 Login_key(){
-echo && echo -e "  主菜单 > 更改系统为密钥登陆
+echo -e "  主菜单 > 更改系统为密钥登陆
 
   ${Green_font_prefix}1.${Font_color_suffix} 安装 openssl
   ${Green_font_prefix}2.${Font_color_suffix} 生成 key
@@ -423,8 +423,9 @@ echo && echo -e "  主菜单 > 更改系统为密钥登陆
   ${Green_font_prefix}5.${Font_color_suffix} 修改 sshd_config文件
   ${Green_font_prefix}6.${Font_color_suffix} 重启 ssh服务
   ${Green_font_prefix}7.${Font_color_suffix} 关闭 密码登陆
-  ——" && echo
-	stty erase '^H' && read -p "(默认: 取消):" Login_key_num
+  ——"
+	echo "(默认: 取消):"
+	read Login_key_num
 	[[ -z "${Login_key_num}" ]] && echo "已取消..." && exit 1
 	if [[ ${Login_key_num} == "1" ]]; then
 		Install_openssl
