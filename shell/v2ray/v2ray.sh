@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.6
+#	Version: 1.5.7
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.6"
+sh_ver="1.5.7"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -227,7 +227,7 @@ DynamicPort(){
  [ -z "$port2" ] && port2=32500 
   
  read -p "输入每次开放端口数（默认：10）:" port_num 
- [ -z "$port_num" ] && portnum=10 
+ [ -z "$port_num" ] && port_num=10 
   
  read -p "输入端口变更时间（单位：分钟）:" refresh 
  [ -z "$refresh" ] && refresh=5 
@@ -430,7 +430,7 @@ auth=$( cat /etc/v2ray/sh_config.json | jq -r '.auth' )
 uuid=$( cat /etc/v2ray/sh_config.json | jq -r '.uuid' )
 ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
  if [[ ${type} == '2' ]]; then
- 	echo "	——————————————————————
+ 	echo -e "	——————————————————————
 	V2ray配置
 	————————
 	服务模式：Vmess
@@ -446,7 +446,7 @@ ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
 	用户配置路径：/etc/v2ray/user_config.json
 	——————————————————————"
 elif [[ ${type} == '1' ]]; then
-	echo "	——————————————————————
+	echo -e "	——————————————————————
 	V2ray配置
 	————————
 	服务模式：Shadowsocks
@@ -457,7 +457,7 @@ elif [[ ${type} == '1' ]]; then
 	密码：${passwd}
 	——————————————————————"
 	else
-	echo "	——————————————————————
+	echo -e "	——————————————————————
 	V2ray配置
 	————————
 	服务模式：Socks
