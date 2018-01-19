@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.3.1
+#	Version: 2.3.2
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.3.1"
+sh_ver="2.3.2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -458,6 +458,7 @@ echo && echo -e "  主菜单 > 更改系统为密钥登陆
   =${Green_font_prefix}Arch${Font_color_suffix} : $arch ($lbit Bit)
   =${Green_font_prefix}Kernel${Font_color_suffix} : $kern
   =${Green_font_prefix}BBR${Font_color_suffix} : $bbr
+  如果以上信息无法正确显示,请>安装依赖>jq
   ==================================================
   ${Green_font_prefix}1.${Font_color_suffix} 安装 依赖
   ${Green_font_prefix}2.${Font_color_suffix} 安装 软件
