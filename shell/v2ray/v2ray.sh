@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.0
+#	Version: 1.5.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.0"
+sh_ver="1.5.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -285,6 +285,7 @@ detour='
     "mux": {"enabled": true}
    }
  ' 
+ ifmux='是'
  echo "	——————————————————————
 	Mux.Cool多路复用：开启
 	——————————————————————"
@@ -293,6 +294,7 @@ detour='
   echo "	——————————————————————
 	Mux.Cool多路复用：不开启
 	——————————————————————"
+ifmux='否'
  fi 
  }
  
@@ -348,25 +350,7 @@ else
 fi
 }
 
-Sh_config(){
-echo '
-{
-	\"loglv\":\"${loglv}\"
-	\"type\":\"${type}\"
-	\"ip\":\"${ip}\"
-	\"port\":\"${main_port}\"
-	\"move\":\"${port1}~${port2}
-	\"mux\":\"${ifmux}\"
-	\"proxy\":\"${proxy}\"
-	\"user\":\"${username}\"
-	\"passwd\":\"${pw}\"
-	\"method\":\"${method}\"
-}' > /etc/v2ray/sh_config.json
 
-
-
-
-}
  
  #########
  #	安装	#
@@ -381,6 +365,8 @@ echo '
  Set_config_Shadowsocks
  Disable_iptables
  User_Shadowsocks
+ Sh_config
+ View_config
  }
  
  Install_vmess(){
@@ -397,6 +383,8 @@ echo '
  User_config
  Save_config
  echo -e "${Info} 安装完成~" 
+ Sh_config
+ View_config
  }
  
  Install_socks(){
@@ -404,10 +392,82 @@ echo '
  Port_main
  Disable_iptables
  Save_socks
+ Sh_config
+ View_config
  }
  
+ Sh_config(){
+echo '
+{
+	\"loglv\":\"${loglv}\"
+	\"type\":\"${type}\"
+	\"ip\":\"${ip}\"
+	\"port\":\"${main_port}\"
+	\"move\":\"${port1} ~ ${port2}\"
+	\"mux\":\"${ifmux}\"
+	\"proxy\":\"${proxy}\"
+	\"user\":\"${username}\"
+	\"passwd\":\"${pw}\"
+	\"method\":\"${method}\"
+	\"auth\":\"${auth}\"
+	\"uuid\":\"${uuid}\"
+}' > /etc/v2ray/sh_config.json
+}
+
  View_config(){
-cat /etc/v2ray/user_config.json
+loglv=$( cat /etc/v2ray/sh_config.json | jq -r '.loglv' )
+type=$( cat /etc/v2ray/sh_config.json | jq -r '.type' )
+ip=$( cat /etc/v2ray/sh_config.json | jq -r '.ip' )
+port=$( cat /etc/v2ray/sh_config.json | jq -r '.port' )
+move=$( cat /etc/v2ray/sh_config.json | jq -r '.move' )
+mux=$( cat /etc/v2ray/sh_config.json | jq -r '.mux' )
+proxy=$( cat /etc/v2ray/sh_config.json | jq -r '.proxy' )
+user=$( cat /etc/v2ray/sh_config.json | jq -r '.user' )
+passwd=$( cat /etc/v2ray/sh_config.json | jq -r '.passwd' )
+method=$( cat /etc/v2ray/sh_config.json | jq -r '.method' )
+auth=$( cat /etc/v2ray/sh_config.json | jq -r '.auth' )
+uuid=$( cat /etc/v2ray/sh_config.json | jq -r '.uuid' )
+ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
+ if [[ ${type} == 'Vmess' ]]; then
+ 	echo "	——————————————————————
+	V2ray配置
+	————————
+	服务模式：${type}
+	————————
+	IP地址：${ip}
+	端口：${port}
+	UUID：${uuid}
+	动态端口：
+		范围：	${move}
+		刷新频率：	${refresh}	分钟
+		同时开放	${Green_font_prefix}${port_num}${Font_color_suffix}	端口
+	Mux.Cool多路复用：${Green_font_prefix}${ifmux}${ifmux}${Font_color_suffix}
+	用户配置路径：/etc/v2ray/user_config.json
+	——————————————————————"
+elif [[ ${type} == 'Shadowsocks' ]]; then
+	echo "	——————————————————————
+	V2ray配置
+	————————
+	服务模式：${type}
+	————————
+	IP地址：${ip}
+	端口：${port}
+	加密方式：${method}
+	密码：${passwd}
+	——————————————————————"
+	else
+	echo "	——————————————————————
+	V2ray配置
+	————————
+	服务模式：${type}
+	————————
+	IP地址：${ip}
+	端口：${port}
+	认证方式：${auth}
+	用户名：${user}
+	密码：${passwd}
+	——————————————————————"
+	fi
  }
  
  Unistall(){
