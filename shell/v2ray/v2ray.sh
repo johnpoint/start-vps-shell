@@ -64,6 +64,7 @@ Disable_China(){
 		stty erase '^H' && read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [yY] ]]; then
+			rm -rf v2ray.sh
 			wget https://github.com/johnpoint/start-vps-shell/raw/master/shell/v2ray/v2ray.sh
 			echo -e "脚本已更新为最新版本[ ${Green_font_prefix}${sh_new_ver}${Font_color_suffix} ] !"
             chmod +x v2ray.sh
