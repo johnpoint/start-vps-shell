@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 1.5.12
+#	Version: 1.5.13
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="1.5.12"
+sh_ver="1.5.13"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -123,22 +123,22 @@ service v2ray status
 2.Vmess
 3.socks 5
 "
-read type
-if [[ ${type} == '1' ]]; then
-	Install_Shadowsocks
+read ctype
+if [[ ${ctype} == '1' ]]; then
 	echo "	——————————————————————
 	服务类型：Shadowsocks
 	——————————————————————"
-elif [[ ${type} == '2' ]]; then
-	Install_vmess
+	Install_Shadowsocks
+elif [[ ${ctype} == '2' ]]; then
 	echo "	——————————————————————
 	服务类型：Vmess
 	——————————————————————"
-elif [[ ${type} == '3' ]]; then
-	Install_socks
+	Install_vmess
+elif [[ ${ctype} == '3' ]]; then
 	echo "	——————————————————————
 	服务类型：Socks
 	——————————————————————"
+	Install_socks
 else
 	echo "选择1，2或3"
 	exit 0
@@ -239,7 +239,7 @@ DynamicPort(){
 	刷新时间：${refresh}
 	——————————————————————"
 
- movePort='
+ movePort="
    "inboundDetour":[
     {
       "protocol": "vmess",
@@ -258,7 +258,7 @@ DynamicPort(){
       }
     }
   ]
-},'
+},"
 detour='
 ,
       "detour": {        
@@ -401,11 +401,11 @@ fi
 echo "
 {
 	\"loglv\":\"${loglv}\",
-	\"type\":\"${type}\",
+	\"type\":\"${ctype}\",
 	\"ip\":\"${ip}\",
-	\"port\":\"${main_port}\",
+	\"port\":\"${port}\",
 	\"move\":\"${port1}to${port2}\",
-	\"mux\":\"${mux}\",
+	\"mux\":\"${ifmux}\",
 	\"proxy\":\"${proxy}\",
 	\"user\":\"${username}\",
 	\"passwd\":\"${pw}\",
@@ -417,7 +417,7 @@ echo "
 
  View_config(){
 loglv=$( cat /etc/v2ray/sh_config.json | jq -r '.loglv' )
-type=$( cat /etc/v2ray/sh_config.json | jq -r '.type' )
+shtype=$( cat /etc/v2ray/sh_config.json | jq -r '.type' )
 ip=$( cat /etc/v2ray/sh_config.json | jq -r '.ip' )
 port=$( cat /etc/v2ray/sh_config.json | jq -r '.port' )
 move=$( cat /etc/v2ray/sh_config.json | jq -r '.move' )
@@ -427,8 +427,8 @@ passwd=$( cat /etc/v2ray/sh_config.json | jq -r '.passwd' )
 method=$( cat /etc/v2ray/sh_config.json | jq -r '.method' )
 auth=$( cat /etc/v2ray/sh_config.json | jq -r '.auth' )
 uuid=$( cat /etc/v2ray/sh_config.json | jq -r '.uuid' )
-ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
- if [[ ${type} == '2' ]]; then
+ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.mux' )
+ if [[ ${shtype} == '2' ]]; then
  	echo -e "	——————————————————————
 	V2ray配置
 	————————
@@ -444,7 +444,7 @@ ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.ifmux' )
 	Mux.Cool多路复用：${Green_font_prefix}${ifmux}${Font_color_suffix}
 	用户配置路径：/etc/v2ray/user_config.json
 	——————————————————————"
-elif [[ ${type} == '1' ]]; then
+elif [[ ${shtype} == '1' ]]; then
 	echo -e "	——————————————————————
 	V2ray配置
 	————————
