@@ -90,9 +90,9 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 # 版本号说明 #
 
-脚本采用**X.Y.Z-W:T**格式命名版本
+脚本采用**X.Y.Z**格式命名版本
 
-含义 **主版本 . 小功能 . 修复bug - beta版**
+含义 **主版本 . 小功能 . 修复bug**
 
 # TODO #
 
