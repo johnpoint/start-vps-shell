@@ -4,14 +4,14 @@ export PATH
 
 #=================================================
 #	System Required: Ubuntu 14.04+
-#	Version: 2.0.0
+#	Version: 2.0.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.0.0"
+sh_ver="2.0.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -403,7 +403,9 @@ echo "
 	\"type\":\"${ctype}\",
 	\"ip\":\"${ip}\",
 	\"port\":\"${port}\",
-	\"move\":\"${port1}to${port2}\",
+	\"move\":\"${port1}～${port2}\",
+	\"portNum\":\"${port_num}\"
+	\"refresh\":\"${refresh}\",
 	\"mux\":\"${ifmux}\",
 	\"proxy\":\"${proxy}\",
 	\"user\":\"${username}\",
@@ -416,6 +418,8 @@ echo "
 
  View_config(){
 loglv=$( cat /etc/v2ray/sh_config.json | jq -r '.loglv' )
+portNum=$( cat /etc/v2ray/sh_config.json | jq -r '.portNum' )
+refresh=$( cat /etc/v2ray/sh_config.json | jq -r '.refresh' )
 shtype=$( cat /etc/v2ray/sh_config.json | jq -r '.type' )
 ip=$( cat /etc/v2ray/sh_config.json | jq -r '.ip' )
 port=$( cat /etc/v2ray/sh_config.json | jq -r '.port' )
@@ -439,7 +443,7 @@ ifmux=$( cat /etc/v2ray/sh_config.json | jq -r '.mux' )
 	动态端口：
 		范围：	${move}
 		刷新频率：	${refresh}	分钟
-		同时开放	${Green_font_prefix}${port_num}${Font_color_suffix}	端口
+		同时开放	${Green_font_prefix}${portNum}${Font_color_suffix}	端口
 	Mux.Cool多路复用：${Green_font_prefix}${ifmux}${Font_color_suffix}
 	客户端加密：auto
 	用户配置路径：/etc/v2ray/user_config.json
