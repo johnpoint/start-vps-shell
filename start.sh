@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.3.7
+#	Version: 2.3.8
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.3.7"
+sh_ver="2.3.8"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -221,7 +221,7 @@ Install_depend_now(){
  
  #Install_v2ray
  Install_v2ray(){
-  wget -qN --no-check-certificate https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
+  wget -qN --no-check-certificate https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray-base.sh && chmod +x v2ray-base.sh && ./v2ray-base.sh
 }
  
  #Install_wordpress
