@@ -120,17 +120,18 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [x] 整理re-po
 - [x] 增加 v2ray 安装
 - [x] 增加VPS具体参数检测 - superbech.sh
-- [ ] 添加检查ssh日志功能
 - [x] 添加检查bbr是否安装功能
 - [x] 精简安装语句
 - [x] 增加检测ip地址
-- [ ] 添加软件重复安装判定
 - [x] 菜单美化
 - [x] 完善v2ray安装
 - [x] 安装rss_bot
-- [ ] centos安装jq解释器
 - [x] 调整脚本菜单排序
 - [x] 安装DirectoryLister
+- [ ] 添加检查ssh日志功能
+- [ ] 添加软件重复安装判定
+- [ ] centos安装jq解释器
+
 
 # 总结 #
 
