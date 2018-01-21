@@ -138,4 +138,4 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 # License #
 
-[GPL v2](https://github.com/johnpoint/start-vps-shell/blob/master/LICENSE)
+[GPL v3](https://github.com/johnpoint/start-vps-shell/blob/master/LICENSE)
