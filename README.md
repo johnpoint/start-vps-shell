@@ -1,4 +1,4 @@
->本文最后更新于 2018-01-19 13:51
+>本文最后更新于 2018-01-21 21:09
 >本文可能有些内容已失效，请与作者联系
 >>[telegram](https://t.me/johnpoint)
 
@@ -131,7 +131,7 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [ ] 添加检查ssh日志功能
 - [ ] 添加软件重复安装判定
 - [ ] centos安装jq解释器
-
+- [ ] 配置iptables
 
 # 总结 #
 
