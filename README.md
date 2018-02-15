@@ -21,13 +21,7 @@
 ### 正式版 ###
 
 ```
-wget -N --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
-```
-
-备用下载：
-
-```
-wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh
+wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
 ```
 
 #### 特殊的 ####
