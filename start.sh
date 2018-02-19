@@ -181,22 +181,22 @@ Install_depend_now(){
  
  #Install_ssr
  Install_ssr(){
- wget -qN --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
+ wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
 
  #Install_status
  Install_status(){
- wget -qN --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
+ wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
  
  #Install_sync
  Install_sync(){
- wget -qN --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
+ wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
  
  Install_rss(){
- wget -qN --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
+ wget -q https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
  ./rssbot.sh
 }
  
@@ -216,27 +216,32 @@ Install_depend_now(){
  
  #Install_EFB
  Install_EFB(){
- wget -qN --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
+ wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
  #Install_v2ray
  Install_v2ray(){
-  wget -qN --no-check-certificate https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray-base.sh && chmod +x v2ray-base.sh && ./v2ray-base.sh
+  wget -q https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray-base.sh && chmod +x v2ray-base.sh && ./v2ray-base.sh
 }
  
- #Install_wordpress
- Install_wordpress(){
- wget -qN --no-check-certificate https://github.com/johnpoint/start-vps-shell/raw/master/shell/wordpress.sh && chmod +x wordpress.sh && ./wordpress.sh
+ #Install_web
+ Install_web(){
+ wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/web.sh && chmod +x web.sh && ./web.sh
+ }
+ 
+  #删除阿里盾
+ Alicloud(){
+ wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/ali.sh && chmod +x ali.sh && ./ali.sh
  }
  
  #Install_GoFlyway
  Install_GoFlyway(){
- wget -qN --no-check-certificate https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
+ wget -q https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
  
  #Install_ExpressBot
  Install_ExpressBot(){
- wget -qN --no-check-certificate https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
+ wget -q https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
  }
  
  #Install_bbr
@@ -260,7 +265,7 @@ Install_depend_now(){
  
 #Bash_bench
 Bash_bench(){
- wget -qN --no-check-certificate https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
+ wget -q https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
  rm -rf superbench.sh
  echo -e "${Info} done"
 }
@@ -392,7 +397,7 @@ echo -e "  主菜单 > 安装软件
 	elif [[ ${install_num} == "6" ]]; then
 		Install_rss
 	elif [[ ${install_num} == "7" ]]; then
-		Install_wordpress
+		Install_web
 	elif [[ ${install_num} == "8" ]]; then
 		Install_status
 	elif [[ ${install_num} == "9" ]]; then
@@ -468,6 +473,7 @@ clear
   ${Green_font_prefix}2.${Font_color_suffix} 安装 软件
   ${Green_font_prefix}3.${Font_color_suffix} 查看 vps详细参数
   ${Green_font_prefix}4.${Font_color_suffix} 更改 系统为密钥登陆
+  ${Green_font_prefix}5.${Font_color_suffix} 净化 阿里云主机[beta]
   ——————————————————————
   ${Green_font_prefix}0.${Font_color_suffix} 更新 脚本
  "
@@ -484,6 +490,9 @@ case "$num" in
 	;;
 	4)
 	Login_key
+	;;
+	5)
+	Alicloud
 	;;
     0)
 	Update_shell

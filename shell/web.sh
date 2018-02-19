@@ -18,6 +18,7 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
+
 #check OS#
 if [ -f /etc/redhat-release ]; then
     release="centos"
@@ -54,8 +55,7 @@ fi
  
  #Add_vhost
  Add_vhost(){
- echo && stty erase '^H' && read -p "请输入命令：（add/del/list)" lnmp
- lnmp vhost $lnmp
+ lnmp vhost add
  }
  
  #Install_wordpress
@@ -93,7 +93,7 @@ fi
  
 	echo -e "  网站管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
- {Tip} 建议在screen环境中安装lnmp！ 
+ ${Tip} 建议在screen环境中安装lnmp！ 
   ${Green_font_prefix}1.${Font_color_suffix} 安装 lnmp
   ${Green_font_prefix}2.${Font_color_suffix} 安装 wordpress
   ${Green_font_prefix}3.${Font_color_suffix} 安装 DirectoryLister
