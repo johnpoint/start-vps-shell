@@ -385,7 +385,7 @@ echo -e "  主菜单 > 安装软件
   ${Green_font_prefix}10.${Font_color_suffix} bbr （秋水逸冰）
   ${Green_font_prefix}11.${Font_color_suffix} youtube-dl
   ————————————————
-  ${Green_font_prefix}11.${Font_color_suffix} BASE64转换
+  ${Green_font_prefix}12.${Font_color_suffix} BASE64转换
   "
 	echo "(默认: 取消):"
 	read install_num
@@ -412,7 +412,7 @@ echo -e "  主菜单 > 安装软件
 		Install_bbr
 	elif [[ ${install_num} == "11" ]]; then
 		Install_ytb_dl
-	elif [[ ${install_num} == "11" ]]; then
+	elif [[ ${install_num} == "12" ]]; then
 		Base64
 	else
 		echo -e "${Error} 请输入正确的选项" && exit 1
