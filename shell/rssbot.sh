@@ -5,8 +5,9 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Version: 0.0.5
-#	Blog: blog.lvcshu.club
+#	Blog: www.lvcshu.club
 #	Author: johnpoint
+#	Mail: hi@lvcshu.club
 #    USE AT YOUR OWN RISK!!!
 #    Publish under GNU General Public License v2
 #=================================================

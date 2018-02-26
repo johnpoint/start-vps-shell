@@ -6,6 +6,7 @@ export PATH
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Version: 1.2.1
 #	Author: johnpoint
+#	Mail: hi@lvcshu.club
 #=================================================
 
 sh_ver="1.2.1"
@@ -32,6 +33,7 @@ tar -xzf sync.tar.gz && rm -rf sync.tar.gz
 chmod +x rslsync
 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 }
+
 #Start_sync
 Start_sync(){
 cd /root/sync
@@ -48,12 +50,15 @@ kill -9 $(ps -ef|grep "rslsync"|grep -v grep|awk '{print $2}')
 }
 #Uninstall_sync
 Uninstall_sync(){
+Stop_sync
 cd ~
 rm -rf /root/sync
 }
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
+
+clear
 
 menu(){
 	echo -e "  sync一键管理脚本 ${Red_font_prefix}[v$sh_ver]

@@ -1,6 +1,7 @@
->本文最后更新于 2018-01-21 21:09
+>本文最后更新于 2018-02-26 22:23
 >本文可能有些内容已失效，请与作者联系
 >>[telegram](https://t.me/johnpoint)
+>>[E-mail](Mailto:hi@lvcshu.club)
 
 # 前言 #
 
@@ -18,21 +19,9 @@
 
 ## 获取 ##
 
-### 正式版 ###
-
 ```
 wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +x start.sh && ./start.sh
 ```
-
-#### 特殊的 ####
-
-有些系统精简得太厉害，连wget都没有安装，用这个：
-
-```
-curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
-```
-
-~~我是不是很贴心呀~~
 
 ## 使用 ##
 
@@ -90,23 +79,22 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 
 ## 1.wget:command not found ##
 
-原因：系统太过精简，没有安装wget
+- 原因：系统太过精简，没有安装wget
 
-解决办法：
+- 解决办法：
 
-- Centos系：`yum install wget`
-- Debian系：`apt install wget`
-- 使用`curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash`
+  - Centos系：`yum install wget`
+  - Debian系：`apt install wget`
+  - 使用`curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash`
 
 ## 2.脚本运行异常 ##
 
-原因：我技术不到家...
+- 原因：我技术不到家...
 
-解决办法：
+- 解决办法：
 
-- 在issue处反馈，注意说明错误详情和所用系统
-- 耐心等待
-- 使用备份脚本`wget -N --no-check-certificate https://yun.lvcshu.club/GitHub/start-vps-shell/start.sh && chmod +x start.sh && ./start.sh`
+  - 在issue处反馈，注意说明错误详情和所用系统，我会尽快处理
+  - 耐心等待
 
 # TODO #
 
@@ -126,10 +114,6 @@ curl https://github.com/johnpoint/start-vps-shell/raw/master/re-start.sh |bash
 - [ ] 添加软件重复安装判定
 - [ ] centos安装jq解释器
 - [ ] 配置iptables
-
-# 总结 #
-
-真的是懒人/小白必备，~~我就是懒人~~
 
 # License #
 

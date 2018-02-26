@@ -2,6 +2,14 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
+#=================================================
+#	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
+#	Version: 1.0.0
+#	Blog: www.lvcshu.club
+#	Author: johnpoint
+#	Mail: hi@lvcshu.club
+#=================================================
+
 clear
 
 Base_in(){

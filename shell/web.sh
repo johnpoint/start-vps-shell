@@ -5,8 +5,9 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Version: 1.4.0
-#	Blog: blog.lvcshu.club
+#	Blog: www.lvcshu.club
 #	Author: johnpoint
+#	Mail: hi@lvcshu.club
 #=================================================
 
 sh_ver="1.4.0"
