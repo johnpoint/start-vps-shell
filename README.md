@@ -114,6 +114,7 @@ wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +
 - [ ] 添加软件重复安装判定
 - [ ] centos安装jq解释器
 - [ ] 配置iptables
+- [ ] 配置域名邮箱
 
 # License #
 
