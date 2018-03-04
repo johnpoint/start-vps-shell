@@ -15,6 +15,13 @@
 
 [start-vps-shell](https://www.github.com/johnpoint/start-vps-shell)
 
+# 公告 #
+
+```
+- 由于EFBbot主程序进行了更新，而脚本未更新，所以EFBbot安装不了咯~
+```
+
+
 # 获取&使用 #
 
 ## 获取 ##
