@@ -18,15 +18,11 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
-###############
-#		检查权限		#
-###############
+#检查权限
 
 [[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 
-############
-#		检测		#
-############
+#检测系统
 
 if [ -f /etc/redhat-release ]; then
     release="centos"
@@ -53,6 +49,8 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     echo -e "${Error}无法识别~"
     exit 0
 fi
+
+#ip地址获取
 
 config=$( curl -s ipinfo.io )
 touch ip.json
@@ -83,6 +81,7 @@ cat ip.json | jq -r '.region'
 }
 
 #check_bbr
+
 Check_bbr(){
 check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	if [[ "${check_bbr_status_on}" = "bbr" ]]; then
@@ -98,13 +97,16 @@ check_bbr_status_on=`sysctl net.ipv4.tcp_available_congestion_control | awk '{pr
 	fi
 }
 
+#系统信息获取
+
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
     [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
     [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
 }
 
-#Update_shell
+#脚本更新
+
 Update_shell(){
 	echo -e "当前版本为 [ ${Green_font_prefix}${sh_ver}${Font_color_suffix} ]，开始检测最新版本..."
 	sh_new_ver=$(wget --no-check-certificate -qO- "https://github.com/johnpoint/start-vps-shell/raw/master/start.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
@@ -128,6 +130,8 @@ Update_shell(){
 	fi
 }
 
+#系统包更新
+
 Update_sys(){
  echo && echo -e "即将更新系统中的包，可能需要一定的时间" && echo
 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
@@ -145,9 +149,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 	fi
 }
 
-###############
-#		脚本执行		#
-###############
+#脚本执行
 
 Update_shell
 Update_sys
@@ -167,29 +169,24 @@ rm -rf ip.json
 
 ############
 #		依赖		#
-############
+###
 
 Install_depend_now(){
 # ${PM} update >/dev/null
  ${PM} install ${depend_name}
 }
  
- ############
- #		软件		#
-############
+#常用工具
  
- #Install_ssr
  Install_ssr(){
  wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
 
- #Install_status
  Install_status(){
  wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
  
- #Install_sync
  Install_sync(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
@@ -199,7 +196,6 @@ Install_depend_now(){
  ./rssbot.sh
 }
  
- #Install_ytb_dl
  Install_ytb_dl(){
  cd ~
  wget https://yt-dl.org/downloads/2017.10.01/youtube-dl -O /usr/local/bin/youtube-dl
@@ -213,17 +209,14 @@ Install_depend_now(){
  youtube-dl $address
  }
  
- #Install_EFB
  Install_EFB(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
  
- #Install_v2ray
  Install_v2ray(){
   wget -q https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray-base.sh && chmod +x v2ray-base.sh && ./v2ray-base.sh
 }
  
- #Install_web
  Install_web(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/web.sh && chmod +x web.sh && ./web.sh
  }
@@ -233,17 +226,14 @@ Install_depend_now(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/ali.sh && chmod +x ali.sh && ./ali.sh
  }
  
- #Install_GoFlyway
  Install_GoFlyway(){
  wget -q https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
  
- #Install_ExpressBot
  Install_ExpressBot(){
  wget -q https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
  }
  
- #Install_bbr
  Install_bbr(){
  echo && echo -e "  安装bbr需要更换内核，可能会造成vps启动失败，请勿在生产环境中使用！
  " && echo
@@ -262,9 +252,7 @@ Install_depend_now(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/base64.sh && chmod +x base64.sh && ./base64.sh
  }
  
-##############
-#		检测vps		#
-############## 
+#检测vps
  
 #Bash_bench
 Bash_bench(){
@@ -273,19 +261,15 @@ Bash_bench(){
  echo -e "${Info} done"
 }
 
-##################
-#		更换密钥登录		#
-##################
+#密钥登录ssh
 
-#install openssl
  Install_openssl(){
- echo -e "${Info} 正在安装openssl..."
+ echo -e "${Info} 正在安装openssl，lrzsz.."
  ${PM} update >/dev/null
- ${PM} install openssl -y
+ ${PM} install openssl lrzsz-y
  echo -e "${Tip} 安装完成！"
  }
  
- #Generate_key
  Generate_key(){
  echo -e "${Info} 正在生成key..."
  ssh-keygen
@@ -296,7 +280,6 @@ Bash_bench(){
  chmod 700 ~/.ssh
  }
  
- #modify_sshd_config
  modify_sshd_config(){
  echo && echo -e  "警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件" && echo 
 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
@@ -322,14 +305,11 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
 	fi
 }
  
- #Download_key
  Download_key(){
  cd ~/.ssh
- cat id_rsa
- echo '把屏幕上面的密匙复制出来写入文件内，文件取名为 id_rsa （这个名称随意，但这个密匙文件一定要保存好！）。'
+ sz id_rsa
  }
  
- #Upload_key
  Upload_key(){
  mkdir ~/.ssh
  Install_lrzsz
@@ -340,14 +320,12 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
  chmod 700 ~/.ssh
  }
  
- #restart_sshd
  restart_sshd(){
  echo '正在重启ssh服务'
  service ssh restart
  service sshd restart
  }
  
- #close_passwd
  close_passwd(){
  echo && echo -e "将PasswordAuthentication 改为no 并去掉#号" && echo
 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
@@ -361,13 +339,10 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 	fi
  }
  
- ###############
- #		交互界面		#
-###############
+ #交互界面
 
-  #Install_soft
 Install_soft(){
-echo -e "  主菜单 > 安装软件
+echo -e "  主菜单 > 常用工具
 
   ${Green_font_prefix}1.${Font_color_suffix} shadowsocksR 服务端
   ${Green_font_prefix}2.${Font_color_suffix} GoFlyway 服务端
@@ -455,7 +430,7 @@ echo -e "  主菜单 > 更改系统为密钥登陆
 	elif [[ ${Login_key_num} == "7" ]]; then
 		close_passwd
 	else
-		echo -e "${Error} 请输入正确的数字 [1-7]" && exit 1
+		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
 }
 

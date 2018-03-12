@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 1.0.0
+#	Version: 1.0.1
 #	Blog: www.lvcshu.club
 #	Author: johnpoint
 #	Mail: hi@lvcshu.club
@@ -32,6 +32,6 @@ if [[ ${i} = "1" ]]; then
 elif [[ ${i} = "2" ]]; then
 	Base_in
 else
-	echo "无效的输入"
+	echo "无效的输入(请输入1或2)"
 	exit 0
 fi

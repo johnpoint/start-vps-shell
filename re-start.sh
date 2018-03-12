@@ -34,8 +34,8 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
     PM='yum'
 fi
- 
- 
+
+ echo "欢迎使用vps工具箱预安装脚本~"
  echo -e "${Info} 正在安装wget..."
  ${PM} update
  ${PM} install wget -y
