@@ -15,6 +15,13 @@
 
 [start-vps-shell](https://www.github.com/johnpoint/start-vps-shell)
 
+# 公告 #
+
+```
+- 由于EFBbot主程序进行了更新，而脚本未更新，所以EFBbot安装不了咯~
+```
+
+
 # 获取&使用 #
 
 ## 获取 ##
@@ -43,23 +50,23 @@ wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +
 
 - ssr (一款优秀的代理软件) 来自：[toyo](https://doub.io)
 - 逗比云监控 （多vps党必备）来自：[toyo](https://doub.io)
-- **『原创』**v2ray （可定制化代理软件）
+- **原创**v2ray （可定制化代理软件）
 - sync （便利地建立私人云盘，大硬盘vps福利）
 - YouTube-dl （命令行下载YouTube视频）
 - EFB_bot （telegram-微信互联，慎用可能会造成微信网页版被封禁）
-- **『原创』**WordPress （自助安装博客必备环境）
+- **原创**WordPress （自助安装博客必备环境）
 - GoFlyway （新的代理软件）来自：[toyo](https://doub.io)
-- **『原创』**ExpressBot （telegram查询快递bot-benny出品）
+- **原创**ExpressBot （telegram查询快递bot-benny出品）
 - bbr （秋水逸冰一键安装bbr脚本）
-- **『原创』**rss_bot安装脚本
-- **『原创』**一键安装DirectoryLister脚本
+- **原创**rss_bot安装脚本
+- **原创**一键安装DirectoryLister脚本
 
 ## 功能二：系统相关操作 ##
 
 - ~~修改密码~~
-- **『原创』**修改登录方式为密匙登录
+- **原创**修改登录方式为密匙登录
 - 查看vps详细参数 （来自：oooldking和teddysun）
-- **『原创』**查询外网ip及相关信息
+- **原创**查询外网ip及相关信息
 
 ## 功能三：脚本自动更新 ##
 
