@@ -122,6 +122,7 @@ wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +
 - [ ] centos安装jq解释器
 - [ ] 配置iptables
 - [ ] 配置域名邮箱
+- [ ] 修复bbr检测
 
 # License #
 
