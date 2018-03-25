@@ -140,7 +140,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
  		${PM} update -y
  		else
  		${PM} update
- 		${PM} upgrade
+ 		${PM} upgrade -y
  		fi
 	elif [[ ${yynnn} == "n" ]]; then
 		echo "已取消..."
