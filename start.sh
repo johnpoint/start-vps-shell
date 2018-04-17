@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.5.0
+#	Version: 2.5.1
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.5.0"
+sh_ver="2.5.1"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -404,7 +404,7 @@ echo -e "  主菜单 > 常用工具
 		Install_ytb_dl
 	elif [[ ${install_num} == "12" ]]; then
 		Base64
-	elif [[ ${install_num} == "12" ]]; then
+	elif [[ ${install_num} == "13" ]]; then
 		PM2
 	else
 		echo -e "${Error} 请输入正确的选项" && exit 1
