@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.4.3
+#	Version: 2.5.0
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.4.3"
+sh_ver="2.5.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -221,6 +221,21 @@ Install_depend_now(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/web.sh && chmod +x web.sh && ./web.sh
  }
  
+ PM2(){
+ wget -N https://nodejs.org/dist/v9.4.0/node-v9.4.0-linux-x64.tar.xz
+tar -xvf node-v9.4.0-linux-x64.tar.xz
+#设置权限
+chmod 777 /root/node-v9.4.0-linux-x64/bin/node
+chmod 777 /root/node-v9.4.0-linux-x64/bin/npm
+#创建软连接
+ln -s /root/node-v9.4.0-linux-x64/bin/node /usr/bin/node
+ln -s /root/node-v9.4.0-linux-x64/bin/npm /usr/bin/npm
+#安装PM2
+npm install -g pm2 --unsafe-perm
+#创建软连接x2
+ln -s /root/node-v9.4.0-linux-x64/bin/pm2 /usr/bin/pm2
+}
+ 
   #删除阿里盾
  Alicloud(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/ali.sh && chmod +x ali.sh && ./ali.sh
@@ -360,6 +375,7 @@ echo -e "  主菜单 > 常用工具
   ${Green_font_prefix}11.${Font_color_suffix} youtube-dl
   ————————————————
   ${Green_font_prefix}12.${Font_color_suffix} BASE64转换
+  ${Green_font_prefix}13.${Font_color_suffix} PM2
   "
 	echo "(默认: 取消):"
 	read install_num
@@ -388,6 +404,8 @@ echo -e "  主菜单 > 常用工具
 		Install_ytb_dl
 	elif [[ ${install_num} == "12" ]]; then
 		Base64
+	elif [[ ${install_num} == "12" ]]; then
+		PM2
 	else
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
