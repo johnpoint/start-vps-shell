@@ -70,8 +70,7 @@ wget https://github.com/johnpoint/start-vps-shell/raw/master/start.sh && chmod +
 
 ## 功能三：脚本自动更新 ##
 
-代码来自toyo的[博客](https://doub.io)（不明原因无法访问）
-
+代码来自toyo的[博客](https://doub.io)
 ## 功能四：脚本主菜单显示系统概况
 
 - 此功能须安装jq解析器
