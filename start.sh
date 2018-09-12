@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Version: 2.5.1
+#	Version: 2.5.2
 #	Blog: johnpoint.github.io
 #	Author: johnpoint
 #	Email: jahanngauss414@gmail.com
@@ -12,7 +12,7 @@ export PATH
 #    Publish under GNU General Public License v2
 #=================================================
 
-sh_ver="2.5.1"
+sh_ver="2.5.2"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -57,7 +57,7 @@ touch ip.json
 echo "$config" > ip.json
 
 Ip(){
-cat ip.json | jq -r '.ip' 
+cat ip.json | jq -r '.ip'
 }
 
 City(){
@@ -175,9 +175,9 @@ Install_depend_now(){
 # ${PM} update >/dev/null
  ${PM} install ${depend_name}
 }
- 
+
 #常用工具
- 
+
  Install_ssr(){
  wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
  }
@@ -186,16 +186,16 @@ Install_depend_now(){
  wget -q https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/status.sh && chmod +x status.sh
  bash status.sh s
  }
- 
+
  Install_sync(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/sync.sh && chmod +x sync.sh && ./sync.sh
  }
- 
+
  Install_rss(){
  wget -q https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/rssbot.sh && chmod +x rssbot.sh
  ./rssbot.sh
 }
- 
+
  Install_ytb_dl(){
  cd ~
  wget https://yt-dl.org/downloads/2017.10.01/youtube-dl -O /usr/local/bin/youtube-dl
@@ -208,19 +208,19 @@ Install_depend_now(){
  echo && stty erase '^H' && read -p "请输入视频地址：" address
  youtube-dl $address
  }
- 
+
  Install_EFB(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/EFB.sh && chmod +x EFB.sh && ./EFB.sh
  }
- 
+
  Install_v2ray(){
   wget -q https://github.com/johnpoint/One-step-to-V2ray/raw/master/v2ray-base.sh && chmod +x v2ray-base.sh && ./v2ray-base.sh
 }
- 
+
  Install_web(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/web.sh && chmod +x web.sh && ./web.sh
  }
- 
+
  PM2(){
  wget -N https://nodejs.org/dist/v9.4.0/node-v9.4.0-linux-x64.tar.xz
 tar -xvf node-v9.4.0-linux-x64.tar.xz
@@ -235,20 +235,36 @@ npm install -g pm2 --unsafe-perm
 #创建软连接x2
 ln -s /root/node-v9.4.0-linux-x64/bin/pm2 /usr/bin/pm2
 }
- 
+
   #删除阿里盾
  Alicloud(){
- wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/ali.sh && chmod +x ali.sh && ./ali.sh
+  wget http://update.aegis.aliyun.com/download/uninstall.sh
+  chmod +x uninstall.sh
+  ./uninstall.sh
+  pkill aliyun-service
+rm -fr /etc/init.d/agentwatch /usr/sbin/aliyun-service
+rm -rf /usr/local/aegis*
+iptables -I INPUT -s 140.205.201.0/28 -j DROP
+iptables -I INPUT -s 140.205.201.16/29 -j DROP
+iptables -I INPUT -s 140.205.201.32/28 -j DROP
+iptables -I INPUT -s 140.205.225.192/29 -j DROP
+iptables -I INPUT -s 140.205.225.200/30 -j DROP
+iptables -I INPUT -s 140.205.225.184/29 -j DROP
+iptables -I INPUT -s 140.205.225.183/32 -j DROP
+iptables -I INPUT -s 140.205.225.206/32 -j DROP
+iptables -I INPUT -s 140.205.225.205/32 -j DROP
+iptables -I INPUT -s 140.205.225.195/32 -j DROP
+iptables -I INPUT -s 140.205.225.204/32 -j DROP
  }
- 
+
  Install_GoFlyway(){
  wget -q https://github.com/ToyoDAdoubi/doubi/raw/master/goflyway.sh && chmod +x goflyway.sh && bash goflyway.sh
  }
- 
+
  Install_ExpressBot(){
  wget -q https://github.com/BennyThink/ExpressBot/raw/master/install.sh && chmod +x install.sh && ./install.sh
  }
- 
+
  Install_bbr(){
  echo && echo -e "  安装bbr需要更换内核，可能会造成vps启动失败，请勿在生产环境中使用！
  " && echo
@@ -262,13 +278,13 @@ ln -s /root/node-v9.4.0-linux-x64/bin/pm2 /usr/bin/pm2
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
  }
- 
+
  Base64(){
  wget -q https://github.com/johnpoint/start-vps-shell/raw/master/shell/base64.sh && chmod +x base64.sh && ./base64.sh
  }
- 
+
 #检测vps
- 
+
 #Bash_bench
 Bash_bench(){
  wget -q https://raw.githubusercontent.com/johnpoint/start-vps-shell/master/shell/superbench.sh && chmod +x superbench.sh && ./superbench.sh
@@ -284,7 +300,7 @@ Bash_bench(){
  ${PM} install openssl lrzsz-y
  echo -e "${Tip} 安装完成！"
  }
- 
+
  Generate_key(){
  echo -e "${Info} 正在生成key..."
  ssh-keygen
@@ -294,9 +310,9 @@ Bash_bench(){
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
- 
+
  modify_sshd_config(){
- echo && echo -e  "警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件" && echo 
+ echo && echo -e  "警告！此步骤如果出现异常请在 /root/sshd_config 目录处使用 mv 指令恢复配置文件" && echo
 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
 	if [[ ${ynn} == "y" ]]; then
 		 mkdir ~/sshd_config
@@ -319,12 +335,12 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
 	    echo "已取消..." && exit 1
 	fi
 }
- 
+
  Download_key(){
  cd ~/.ssh
  sz id_rsa
  }
- 
+
  Upload_key(){
  mkdir ~/.ssh
  Install_lrzsz
@@ -334,13 +350,13 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" ynn
  chmod 600 authorized_keys
  chmod 700 ~/.ssh
  }
- 
+
  restart_sshd(){
  echo '正在重启ssh服务'
  service ssh restart
  service sshd restart
  }
- 
+
  close_passwd(){
  echo && echo -e "将PasswordAuthentication 改为no 并去掉#号" && echo
 stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
@@ -353,7 +369,7 @@ stty erase '^H' && read -p "是否继续？（y/N）（默认：取消）" yynnn
 	    echo "已取消..." && exit 1
 	fi
  }
- 
+
  #交互界面
 
 Install_soft(){
@@ -410,7 +426,7 @@ echo -e "  主菜单 > 常用工具
 		echo -e "${Error} 请输入正确的选项" && exit 1
 	fi
 }
- 
+
   #Install_depend
 Install_depend(){
 echo -e "${Info} 请输入要安装的依赖名："
@@ -455,10 +471,10 @@ echo -e "  主菜单 > 更改系统为密钥登陆
 clear
 	echo -e "  VPS工具箱 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- johnpoint ----
-  
+
   ================= IP Information =====================
   =ip地址：${Green_font_prefix}$ip${Font_color_suffix}
-  =${Green_font_prefix}位置：${Font_color_suffix}$country $region $city 
+  =${Green_font_prefix}位置：${Font_color_suffix}$country $region $city
   =${Green_font_prefix}经纬：${Font_color_suffix}$loc
   =${Green_font_prefix}组织：${Font_color_suffix}$org
   =============== System Information ===================
